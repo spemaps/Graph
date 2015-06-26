@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+  	<head>
+	  	<meta charset="utf-8">
+	    <title>Paint</title>
+	    <style type="text/css">
+	      #container { position: relative; }
+	      #imageView { border: 1px solid #000; }
+	      #imageTemp { position: absolute; top: 1px; left: 1px; }
+	    </style>
+ 	</head>
+  	<body>
+  		<p><label>Drawing tool: <select id="dtool">
+  		    <option value="node">Node</option>
+	        <option value="edge">Edge</option>          
+    	</select></label></p>
+    	<p>
+        <button type="button" id="undo"> Undo </button>
+        <button type="button" id='redo'> Redo </button>
+      </p>
+		<div id="container">
+      <canvas id="imageView" width="563" height="272" style="background-image:url(csfloor2.gif)">
+      	<!-- change image to whatever you want above-->
+      </canvas>
+    </div>
+       <script src="graph.js"></script>
+	</body>
+</html>
