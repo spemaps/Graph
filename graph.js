@@ -326,10 +326,6 @@ function remove_nodes(coords){
   }
  };
 
-
-
-
-
    // The resize tool.
   tools.resize = function () {
     var tool = this;
@@ -338,6 +334,7 @@ function remove_nodes(coords){
     var old_x = 0;
     var old_y = 0;
     var node_id; //id of the resizing node
+    var first_run = false;
     var connect_id = []; // ids of the nodes on the other end of edges
 
     this.mousedown = function (ev) {
@@ -356,6 +353,8 @@ function remove_nodes(coords){
             connect_id.push(edges[i][0]); //push id of the other node
          }
       }
+      //prepare first_run
+      first_run = true;
     };
 
     //closest function
@@ -380,6 +379,16 @@ function remove_nodes(coords){
     this.mousemove = function (ev) {
       if (!tool.started) {
         return;
+      }
+      if (first_run) {
+        //removal of original edges to the moved node
+        for (var i = 0; i < connect_id.length; i++) {
+          remove_edges([nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1]], //other node
+            [old_x, old_y]); //original node
+         }
+        //remove original node
+        remove_nodes([old_x, old_y]);
+        first_run = false;
       }
 
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -414,13 +423,8 @@ function remove_nodes(coords){
         //update coordinates of changed node
         nodes[node_id].coords = [ev._x, ev._y];
 
-        //removal of original edges to the moved node
-        for (var i = 0; i < connect_id.length; i++) {
-          remove_edges([nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1]], //other node
-            [old_x, old_y]); //original node
-         }
-        //remove original node
-        remove_nodes([old_x, old_y]);
+        //clear connect_id
+        connect_id = [];
       }
     };
   };
