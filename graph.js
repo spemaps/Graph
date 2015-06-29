@@ -35,13 +35,12 @@
     mouse_canvas = document.getElementById('mouse');
     mouse_context = mouse_canvas.getContext('2d');
 
+    //determine which button is selected. toollist is list of the button names
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
+      //toollist[i] is an individual name. cannot have eventlistener on list
       toollist[i].addEventListener('change', ev_tool_change, false);
     }
-
-    
-
 
     // Activate the default tool.
     if (tools[tool_default]) {
@@ -122,6 +121,12 @@ function changeCanvas(){
              var selectedT = toollist[i].value
             tool = new tools[selectedT];
             break;
+            if(selectedT == 'node'){
+              $('#nodeType').show();
+            }
+            else{
+              $('#nodeType').hide();
+            }
         
       }
     }

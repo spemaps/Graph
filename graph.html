@@ -1,4 +1,4 @@
-!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
     <head>
         <meta charset="utf-8">
@@ -17,6 +17,10 @@
           <input type='radio' name='dtool' value='edge'>Edge    
           <input type='radio' name='dtool' value='resize'>Resize     
         </form></label></p>
+        <select name='node type' id='nodeType'>
+          <option>value="walk">Walk</option>";
+          <option>value="room">Room</option>";
+        </select>
         <p>
         <button type="button" id="undo"> Undo </button>
         <button type="button" id='redo'> Redo </button>
@@ -28,6 +32,6 @@
       </canvas>
       <canvas id='mouse' width='563' height='272'></canvas>
     </div>
-       <script src="graph_f.js"></script>
+       <script src="graph.js"></script>
     </body>
 </html>
