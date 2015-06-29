@@ -39,6 +39,10 @@
     document.getElementById("snapping").style.display = "none"; //hide snapping tool
     document.getElementById('gender').style.display = 'none'; //hide gender tool
 
+    //add event listener for nodeType
+    document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
+
+
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
       toollist[i].addEventListener('change', ev_tool_change, false);
@@ -124,17 +128,22 @@ function changeCanvas(){
              var selectedT = toollist[i].value
             tool = new tools[selectedT];
          
-            if(selectedT == 'node') {
+            if (selectedT == 'node') {
               document.getElementById("nodeType").style.display = "block";
               document.getElementById("snapping").style.display = "none";
+              if (document.getElementById("nodeType").value == "bathroom") {
+                document.getElementById('gender').style.display = 'block';
+              }
             }
             else if (selectedT == 'resize'){
               document.getElementById("snapping").style.display = "block";
               document.getElementById("nodeType").style.display = "none";
+              document.getElementById('gender').style.display = 'none';
             }
             else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
+              document.getElementById('gender').style.display = 'none';
             }
       }
     }
@@ -229,6 +238,9 @@ function changeCanvas(){
       this.id = id;
       this.coords = coords;
       this.type = type;
+      if (type = "bathroom") {
+        gender = "M";
+      }
     };
 
 
@@ -275,6 +287,16 @@ function changeCanvas(){
         img_update();
 
         nodes.push(new Node(nodes.length,[tool.x0, tool.y0], tool.findNT()));
+
+        //add extra attributes
+        //add bathroom things
+        if (document.getElementById("nodeType").value == "bathroom") {
+          if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
+            nodes[nodes.length - 1].gender = 'F'; //if female is checked
+          }
+        }
+
+
         //update undo
         undo.push("n"); //add new to end
         if(undo.length == 10) {
