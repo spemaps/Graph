@@ -248,12 +248,13 @@ function changeCanvas(){
       draw_node(tool.x0, tool.y0, 5, 'black', 1);
     };
 
-    this.mouseup = function (ev) {
+     this.mouseup = function (ev) {
       if (tool.started) {
         tool.mousemove(ev);
         tool.started = false;
         img_update();
-        nodes.push(new Node(nodes.length,[tool.x0, tool.y0]));
+
+        nodes.push(new Node(nodes.length,[tool.x0, tool.y0], tool.findNT()));
         //update undo
         undo.push("n"); //add new to end
         if(undo.length == 10) {
@@ -261,6 +262,16 @@ function changeCanvas(){
           }
       }
     };
+
+    this.findNT = function(){
+       r = document.getElementById("nodeType").length;
+       for(var i = 0; i<r; i++){
+        var typetrial = document.getElementById("nodeType")[i];
+        if(typetrial.selected)
+          return typetrial.value;
+       }
+    };
+
   };
 
 //function that removes edges on canvas
