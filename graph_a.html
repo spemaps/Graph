@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Graph_A</title>
+        <style type="text/css">
+          #container { position: relative; }
+          #imageView { border: 1px solid #000; }
+          #imageTemp { position: absolute; top: 1px; left: 1px; }
+        </style>
+    </head>
+    <body>
+      <div><input type="file" name="image_file" id="image"/></div>
+      <div><input type="button" value="Upload" onclick="changeCanvas()" /></div>
+        
+        <form>
+          <input type="radio" name="dtool" value="node" checked>Node
+          <br>
+          <input type="radio" name="dtool" value="edge" >Edge
+          <br>
+        </form>
+        <p>
+        <button type="button" id="undo"> Undo </button>
+        <button type="button" id='redo'> Redo </button>
+      </p>
+    
+      
+<div id="container">
+      <canvas id='background' width='563' height='272' style="position: absolute; left: 0; top: 0;"></canvas>
+      <canvas id="imageView" width="563" height="272" style="position: absolute; left: 0; top: 0;">
+        <!-- change image to whatever you want above-->
+      </canvas>
+    </div>
+       <script src="graph_b.js"></script>
+    </body>
+</html>
