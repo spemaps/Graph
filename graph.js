@@ -35,12 +35,13 @@
     mouse_canvas = document.getElementById('mouse');
     mouse_context = mouse_canvas.getContext('2d');
 
-    //determine which button is selected. toollist is list of the button names
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
-      //toollist[i] is an individual name. cannot have eventlistener on list
       toollist[i].addEventListener('change', ev_tool_change, false);
     }
+
+    
+
 
     // Activate the default tool.
     if (tools[tool_default]) {
@@ -118,8 +119,9 @@ function changeCanvas(){
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
       if(toollist[i].checked == true)  {
-             var selectedT = toollist[i].value
+            var selectedT = toollist[i].value
             tool = new tools[selectedT];
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             break;
             if(selectedT == 'node'){
@@ -137,7 +139,17 @@ function changeCanvas(){
 >>>>>>> Stashed changes
             }
         
+=======
+          if(selectedT == 'node'){
+            document.getElementById("nodeType").style.display = "block";
+          }
+          else{
+            document.getElementById("nodeType").style.display = "none";
+          }
+>>>>>>> Stashed changes
       }
+
+
     }
   };
 
