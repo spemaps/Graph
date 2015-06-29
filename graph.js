@@ -264,7 +264,7 @@ function changeCanvas(){
     };
 
     this.findNT = function(){
-       r = document.getElementById("nodeType").length;
+      var r = document.getElementById("nodeType").length;
        for(var i = 0; i<r; i++){
         var typetrial = document.getElementById("nodeType")[i];
         if(typetrial.selected)
