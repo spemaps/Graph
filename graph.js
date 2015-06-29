@@ -226,6 +226,9 @@ function changeCanvas(){
       this.type = type;
     };
 
+
+
+
   //node tool
   tools.node = function () {
     var tool = this;
@@ -244,8 +247,20 @@ function changeCanvas(){
         return;
       }
 
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      draw_node(tool.x0, tool.y0, 5, 'black', 1);
+     context.clearRect(0, 0, canvas.width, canvas.height);
+      draw_node(tool.x0, tool.y0, 5, tool.colorFind(), 1);
+    };
+
+    this.colorFind = function(){
+      nodeType = tool.findNT();
+      if (nodeType =='walk')
+        return 'black';
+      else if (nodeType =='room' || nodeType =='bathroom')
+        return 'red';
+      else if (nodeType =='stairs' || nodeType =='elevator')
+        return 'blue';
+      else if (nodeType =='entry')
+        return 'green';
     };
 
      this.mouseup = function (ev) {
