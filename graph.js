@@ -219,18 +219,19 @@ function changeCanvas(){
       }
     }
   };
-  
-
+  //Node function out of the Node tool
+  function Node(id,coords,type) {
+      this.id = id;
+      this.coords = coords;
+      this.type = type;
+    };
 
   //node tool
   tools.node = function () {
     var tool = this;
     this.started = false;
 
-    function Node(id,coords) {
-      this.id = id;
-      this.coords = coords;
-    };
+
 
     this.mousedown = function (ev) {
       tool.started = true;
