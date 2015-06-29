@@ -10,6 +10,8 @@
 	    </style>
  	</head>
   	<body>
+      <div><input type="file" name="image_file" id="image"/></div>
+      <div><input type="button" value="Upload" onclick="changeCanvas()" /></div>
   		<p><label>Drawing tool: <select id="dtool">
   		    <option value="node">Node</option>
 	        <option value="edge">Edge</option>
@@ -20,7 +22,8 @@
         <button type="button" id='redo'> Redo </button>
       </p>
 		<div id="container">
-      <canvas id="imageView" width="563" height="272" style="background-image:url(csfloor2.gif)">
+      <canvas id='background' width='563' height='272' style="position: absolute; left: 0; top: 0;"></canvas>
+      <canvas id="imageView" width="563" height="272" style="position: absolute; left: 0; top: 0;">
       	<!-- change image to whatever you want above-->
       </canvas>
     </div>

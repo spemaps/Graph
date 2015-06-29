@@ -12,9 +12,11 @@
   function init () {
     // Find the canvas element.
     canvaso = document.getElementById('imageView');
+    backgroundCanvas = document.getElementById('background');
 
     // Get the 2D canvas context.
     contexto = canvaso.getContext('2d');
+    backgroundContext = backgroundCanvas.getContext('2d');
 
     // Add the temporary canvas.
     var container = canvaso.parentNode;
@@ -48,6 +50,43 @@
     canvas.addEventListener('mousemove', ev_canvas, false);
     canvas.addEventListener('mouseup',   ev_canvas, false);
   }
+
+//get file and change canvas background
+function changeCanvas(){
+  var file = document.getElementById('image').files[0];
+  var fileread = new FileReader();
+  var image = new Image();
+  var width, height;
+  
+  //fileread.readAsDataURL(file);
+  fileread.onload = function(_file) { //once file has uplaoded
+    //make sure the image has loaded
+    image.onload = function(){
+      width = this.width;
+      height = this.height
+
+      //change canvas
+      canvaso.width = width; //edit sizes
+      canvaso.height = height;
+      canvas.width = width;
+      canvas.height = height;
+      backgroundCanvas.width = width;
+      backgroundCanvas.height = height;
+      backgroundContext.drawImage(image, 0, 0);
+//      img_update();
+
+      //clear all nodes and edges
+      edges = [];
+      nodes = [];
+    }
+    image.src = _file.target.result;
+  }
+  fileread.readAsDataURL(file);
+}
+
+//
+
+
 
   // The general-purpose event handler. This function just determines the mouse 
   // position relative to the canvas element.
@@ -218,7 +257,7 @@ function remove_edges(start_coords, end_coords) {
   contexto.beginPath();
   contexto.moveTo(start_coords[0], start_coords[1]);
   contexto.lineTo(end_coords[0], end_coords[1]);
-  contexto.lineWidth = 4;
+  contexto.lineWidth = 3;
   contexto.strokeStyle = 'white';
   contexto.stroke();
   contexto.closePath();
