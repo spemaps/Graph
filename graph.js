@@ -35,7 +35,9 @@
     mouse_canvas = document.getElementById('mouse');
     mouse_context = mouse_canvas.getContext('2d');
 
-    document.getElementById("snapping").style.display = "none"; //remove snapping tool
+    //hide all tools
+    document.getElementById("snapping").style.display = "none"; //hide snapping tool
+    document.getElementById('gender').style.display = 'none'; //hide gender tool
 
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
