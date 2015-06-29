@@ -6,6 +6,7 @@
 
   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
   var toollist;
+  var snapping = true;
 
   // The active tool instance.
   var tool;
@@ -115,43 +116,17 @@ function changeCanvas(){
     }
   }
 
- // The event handler for any changes made to the tool selector. 
+ // The event handler for any changes made to the tool selector. AKLFJAKLSDJFLKASJFLKSJAFDLKJDSFLKJFKLDJSF
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
       if(toollist[i].checked == true)  {
-            var selectedT = toollist[i].value
+             var selectedT = toollist[i].value
             tool = new tools[selectedT];
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
             break;
-            if(selectedT == 'node'){
-              $('#nodeType').show();
-            }
-            else{
-              $('#nodeType').hide();
-=======
         
-            if(selectedT == 'node') {
-              document.getElementById("nodeType").style.display = "block";
-            }
-            else {
-              document.getElementById("nodeType").style.display = "none";
->>>>>>> Stashed changes
-            }
-        
-=======
-          if(selectedT == 'node'){
-            document.getElementById("nodeType").style.display = "block";
-          }
-          else{
-            document.getElementById("nodeType").style.display = "none";
-          }
->>>>>>> Stashed changes
       }
-
-
     }
-  };
+  }
 
   // This function draws the #imageTemp canvas on top of #imageView, after which 
   // #imageTemp is cleared. This function is called each time when the user 
@@ -452,11 +427,11 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
     var tool = this;
     this.started = false;
 
-    var old_x = 0;
-    var old_y = 0;
+    var old_x, old_y, end_x, snapping_x, snapping_y;
     var node_id; //id of the resizing node
     var first_run = false;
     connect_id = []; // ids of the nodes on the other end of edges
+
 
     this.mousedown = function (ev) {
       tool.started = true;
@@ -476,6 +451,12 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
       }
       //prepare first_run
       first_run = true;
+
+      //prepare snapping
+      if (false) { //if snapping true
+        snapping_x = false;
+        snapping_y = false;
+      }
     };
 
     //closest function
@@ -511,14 +492,40 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
         first_run = false;
       }
 
+      var current_x = ev._x;
+      var current_y = ev._y;
+      var tolerance = 10;
+
       context.clearRect(0, 0, canvas.width, canvas.height);
-      mouseCoords(ev._x, ev._y);
-      draw_node(ev._x, ev._y, 5, 'black', 1);  //draw new node
+      //mouseCoords(ev._x, ev._y);
+
+      if (false) { //if snapping is on
+        for (var i = 0; i < connect_id.length; i++) { //for all neighbors of the node
+          var coords = nodes[connect_id[i]].coords;
+          if (snapping_x) {
+            if (Math.abs(coords[0] - current_x) <= tolerance) {
+              current_x = coords[0];
+              snapping_x = true;
+              alert("HEY");
+            }
+          }
+          if (snapping_y) {
+            if (Math.abs(coords[1] - current_y) <= tolerance) {
+              current_y = coords[1];
+              snapping_y = true;
+            }
+          }
+        }
+      } 
+      
+      draw_node(current_x, current_y, 5, 'black', 1);  //draw new node
 
       //draw new edges
       for (var i = 0; i < connect_id.length; i++) {
-        draw_edge(nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1], ev._x, ev._y, 'black', 2);
+        draw_edge(nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1], current_x, current_y, 'black', 2);
       }
+      end_x = current_x;
+      end_y = current_y;
     };
 
     this.mouseup = function (ev) {
@@ -529,7 +536,7 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
         mouse_context.clearRect(0, 0, mouse_canvas.width, mouse_canvas.height);
 
         //update coordinates of changed node
-        nodes[node_id].coords = [ev._x, ev._y];
+        nodes[node_id].coords = [end_x, end_y];
 
         connected_edges = connect_id;
         //add to undo list
