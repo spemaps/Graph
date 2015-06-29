@@ -6,7 +6,6 @@
 
   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
   var toollist;
-  var snapping = true;
 
   // The active tool instance.
   var tool;
@@ -36,12 +35,12 @@
     mouse_canvas = document.getElementById('mouse');
     mouse_context = mouse_canvas.getContext('2d');
 
+    document.getElementById("snapping").style.display = "none"; //remove snapping tool
+
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
       toollist[i].addEventListener('change', ev_tool_change, false);
     }
-
-    
 
 
     // Activate the default tool.
@@ -125,12 +124,16 @@ function changeCanvas(){
          
             if(selectedT == 'node') {
               document.getElementById("nodeType").style.display = "block";
+              document.getElementById("snapping").style.display = "none";
+            }
+            else if (selectedT == 'resize'){
+              document.getElementById("snapping").style.display = "block";
+              document.getElementById("nodeType").style.display = "none";
             }
             else {
               document.getElementById("nodeType").style.display = "none";
-
+              document.getElementById("snapping").style.display = "none";
             }
-        
       }
     }
   }
@@ -461,11 +464,11 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
     var tool = this;
     this.started = false;
 
-    var old_x, old_y, end_x, snapping_x, snapping_y, current_x, current_y;
+    var old_x, old_y, end_x, end_y, snapping_x, snapping_y, current_x, current_y;
     var node_id; //id of the resizing node
     var first_run = false;
     connect_id = []; // ids of the nodes on the other end of edges
-
+    var snapping;
 
     this.mousedown = function (ev) {
       tool.started = true;
@@ -486,10 +489,11 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
       //prepare first_run
       first_run = true;
 
+      snapping = document.getElementsByName('snapping')[0].checked;
       //prepare snapping
       if (snapping) { //if snapping true
-        snapping_x = false;
-        snapping_y = false;
+        snapping_x = true;
+        snapping_y = true;
       }
     };
 
@@ -526,8 +530,14 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
         first_run = false;
       }
 
-      if (!snapping_x) {current_x = ev._x;}
-      if (!snapping_y) {current_y = ev._y;}
+      if (!snapping) {
+        current_x = ev._x;
+        current_y = ev._y;
+      } else {
+        if (snapping_x) {current_x = ev._x;}
+        if (snapping_y) {current_y = ev._y;}
+      }
+
 
       var tolerance = 2;
 
@@ -537,16 +547,16 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
       if (snapping) { //if snapping is on
         for (var i = 0; i < connect_id.length; i++) { //for all neighbors of the node
           var coords = nodes[connect_id[i]].coords;
-          if (!snapping_x) {
+          if (snapping_x) {
             if (Math.abs(coords[0] - current_x) <= tolerance) {
               current_x = coords[0];
-              snapping_x = true;
+              snapping_x = false;
             }
           }
-          if (!snapping_y) {
+          if (snapping_y) {
             if (Math.abs(coords[1] - current_y) <= tolerance) {
               current_y = coords[1];
-              snapping_y = true;
+              snapping_y = false;
             }
           }
         }
