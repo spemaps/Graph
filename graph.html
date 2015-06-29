@@ -12,11 +12,11 @@
   	<body>
       <div><input type="file" name="image_file" id="image"/></div>
       <div><input type="button" value="Upload" onclick="changeCanvas()" /></div>
-  		<p> <label>Drawing tool: <form id="dtool">
-          <input type='radio' name='dtool' value='node' checked='checked'>Node
-          <input type='radio' name='dtool' value='edge'>Edge
-          <input type='radio' name='dtool' value='resize'>Resize         
-    	</form></label></p>
+  		<p><label>Drawing tool: <select id="dtool">
+  		    <option value="node">Node</option>
+	        <option value="edge">Edge</option>
+          <option value="resize">Resize</option>          
+    	</select></label></p>
     	<p>
         <button type="button" id="undo"> Undo </button>
         <button type="button" id='redo'> Redo </button>
