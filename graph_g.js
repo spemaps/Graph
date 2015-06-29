@@ -127,11 +127,15 @@ function changeCanvas(){
   }*/
 
   function setNode(ev){
-    tool = new tools['node']
+    tool = new tools['node'];
   }
 
   function setEdge(ev){
-    tool = new toolds['edge']
+    tool = new tools['edge'];
+  }
+
+  function setResize(ev){
+    tool = new tools['resize'];
   }
 
   // This function draws the #imageTemp canvas on top of #imageView, after which 
