@@ -435,7 +435,7 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
     var tool = this;
     this.started = false;
 
-    var old_x, old_y, end_x, snapping_x, snapping_y;
+    var old_x, old_y, end_x, snapping_x, snapping_y, current_x, current_y;
     var node_id; //id of the resizing node
     var first_run = false;
     connect_id = []; // ids of the nodes on the other end of edges
@@ -461,7 +461,7 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
       first_run = true;
 
       //prepare snapping
-      if (false) { //if snapping true
+      if (snapping) { //if snapping true
         snapping_x = false;
         snapping_y = false;
       }
@@ -500,24 +500,24 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
         first_run = false;
       }
 
-      var current_x = ev._x;
-      var current_y = ev._y;
-      var tolerance = 10;
+      if (!snapping_x) {current_x = ev._x;}
+      if (!snapping_y) {current_y = ev._y;}
+
+      var tolerance = 2;
 
       context.clearRect(0, 0, canvas.width, canvas.height);
       //mouseCoords(ev._x, ev._y);
 
-      if (false) { //if snapping is on
+      if (snapping) { //if snapping is on
         for (var i = 0; i < connect_id.length; i++) { //for all neighbors of the node
           var coords = nodes[connect_id[i]].coords;
-          if (snapping_x) {
+          if (!snapping_x) {
             if (Math.abs(coords[0] - current_x) <= tolerance) {
               current_x = coords[0];
               snapping_x = true;
-              alert("HEY");
             }
           }
-          if (snapping_y) {
+          if (!snapping_y) {
             if (Math.abs(coords[1] - current_y) <= tolerance) {
               current_y = coords[1];
               snapping_y = true;
