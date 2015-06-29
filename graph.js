@@ -122,7 +122,14 @@ function changeCanvas(){
       if(toollist[i].checked == true)  {
              var selectedT = toollist[i].value
             tool = new tools[selectedT];
-            break;
+         
+            if(selectedT == 'node') {
+              document.getElementById("nodeType").style.display = "block";
+            }
+            else {
+              document.getElementById("nodeType").style.display = "none";
+
+            }
         
       }
     }
