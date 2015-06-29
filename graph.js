@@ -3,7 +3,7 @@
  */
 
 
-  var canvas, context, canvaso, contexto;
+  var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
 
   // The active tool instance.
   var tool;
@@ -28,6 +28,10 @@
     container.appendChild(canvas);
 
     context = canvas.getContext('2d');
+
+    //initialize mouse coordinates box
+    mouse_canvas = document.getElementById('mouse');
+    mouse_context = mouse_canvas.getContext('2d');
 
     // Get the tool select input.
     var tool_select = document.getElementById('dtool');
@@ -471,7 +475,7 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
       }
 
       context.clearRect(0, 0, canvas.width, canvas.height);
-
+      mouseCoords(ev._x, ev._y);
       draw_node(ev._x, ev._y, 5, 'black', 1);  //draw new node
 
       //draw new edges
@@ -485,6 +489,7 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
         tool.mousemove(ev);
         tool.started = false;
         img_update();
+        mouse_context.clearRect(0, 0, mouse_canvas.width, mouse_canvas.height);
 
         //update coordinates of changed node
         nodes[node_id].coords = [ev._x, ev._y];
@@ -498,6 +503,14 @@ function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
       }
     };
   };
+
+function mouseCoords(x, y) {
+  var message = 'Mouse position: ' + x + ', ' + y;
+  mouse_context.clearRect(0, 0, mouse_canvas.width, mouse_canvas.height);
+  mouse_context.font = '12pt Calibri';
+  mouse_context.fillStyle = 'black';
+  mouse_context.fillText(message, 10, 20);
+}
 
 if(window.addEventListener) {
     window.addEventListener('load', init(), false)
