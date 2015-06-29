@@ -1,9 +1,11 @@
+
 /* Inspired by ROBO Design
  * https://dev.opera.com/articles/html5-canvas-painting/
  */
 
 
   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
+  var toollist;
 
   // The active tool instance.
   var tool;
@@ -33,14 +35,18 @@
     mouse_canvas = document.getElementById('mouse');
     mouse_context = mouse_canvas.getContext('2d');
 
-    // Get the tool select input.
-    var tool_select = document.getElementById('dtool');
-    tool_select.addEventListener('change', ev_tool_change, false);
+    toollist = document.getElementsByName("dtool"); 
+    for(var i = 0; i < toollist.length; i++) {  
+      toollist[i].addEventListener('change', ev_tool_change, false);
+    }
+
+    
+
 
     // Activate the default tool.
     if (tools[tool_default]) {
       tool = new tools[tool_default]();
-      tool_select.value = tool_default;
+      toollist.value = tool_default;
     }
 
     //work with the undo/redo button
@@ -109,10 +115,15 @@ function changeCanvas(){
     }
   }
 
-  // The event handler for any changes made to the tool selector.
+ // The event handler for any changes made to the tool selector. AKLFJAKLSDJFLKASJFLKSJAFDLKJDSFLKJFKLDJSF
   function ev_tool_change (ev) {
-    if (tools[this.value]) {
-      tool = new tools[this.value]();
+    for(var i = 0; i < toollist.length; i++) {  
+      if(toollist[i].checked == true)  {
+             var selectedT = toollist[i].value
+            tool = new tools[selectedT];
+            break;
+        
+      }
     }
   }
 
