@@ -114,23 +114,32 @@ function changeCanvas(){
     }
   }
 
- // The event handler for any changes made to the tool selector. AKLFJAKLSDJFLKASJFLKSJAFDLKJDSFLKJFKLDJSF
+ // The event handler for any changes made to the tool selector. 
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
       if(toollist[i].checked == true)  {
              var selectedT = toollist[i].value
             tool = new tools[selectedT];
+<<<<<<< Updated upstream
             break;
             if(selectedT == 'node'){
               $('#nodeType').show();
             }
             else{
               $('#nodeType').hide();
+=======
+        
+            if(selectedT == 'node') {
+              document.getElementById("nodeType").style.display = "block";
+            }
+            else {
+              document.getElementById("nodeType").style.display = "none";
+>>>>>>> Stashed changes
             }
         
       }
     }
-  }
+  };
 
   // This function draws the #imageTemp canvas on top of #imageView, after which 
   // #imageTemp is cleared. This function is called each time when the user 
