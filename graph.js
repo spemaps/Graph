@@ -4,7 +4,7 @@
 
 
   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
-  var toollist;
+  var toollist, radius;
 
   // The active tool instance.
   var tool;
@@ -67,6 +67,15 @@
     canvas.addEventListener('mousemove', ev_canvas, false);
     canvas.addEventListener('mouseup',   ev_canvas, false);
   }
+//set radius
+function setRadius() {
+    //set radius size
+    if (document.getElementsByName('radius')[0].value == '') {
+      alert('radius is undefined!');
+    }
+    radius = parseFloat(document.getElementsByName('radius')[0].value);
+}
+
 
 //get file and change canvas background
 function changeCanvas(){
@@ -244,8 +253,8 @@ function changeCanvas(){
            tool.mousemove(ev);
            tool.started = false;
            //draw the endpoints onto the nodes
-           draw_node(start_x, start_y, 5, colorFind(start_id), 1);
-           draw_node(nodes[end_id].coords[0], nodes[end_id].coords[1], 5, colorFind(end_id), 1);
+           draw_node(start_x, start_y, radius, colorFind(start_id), 1);
+           draw_node(nodes[end_id].coords[0], nodes[end_id].coords[1], radius, colorFind(end_id), 1);
            img_update();
            //////append new edge to array of edges
            edges.push([start_id, end_id]);
@@ -303,6 +312,7 @@ function changeCanvas(){
        tool.started = true;
        tool.x0 = ev._x;
        tool.y0 = ev._y;
+       setRadius();
      };
  
      this.mousemove = function (ev) {
@@ -311,7 +321,7 @@ function changeCanvas(){
        }
  
        context.clearRect(0, 0, canvas.width, canvas.height);
-       draw_node(tool.x0, tool.y0, 5, colorFind(nodes.length), 1);
+       draw_node(tool.x0, tool.y0, radius, colorFind(nodes.length), 1);
      };
  
  
@@ -373,7 +383,7 @@ function changeCanvas(){
  
    //draw nodes over where line was erased
    contexto.beginPath();
-   contexto.arc(start_coords[0], start_coords[1], 5, 0, 2 * Math.PI);
+   contexto.arc(start_coords[0], start_coords[1], radius, 0, 2 * Math.PI);
    contexto.fillStyle = colorFind(start_id);
    contexto.fill();
    contexto.lineWidth = 1;
@@ -382,7 +392,7 @@ function changeCanvas(){
    contexto.closePath();
  
    contexto.beginPath();
-   contexto.arc(end_coords[0], end_coords[1], 5, 0, 2 * Math.PI);
+   contexto.arc(end_coords[0], end_coords[1], radius, 0, 2 * Math.PI);
    contexto.fillStyle = colorFind(end_id);
    contexto.fill();
    contexto.strokeStyle = colorFind(end_id);
@@ -394,7 +404,7 @@ function changeCanvas(){
  function remove_nodes(coords) {
    contexto.globalCompositeOperation = "xor";
    contexto.beginPath();
-   contexto.arc(coords[0], coords[1], 6, 0, 2 * Math.PI);
+   contexto.arc(coords[0], coords[1], radius + 1, 0, 2 * Math.PI);
    contexto.fillStyle = 'white';
    contexto.fill();
    contexto.strokeStyle = 'white';
@@ -464,9 +474,9 @@ function changeCanvas(){
            coords[0], coords[1], 'black', 2); 
        }
        for (var i = 0; i < connected_edges.length; i++) { //draw nodes
-         draw_node(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], 5, colorFind(connected_edges[i]), 1); 
+         draw_node(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], radius, colorFind(connected_edges[i]), 1); 
        }
-       draw_node(coords[0], coords[1], 5, colorFind(node_id), 1);
+       draw_node(coords[0], coords[1], radius, colorFind(node_id), 1);
        
        nodes[node_id].coords = coords; //update coords of node
        img_update();
@@ -492,8 +502,8 @@ function changeCanvas(){
      //draw edge
      draw_edge(start_coords[0], start_coords[1], end_coords[0], end_coords[1], 'black', 2);
      //draw two noes around it
-     draw_node(start_coords[0], start_coords[1], 5, colorFind(redo_edge[0]), 1);
-     draw_node(end_coords[0], end_coords[1], 5, colorFind(redo_edge[1]), 1);
+     draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge[0]), 1);
+     draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge[1]), 1);
      img_update();
  
      undo.push('e'); //add back to undo
@@ -501,7 +511,7 @@ function changeCanvas(){
      var redo_node = jk[1];
      nodes.push(redo_node); //add node to array
      //draw node
-     draw_node(redo_node.coords[0], redo_node.coords[1], 5, colorFind(redo_node.id), 1);
+     draw_node(redo_node.coords[0], redo_node.coords[1], radius, colorFind(redo_node.id), 1);
      img_update();
  
      undo.push('n'); //add back to undo
@@ -524,9 +534,9 @@ function changeCanvas(){
      }
      for (var i = 0; i < connected_edges.length; i++) { //redraw nodes
        draw_node(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], 
-         5, colorFind(connected_edges[i]), 1); 
+         radius, colorFind(connected_edges[i]), 1); 
      }
-     draw_node(coords[0], coords[1], 5, colorFind(node_id), 1);
+     draw_node(coords[0], coords[1], radius, colorFind(node_id), 1);
      nodes[node_id].coords = coords; //update coords of node
      img_update();
      
@@ -647,10 +657,10 @@ function changeCanvas(){
        }
 
        for (var i = 0; i < connect_id.length; i++) {
-        draw_node(nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1], 5, colorFind(connect_id[i]), 1)
+        draw_node(nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1], radius, colorFind(connect_id[i]), 1)
        }
 
-        draw_node(current_x, current_y, 5, colorFind(node_id), 1);  //draw new node
+        draw_node(current_x, current_y, radius, colorFind(node_id), 1);  //draw new node
        
        end_x = current_x;
        end_y = current_y;
