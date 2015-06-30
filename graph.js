@@ -359,7 +359,7 @@ function changeCanvas(){
    };
  
  //function that removes edges on canvas
- function remove_edges(start_coords, end_coords) {
+ function remove_edges(start_coords, end_coords, start_id, end_id) {
    //remove edge drawing
    contexto.globalCompositeOperation = "xor";
    contexto.beginPath();
@@ -374,18 +374,18 @@ function changeCanvas(){
    //draw nodes over where line was erased
    contexto.beginPath();
    contexto.arc(start_coords[0], start_coords[1], 5, 0, 2 * Math.PI);
-   contexto.fillStyle = 'black';
+   contexto.fillStyle = colorFind(start_id);
    contexto.fill();
    contexto.lineWidth = 1;
-   contexto.strokeStyle = 'black';
+   contexto.strokeStyle = colorFind(start_id);
    contexto.stroke();
    contexto.closePath();
  
    contexto.beginPath();
    contexto.arc(end_coords[0], end_coords[1], 5, 0, 2 * Math.PI);
-   contexto.fillStyle = 'black';
+   contexto.fillStyle = colorFind(end_id);
    contexto.fill();
-   contexto.strokeStyle = 'black';
+   contexto.strokeStyle = colorFind(end_id);
    contexto.stroke();
    contexto.closePath();
  };
@@ -436,7 +436,7 @@ function changeCanvas(){
        start_coords = nodes[bye_edge[0]].coords;
        end_coords = nodes[bye_edge[1]].coords;
        
-       remove_edges(start_coords, end_coords);//remove photo
+       remove_edges(start_coords, end_coords, bye_edge[0], bye_edge[1]);//remove photo
  
        redo.push(['e', bye_edge]); //add to redo
      } else if (oops == 'n') {
@@ -446,7 +446,7 @@ function changeCanvas(){
        remove_nodes(bye_node.coords);//remove node from drawing
  
        redo.push(['n', bye_node]);//add to redo
-     } else {
+     } else { //undoing resize
        var node_id = oops[0];
        var coords = oops[1]; //coordinates to reset the node to
        var connected_edges = oops[2];
@@ -454,16 +454,20 @@ function changeCanvas(){
  
        //remove new drawings
        for (var i = 0; i < connected_edges.length; i++) {
-         remove_edges(nodes[connected_edges[i]].coords, old_coords); 
+         remove_edges(nodes[connected_edges[i]].coords, old_coords, connected_edges[i], node_id); 
        }
        remove_nodes(old_coords);
  
        //add new drawings
-       draw_node(coords[0], coords[1], 5, 'black', 1);
-       for (var i = 0; i < connected_edges.length; i++) {
+       for (var i = 0; i < connected_edges.length; i++) { //draw edges
          draw_edge(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], 
            coords[0], coords[1], 'black', 2); 
        }
+       for (var i = 0; i < connected_edges.length; i++) { //draw nodes
+         draw_node(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], 5, colorFind(connected_edges[i]), 1); 
+       }
+       draw_node(coords[0], coords[1], 5, colorFind(node_id), 1);
+       
        nodes[node_id].coords = coords; //update coords of node
        img_update();
  
@@ -479,7 +483,7 @@ function changeCanvas(){
      alert("Nothing to redo!");
    } else {
     var jk = redo.pop();
-    if (jk[0] == 'e') {
+    if (jk[0] == 'e') { //REDO EDGES
      var redo_edge = jk[1];
      edges.push(redo_edge); //add edge to array
      //get edge coordinates
@@ -487,18 +491,21 @@ function changeCanvas(){
      end_coords = nodes[redo_edge[1]].coords;
      //draw edge
      draw_edge(start_coords[0], start_coords[1], end_coords[0], end_coords[1], 'black', 2);
+     //draw two noes around it
+     draw_node(start_coords[0], start_coords[1], 5, colorFind(redo_edge[0]), 1);
+     draw_node(end_coords[0], end_coords[1], 5, colorFind(redo_edge[1]), 1);
      img_update();
  
      undo.push('e'); //add back to undo
-    } else if (jk[0] == 'n') {
+    } else if (jk[0] == 'n') { //REDO NODES
      var redo_node = jk[1];
      nodes.push(redo_node); //add node to array
      //draw node
-     draw_node(redo_node.coords[0], redo_node.coords[1], 5, 'black', 1);
+     draw_node(redo_node.coords[0], redo_node.coords[1], 5, colorFind(redo_node.id), 1);
      img_update();
  
      undo.push('n'); //add back to undo
-    } else {
+    } else { //REDO RESIZE
      var node_id = jk[0];
      var coords = jk[1]; //coordinates to reset the node to
      var connected_edges = jk[2];
@@ -506,16 +513,20 @@ function changeCanvas(){
  
      //remove new drawings
      for (var i = 0; i < connected_edges.length; i++) {
-       remove_edges(nodes[connected_edges[i]].coords, old_coords); 
+       remove_edges(nodes[connected_edges[i]].coords, old_coords, connected_edges[i], node_id); 
      }
      remove_nodes(old_coords);
  
      //add new drawings
-     draw_node(coords[0], coords[1], 5, 'black', 1);
-     for (var i = 0; i < connected_edges.length; i++) {
+     for (var i = 0; i < connected_edges.length; i++) { //redraw edges
        draw_edge(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], 
          coords[0], coords[1], 'black', 2); 
      }
+     for (var i = 0; i < connected_edges.length; i++) { //redraw nodes
+       draw_node(nodes[connected_edges[i]].coords[0], nodes[connected_edges[i]].coords[1], 
+         5, colorFind(connected_edges[i]), 1); 
+     }
+     draw_node(coords[0], coords[1], 5, colorFind(node_id), 1);
      nodes[node_id].coords = coords; //update coords of node
      img_update();
      
@@ -589,7 +600,7 @@ function changeCanvas(){
        if (first_run) {
          //removal of original edges to the moved node
          for (var i = 0; i < connect_id.length; i++) {
-           remove_edges(nodes[connect_id[i]].coords, [old_x, old_y]);
+           remove_edges(nodes[connect_id[i]].coords, [old_x, old_y], connect_id[i], node_id);
           }
          //remove original node
          remove_nodes([old_x, old_y]);
