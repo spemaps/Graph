@@ -243,6 +243,18 @@ function changeCanvas(){
       }
     };
 
+  function colorFind(node_id){
+      var nodeType = nodes[node_id].type
+      if (nodeType =='walk')
+        return 'black';
+      else if (nodeType =='room' || nodeType =='bathroom')
+        return 'red';
+      else if (nodeType =='stairs' || nodeType =='elevator')
+        return 'blue';
+      else if (nodeType =='entry')
+        return 'green';
+    };
+
 
 
 
@@ -265,20 +277,9 @@ function changeCanvas(){
       }
 
      context.clearRect(0, 0, canvas.width, canvas.height);
-      draw_node(tool.x0, tool.y0, 5, tool.colorFind(), 1);
+      draw_node(tool.x0, tool.y0, 5, colorFind(0), 1);
     };
 
-    this.colorFind = function(){
-      nodeType = tool.findNT();
-      if (nodeType =='walk')
-        return 'black';
-      else if (nodeType =='room' || nodeType =='bathroom')
-        return 'red';
-      else if (nodeType =='stairs' || nodeType =='elevator')
-        return 'blue';
-      else if (nodeType =='entry')
-        return 'green';
-    };
 
      this.mouseup = function (ev) {
       if (tool.started) {
