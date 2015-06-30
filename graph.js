@@ -1,168 +1,171 @@
- 
- /* Inspired by ROBO Design
-  * https://dev.opera.com/articles/html5-canvas-painting/
-  */
- 
- 
-   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
-   var toollist;
- 
-   // The active tool instance.
-   var tool;
-   var tool_default = 'node';
- 
-   function init () {
-     // Find the canvas element.
-     canvaso = document.getElementById('imageView');
-     backgroundCanvas = document.getElementById('background');
- 
-     // Get the 2D canvas context.
-     contexto = canvaso.getContext('2d');
-     backgroundContext = backgroundCanvas.getContext('2d');
- 
-     // Add the temporary canvas.
-     var container = canvaso.parentNode;
-     canvas = document.createElement('canvas');
- 
-     canvas.id     = 'imageTemp';
-     canvas.width  = canvaso.width;
-     canvas.height = canvaso.height;
-     container.appendChild(canvas);
- 
-     context = canvas.getContext('2d');
- 
-     //initialize mouse coordinates box
-     mouse_canvas = document.getElementById('mouse');
-     mouse_context = mouse_canvas.getContext('2d');
- 
-     //hide all tools
-     document.getElementById("snapping").style.display = "none"; //hide snapping tool
-     document.getElementById('gender').style.display = 'none'; //hide gender tool
-     document.getElementById('roomNumber').style.display = 'none'; //hide room number tool
- 
-     //add event listener for nodeType
-     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
- 
- 
-     toollist = document.getElementsByName("dtool"); 
-     for(var i = 0; i < toollist.length; i++) {  
-       toollist[i].addEventListener('change', ev_tool_change, false);
-     }
- 
- 
-     // Activate the default tool.
-     if (tools[tool_default]) {
-       tool = new tools[tool_default]();
-       toollist.value = tool_default;
-     }
- 
-     //work with the undo/redo button
-     var undo_click = document.getElementById('undo');
-     var redo_click = document.getElementById('redo');
-     undo_click.addEventListener('click', undoIt, false);
-     redo_click.addEventListener('click', redoIt, false);
- 
-     // Attach the mousedown, mousemove and mouseup event listeners.
-     canvas.addEventListener('mousedown', ev_canvas, false);
-     canvas.addEventListener('mousemove', ev_canvas, false);
-     canvas.addEventListener('mouseup',   ev_canvas, false);
-   }
- 
- //get file and change canvas background
- function changeCanvas(){
-   var file = document.getElementById('image').files[0];
-   var fileread = new FileReader();
-   var image = new Image();
-   var width, height;
-   
-   //fileread.readAsDataURL(file);
-   fileread.onload = function(_file) { //once file has uplaoded
-     //make sure the image has loaded
-     image.onload = function(){
-       width = this.width;
-       height = this.height
- 
-       height = height * 1000 / width;
-       width = 1000;
- 
-       //change canvas
-       canvaso.width = width; //edit sizes
-       canvaso.height = height;
-       canvas.width = width;
-       canvas.height = height;
-       backgroundCanvas.width = width;
-       backgroundCanvas.height = height;
-       backgroundContext.drawImage(image, 0, 0, width, height);
- 
-       //clear all nodes and edges
-       edges = [];
-       nodes = [];
-     }
-     image.src = _file.target.result;
-   }
-   fileread.readAsDataURL(file);
- }
- 
- 
-   // The general-purpose event handler. This function just determines the mouse 
-   // position relative to the canvas element.
-   function ev_canvas (ev) {
-     if (ev.layerX || ev.layerX == 0) { // Firefox
-       ev._x = ev.layerX;
-       ev._y = ev.layerY;
-     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-       ev._x = ev.offsetX;
-       ev._y = ev.offsetY;
-     }
- 
-     // Call the event handler of the tool.
-     var func = tool[ev.type];
-     if (func) {
-       func(ev);
-     }
-   }
- 
-  // The event handler for any changes made to the tool selector. AKLFJAKLSDJFLKASJFLKSJAFDLKJDSFLKJFKLDJSF
-   function ev_tool_change (ev) {
-     for(var i = 0; i < toollist.length; i++) {  
-       if(toollist[i].checked == true)  {
-              var selectedT = toollist[i].value
-             tool = new tools[selectedT];
-          
-             if (selectedT == 'node') {
-               document.getElementById("nodeType").style.display = "block";
-               document.getElementById("snapping").style.display = "none";
-               if (document.getElementById("nodeType").value == "bathroom") {
-                 document.getElementById('gender').style.display = 'block';
-               }
-               if(document.getElementById("nodeType").value == "bathroom" || document.getElementById("nodeType").value == "room"){
-                document.getElementById('roomNumber').style.display = 'block';
+/* Inspired by ROBO Design
+ * https://dev.opera.com/articles/html5-canvas-painting/
+ */
+
+
+  var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
+  var toollist;
+
+  // The active tool instance.
+  var tool;
+  var tool_default = 'node';
+
+  function init () {
+    // Find the canvas element.
+    canvaso = document.getElementById('imageView');
+    backgroundCanvas = document.getElementById('background');
+
+    // Get the 2D canvas context.
+    contexto = canvaso.getContext('2d');
+    backgroundContext = backgroundCanvas.getContext('2d');
+
+    // Add the temporary canvas.
+    var container = canvaso.parentNode;
+    canvas = document.createElement('canvas');
+
+    canvas.id     = 'imageTemp';
+    canvas.width  = canvaso.width;
+    canvas.height = canvaso.height;
+    container.appendChild(canvas);
+
+    context = canvas.getContext('2d');
+
+    //initialize mouse coordinates box
+    mouse_canvas = document.getElementById('mouse');
+    mouse_context = mouse_canvas.getContext('2d');
+
+    //hide all tools
+    document.getElementById("snapping").style.display = "none"; //hide snapping tool
+    document.getElementById('gender').style.display = 'none'; //hide gender tool
+    document.getElementById('roomNumber').style.display = 'none'; //hide room number tool
+
+    //add event listener for nodeType
+    document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
+
+
+    toollist = document.getElementsByName("dtool"); 
+    for(var i = 0; i < toollist.length; i++) {  
+      toollist[i].addEventListener('change', ev_tool_change, false);
+    }
+
+
+    // Activate the default tool.
+    if (tools[tool_default]) {
+      tool = new tools[tool_default]();
+      toollist.value = tool_default;
+    }
+
+    //work with the undo/redo button
+    var undo_click = document.getElementById('undo');
+    var redo_click = document.getElementById('redo');
+    undo_click.addEventListener('click', undoIt, false);
+    redo_click.addEventListener('click', redoIt, false);
+
+    // Attach the mousedown, mousemove and mouseup event listeners.
+    canvas.addEventListener('mousedown', ev_canvas, false);
+    canvas.addEventListener('mousemove', ev_canvas, false);
+    canvas.addEventListener('mouseup',   ev_canvas, false);
+  }
+
+//get file and change canvas background
+function changeCanvas(){
+  var file = document.getElementById('image').files[0];
+  var fileread = new FileReader();
+  var image = new Image();
+  var width, height;
+  
+  //fileread.readAsDataURL(file);
+  fileread.onload = function(_file) { //once file has uplaoded
+    //make sure the image has loaded
+    image.onload = function(){
+      width = this.width;
+      height = this.height
+
+      height = height * 1000 / width;
+      width = 1000;
+
+      //change canvas
+      canvaso.width = width; //edit sizes
+      canvaso.height = height;
+      canvas.width = width;
+      canvas.height = height;
+      backgroundCanvas.width = width;
+      backgroundCanvas.height = height;
+      backgroundContext.drawImage(image, 0, 0, width, height);
+
+      //clear all nodes and edges
+      edges = [];
+      nodes = [];
+    }
+    image.src = _file.target.result;
+  }
+  fileread.readAsDataURL(file);
+}
+
+
+  // The general-purpose event handler. This function just determines the mouse 
+  // position relative to the canvas element.
+  function ev_canvas (ev) {
+    if (ev.layerX || ev.layerX == 0) { // Firefox
+      ev._x = ev.layerX;
+      ev._y = ev.layerY;
+    } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+      ev._x = ev.offsetX;
+      ev._y = ev.offsetY;
+    }
+
+    // Call the event handler of the tool.
+    var func = tool[ev.type];
+    if (func) {
+      func(ev);
+    }
+  }
+
+ // The event handler for any changes made to the tool selector. 
+  function ev_tool_change (ev) {
+    for(var i = 0; i < toollist.length; i++) {  
+      if(toollist[i].checked == true)  {
+             var selectedT = toollist[i].value
+            tool = new tools[selectedT];
+         
+            if (selectedT == 'node') {
+              document.getElementById("nodeType").style.display = "block";
+              document.getElementById("snapping").style.display = "none";
+              if (document.getElementById("nodeType").value == "bathroom") {
+                document.getElementById('gender').style.display = 'block';
+                document.getElementById('roomNumber').style.display = 'none';
               }
-              else{
-                 document.getElementById('roomNumber').style.display = 'none';
-             }
-             else if (selectedT == 'resize'){
-               document.getElementById("snapping").style.display = "block";
-               document.getElementById("nodeType").style.display = "none";
-               document.getElementById('gender').style.display = 'none';
-               document.getElementById('roomNumber').style.display = 'none';
-             }
-             else {
-               document.getElementById("nodeType").style.display = "none";
-               document.getElementById("snapping").style.display = "none";
-               document.getElementById('gender').style.display = 'none';
-               document.getElementById('roomNumber').style.display = 'none';
-             }
-       }
-     }
-   }
- 
-   // This function draws the #imageTemp canvas on top of #imageView, after which 
-   // #imageTemp is cleared. This function is called each time when the user 
-   // completes a drawing operation.
-   function img_update () {
-     contexto.drawImage(canvas, 0, 0);
-     context.clearRect(0, 0, canvas.width, canvas.height);
+              else if (document.getElementById("nodeType").value == "room") { // text box appears if node type is room 
+                document.getElementById('roomNumber').style.display = 'block';
+                document.getElementById('gender').style.display = 'none';
+              }
+              else {
+                document.getElementById('gender').style.display = 'none';
+                document.getElementById('roomNumber').style.display = 'none';
+              }
+            }
+            else if (selectedT == 'resize'){
+              document.getElementById("snapping").style.display = "block";
+              document.getElementById("nodeType").style.display = "none";
+              document.getElementById('gender').style.display = 'none';
+              document.getElementById('roomNumber').style.display = 'none';
+            }
+            else {
+              document.getElementById("nodeType").style.display = "none";
+              document.getElementById("snapping").style.display = "none";
+              document.getElementById('gender').style.display = 'none';
+              document.getElementById('roomNumber').style.display = 'none';
+            }
+      }
+    }
+  }
+
+  // This function draws the #imageTemp canvas on top of #imageView, after which 
+  // #imageTemp is cleared. This function is called each time when the user 
+  // completes a drawing operation.
+  function img_update () {
+    contexto.drawImage(canvas, 0, 0);
+    context.clearRect(0, 0, canvas.width, canvas.height);
    }
  
    // This object holds the implementation of each drawing tool.
@@ -229,9 +232,9 @@
          if(start_id != end_id) {
            tool.mousemove(ev);
            tool.started = false;
-          //draw the endpoints onto the nodes
-          draw_node(start_x, start_y, 5, colorFind(start_id), 1);
-          draw_node(nodes[end_id].coords[0], nodes[end_id].coords[1], 5, colorFind(end_id), 1);
+           //draw the endpoints onto the nodes
+           draw_node(start_x, start_y, 5, colorFind(start_id), 1);
+           draw_node(nodes[end_id].coords[0], nodes[end_id].coords[1], 5, colorFind(end_id), 1);
            img_update();
            //////append new edge to array of edges
            edges.push([start_id, end_id]);
@@ -275,9 +278,8 @@
          var typetrial = document.getElementById("nodeType")[i];
          if(typetrial.selected)
            return typetrial.value;
-        }
-     };
- 
+       }
+     }
  
    //node tool
    tools.node = function () {
@@ -302,23 +304,26 @@
      };
  
  
-      this.mouseup = function (ev) {
+     this.mouseup = function (ev) {
        if (tool.started) {
-         tool.mousemove(ev);
-         tool.started = false;
-         img_update();
- 
-         nodes.push(new Node(nodes.length,[tool.x0, tool.y0], findNT()));
- 
-         //add extra attributes
-         //add bathroom things
-         if (document.getElementById("nodeType").value == "bathroom") {
-           if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
-             nodes[nodes.length - 1].gender = 'F'; //if female is checked
-          } else {
-            nodes[nodes.length - 1].gender = 'M';
-           }
-         }
+        tool.mousemove(ev);
+        tool.started = false;
+        img_update();
+
+        nodes.push(new Node(nodes.length,[tool.x0, tool.y0], findNT()));
+
+        //add extra attributes
+        //add bathroom things
+        if (document.getElementById("nodeType").value == "bathroom") {
+          if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
+            nodes[nodes.length - 1].gender = 'F'; //if female is checked
+          }
+        } else if (document.getElementById("nodeType").value == "room") {
+          nodes[nodes.length - 1].room = document.getElementsByName('numtextbox')[0].value;
+          var value = document.getElementsByName('numtextbox')[0].value;
+          value = parseInt(value) + 1;
+          document.getElementsByName('numtextbox')[0].value = value.toString();
+        }
  
  
          //update undo
