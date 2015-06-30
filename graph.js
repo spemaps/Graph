@@ -214,8 +214,6 @@ function changeCanvas(){
       end_id = node[1];
 
       draw_edge(start_x, start_y, node[0][0], node[0][1], 'black', 2);
-     // draw_node(start_x, start_y, 5, nodes[start_id], 1);
-      //draw_node(node[0][0], node[0][1], 5, nodes[end_id], 1);
     };
 
     this.mouseup = function (ev) {
@@ -223,6 +221,9 @@ function changeCanvas(){
         if(start_id != end_id) {
           tool.mousemove(ev);
           tool.started = false;
+          //draw the endpoints onto the nodes
+          draw_node(start_x, start_y, 5, colorFind(start_id), 1);
+          draw_node(nodes[end_id].coords[0], nodes[end_id].coords[1], 5, colorFind(end_id), 1);
           img_update();
           //////append new edge to array of edges
           edges.push([start_id, end_id]);
@@ -240,9 +241,6 @@ function changeCanvas(){
       this.id = id;
       this.coords = coords;
       this.type = type;
-      if (type = "bathroom") {
-        gender = "M";
-      }
     };
 
   function colorFind(node_id){
@@ -309,6 +307,8 @@ function changeCanvas(){
         if (document.getElementById("nodeType").value == "bathroom") {
           if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
             nodes[nodes.length - 1].gender = 'F'; //if female is checked
+          } else {
+            nodes[nodes.length - 1].gender = 'M';
           }
         }
 
