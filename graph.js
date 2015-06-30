@@ -38,6 +38,7 @@
     document.getElementById("snapping").style.display = "none"; //hide snapping tool
     document.getElementById('gender').style.display = 'none'; //hide gender tool
     document.getElementById('roomNumber').style.display = 'none'; //hide room number tool
+    document.getElementById('entryway').style.display = 'none';
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -331,12 +332,20 @@ function changeCanvas(){
           else {
             nodes[nodes.length - 1].gender = 'M'; //if male is checked
           }
-
         } else if (document.getElementById("nodeType").value == "room") {
           nodes[nodes.length - 1].room = document.getElementsByName('numtextbox')[0].value;
           var value = document.getElementsByName('numtextbox')[0].value;
-          value = parseInt(value) + 1;
-          document.getElementsByName('numtextbox')[0].value = value.toString();
+          if (value != "") { //if not no room number
+            value = parseInt(value) + 1;
+            document.getElementsByName('numtextbox')[0].value = value.toString();
+          }
+        } else if (document.getElementById("nodeType").value == 'entry') {
+          nodes[nodes.length - 1].entryway = document.getElementsByName('entryway')[0].value;
+          var value = document.getElementsByName('entryway')[0].value;
+          if (value != "") { //if an entryway number
+            value = parseInt(value) + 1;
+            document.getElementsByName('entryway')[0].value = value.toString();
+          }
         }
  
  
