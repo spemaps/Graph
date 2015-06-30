@@ -134,14 +134,22 @@ function changeCanvas(){
               if (document.getElementById("nodeType").value == "bathroom") {
                 document.getElementById('gender').style.display = 'block';
                 document.getElementById('roomNumber').style.display = 'none';
+                document.getElementById('entryway').style.display = 'none';
               }
               else if (document.getElementById("nodeType").value == "room") { // text box appears if node type is room 
                 document.getElementById('roomNumber').style.display = 'block';
+                document.getElementById('gender').style.display = 'none';
+                document.getElementById('entryway').style.display = 'none';
+              }
+              else if (document.getElementById("nodeType").value == "entry") { // text box appears if node type is room 
+                document.getElementById('entryway').style.display = 'block';
+                document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('gender').style.display = 'none';
               }
               else {
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('roomNumber').style.display = 'none';
+                document.getElementById('entryway').style.display = 'none';
               }
             }
             else if (selectedT == 'resize'){
@@ -149,12 +157,14 @@ function changeCanvas(){
               document.getElementById("nodeType").style.display = "none";
               document.getElementById('gender').style.display = 'none';
               document.getElementById('roomNumber').style.display = 'none';
+              document.getElementById('entryway').style.display = 'none';
             }
             else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
               document.getElementById('gender').style.display = 'none';
               document.getElementById('roomNumber').style.display = 'none';
+              document.getElementById('entryway').style.display = 'none';
             }
       }
     }
@@ -318,7 +328,7 @@ function changeCanvas(){
           if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
             nodes[nodes.length - 1].gender = 'F'; //if female is checked
           }
-          else{
+          else {
             nodes[nodes.length - 1].gender = 'M'; //if male is checked
           }
 
