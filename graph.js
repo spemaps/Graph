@@ -214,6 +214,8 @@ function changeCanvas(){
       end_id = node[1];
 
       draw_edge(start_x, start_y, node[0][0], node[0][1], 'black', 2);
+      draw_node(start_x, start_y, 5, nodes[start_id], 1);
+      draw_node(end_x, end_y, 5, nodes[end_id], 1);
     };
 
     this.mouseup = function (ev) {
