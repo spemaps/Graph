@@ -318,6 +318,10 @@ function changeCanvas(){
           if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
             nodes[nodes.length - 1].gender = 'F'; //if female is checked
           }
+          else{
+            nodes[nodes.length - 1].gender = 'M'; //if male is checked
+          }
+
         } else if (document.getElementById("nodeType").value == "room") {
           nodes[nodes.length - 1].room = document.getElementsByName('numtextbox')[0].value;
           var value = document.getElementsByName('numtextbox')[0].value;
