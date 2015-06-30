@@ -628,12 +628,19 @@ function changeCanvas(){
          }
        } 
        
-       draw_node(current_x, current_y, 5, 'black', 1);  //draw new node
+       
  
        //draw new edges
        for (var i = 0; i < connect_id.length; i++) {
          draw_edge(nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1], current_x, current_y, 'black', 2);
        }
+
+       for (var i = 0; i < connect_id.length; i++) {
+        draw_node(nodes[connect_id[i]].coords[0], nodes[connect_id[i]].coords[1], 5, colorFind(connect_id[i]), 1)
+       }
+
+        draw_node(current_x, current_y, 5, colorFind(node_id), 1);  //draw new node
+       
        end_x = current_x;
        end_y = current_y;
      };
