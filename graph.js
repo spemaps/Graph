@@ -38,6 +38,8 @@
     //hide all tools
     document.getElementById("snapping").style.display = "none"; //hide snapping tool
     document.getElementById('gender').style.display = 'none'; //hide gender tool
+     // CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES
+    document.getElementById('roomNumber').style.display = 'none'; //hide room number tool
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -121,7 +123,7 @@ function changeCanvas(){
     }
   }
 
- // The event handler for any changes made to the tool selector. AKLFJAKLSDJFLKASJFLKSJAFDLKJDSFLKJFKLDJSF
+ // The event handler for any changes made to the tool selector. 
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
       if(toollist[i].checked == true)  {
@@ -134,16 +136,29 @@ function changeCanvas(){
               if (document.getElementById("nodeType").value == "bathroom") {
                 document.getElementById('gender').style.display = 'block';
               }
+
+              // CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES
+              // text box appears if node type is room or bathroom
+              if(document.getElementById("nodeType").value == "bathroom" || document.getElementById("nodeType").value == "room"){
+                document.getElementById('roomNumber').style.display = 'block';
+              }
+              else{
+                 document.getElementById('roomNumber').style.display = 'none';
+               } // CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES ENDDD
             }
             else if (selectedT == 'resize'){
               document.getElementById("snapping").style.display = "block";
               document.getElementById("nodeType").style.display = "none";
               document.getElementById('gender').style.display = 'none';
+              // CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES
+              document.getElementById('roomNumber').style.display = 'none';
             }
             else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
               document.getElementById('gender').style.display = 'none';
+              // CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES
+              document.getElementById('roomNumber').style.display = 'none';
             }
       }
     }
@@ -214,6 +229,8 @@ function changeCanvas(){
       end_id = node[1];
 
       draw_edge(start_x, start_y, node[0][0], node[0][1], 'black', 2);
+      draw_node(start_x, start_y, 5, nodes[start_id], 1);
+      draw_node(end_x, end_y, 5, nodes[end_id], 1);
     };
 
     this.mouseup = function (ev) {
@@ -221,9 +238,6 @@ function changeCanvas(){
         if(start_id != end_id) {
           tool.mousemove(ev);
           tool.started = false;
-          //draw the endpoints onto the nodes
-          draw_node(start_x, start_y, 5, colorFind(start_id), 1);
-          draw_node(nodes[end_id].coords[0], nodes[end_id].coords[1], 5, colorFind(end_id), 1);
           img_update();
           //////append new edge to array of edges
           edges.push([start_id, end_id]);
@@ -241,16 +255,13 @@ function changeCanvas(){
       this.id = id;
       this.coords = coords;
       this.type = type;
+      if (type = "bathroom") {
+        gender = "M";
+      }
     };
 
   function colorFind(node_id){
-      var nodeType;
-      if (nodes.length == node_id) {
-        nodeType = findNT();
-      }
-      else {
-        nodeType = nodes[node_id].type;
-      }
+      var nodeType = nodes[node_id].type
       if (nodeType =='walk')
         return 'black';
       else if (nodeType =='room' || nodeType =='bathroom')
@@ -261,14 +272,7 @@ function changeCanvas(){
         return 'green';
     };
 
-   function findNT() {
-      var r = document.getElementById("nodeType").length;
-       for(var i = 0; i<r; i++){
-        var typetrial = document.getElementById("nodeType")[i];
-        if(typetrial.selected)
-          return typetrial.value;
-       }
-    };
+
 
 
   //node tool
@@ -289,8 +293,8 @@ function changeCanvas(){
         return;
       }
 
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      draw_node(tool.x0, tool.y0, 5, colorFind(nodes.length), 1);
+     context.clearRect(0, 0, canvas.width, canvas.height);
+      draw_node(tool.x0, tool.y0, 5, colorFind(0), 1);
     };
 
 
@@ -300,15 +304,13 @@ function changeCanvas(){
         tool.started = false;
         img_update();
 
-        nodes.push(new Node(nodes.length,[tool.x0, tool.y0], findNT()));
+        nodes.push(new Node(nodes.length,[tool.x0, tool.y0], tool.findNT()));
 
         //add extra attributes
         //add bathroom things
         if (document.getElementById("nodeType").value == "bathroom") {
           if (nodes[nodes.length - 1].gender = document.getElementsByName("gender")[0].checked)  {
             nodes[nodes.length - 1].gender = 'F'; //if female is checked
-          } else {
-            nodes[nodes.length - 1].gender = 'M';
           }
         }
 
@@ -320,6 +322,16 @@ function changeCanvas(){
           }
       }
     };
+
+    this.findNT = function(){
+      var r = document.getElementById("nodeType").length;
+       for(var i = 0; i<r; i++){
+        var typetrial = document.getElementById("nodeType")[i];
+        if(typetrial.selected)
+          return typetrial.value;
+       }
+    };
+
   };
 
 //function that removes edges on canvas
