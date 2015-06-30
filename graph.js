@@ -214,8 +214,8 @@ function changeCanvas(){
       end_id = node[1];
 
       draw_edge(start_x, start_y, node[0][0], node[0][1], 'black', 2);
-      draw_node(start_x, start_y, 5, nodes[start_id], 1);
-      draw_node(end_x, end_y, 5, nodes[end_id], 1);
+     // draw_node(start_x, start_y, 5, nodes[start_id], 1);
+      //draw_node(node[0][0], node[0][1], 5, nodes[end_id], 1);
     };
 
     this.mouseup = function (ev) {
@@ -246,7 +246,13 @@ function changeCanvas(){
     };
 
   function colorFind(node_id){
-      var nodeType = nodes[node_id].type
+      var nodeType;
+      if (nodes.length == node_id) {
+        nodeType = findNT();
+      }
+      else {
+        nodeType = nodes[node_id].type;
+      }
       if (nodeType =='walk')
         return 'black';
       else if (nodeType =='room' || nodeType =='bathroom')
@@ -257,7 +263,14 @@ function changeCanvas(){
         return 'green';
     };
 
-
+   function findNT() {
+      var r = document.getElementById("nodeType").length;
+       for(var i = 0; i<r; i++){
+        var typetrial = document.getElementById("nodeType")[i];
+        if(typetrial.selected)
+          return typetrial.value;
+       }
+    };
 
 
   //node tool
@@ -278,8 +291,8 @@ function changeCanvas(){
         return;
       }
 
-     context.clearRect(0, 0, canvas.width, canvas.height);
-      draw_node(tool.x0, tool.y0, 5, colorFind(0), 1);
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      draw_node(tool.x0, tool.y0, 5, colorFind(nodes.length), 1);
     };
 
 
@@ -289,7 +302,7 @@ function changeCanvas(){
         tool.started = false;
         img_update();
 
-        nodes.push(new Node(nodes.length,[tool.x0, tool.y0], tool.findNT()));
+        nodes.push(new Node(nodes.length,[tool.x0, tool.y0], findNT()));
 
         //add extra attributes
         //add bathroom things
@@ -307,16 +320,6 @@ function changeCanvas(){
           }
       }
     };
-
-    this.findNT = function(){
-      var r = document.getElementById("nodeType").length;
-       for(var i = 0; i<r; i++){
-        var typetrial = document.getElementById("nodeType")[i];
-        if(typetrial.selected)
-          return typetrial.value;
-       }
-    };
-
   };
 
 //function that removes edges on canvas
