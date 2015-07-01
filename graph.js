@@ -578,11 +578,28 @@ function setRadius() {
 function updateX(newx, i){
   var old_x = nodes[i].coords[0];
   nodes[i].coords[0] = newx;
+  remove_nodes([old_x, nodes[i].coords[1]]);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  //move node
+  draw_node(newx, nodes[i].coords[1], radius, colorFind(i), 1);
+  img_update();
+  //redraw selection
+  draw_node(newx, nodes[i].coords[1], radius, '#FFFF00', 1);
+  draw_node(newx, nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
 };
 
 
 function updateY(newy, i){
+  var old_y = nodes[i].coords[1];
   nodes[i].coords[1] = newy;
+  remove_nodes([nodes[i].coords[0], old_y]);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  //move node
+  draw_node(nodes[i].coords[0], newy, radius, colorFind(i), 1);
+  img_update();
+  //redraw selection
+  draw_node(nodes[i].coords[0], newy, radius, '#FFFF00', 1);
+  draw_node(nodes[i].coords[0], newy, radius * 0.5, colorFind(i), 1);
 };
 
 
@@ -623,6 +640,11 @@ function updateType(newt, i){
     alert("Entry number has not been set.")
   }
 
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(i), 1);
+  img_update();
+  //redraw selection
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, '#FFFF00', 1);
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
 };
 
 function updateEntry(newe, i){
