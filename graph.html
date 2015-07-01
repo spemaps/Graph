@@ -19,13 +19,13 @@
         <!-- ID: <input type="text" value="" id="popid" name="populateme" /><br>
        ID COMMENTED OUT for now-->
 
-        X Coordinate: <input type="text" value="" id="popx" name="populateme" /><br>
-        Y Coordinate: <input type="text" value="" id="popy" name="populateme" /><br>
-        Type: <input type="text" value="" id="poptype" name="populateme" /><br>
-        <span id='no1'>Entry: </span><input type="text" value="" id="popentry" name="populateme" /><br>
-        <span id="no2">Room: </span><input type="text" value="" id="poproom" name="populateme" /><br>
-        <span id="no3">Gender: </span><input type='radio' id = 'popfemale' name='genderpop' value='F'><span id='no4'>Female</span>
-          <input type='radio' id = 'popmale' name='genderpop' value='M'><span id='no5'>Male</span>  
+       X Coordinate: <input type="text" value="" id="popx" name="populateme" onchange = "updateX(value, findme.value)" /><br>
+        Y Coordinate: <input type="text" value="" id="popy" name="populateme" onchange = "updateY(value, findme.value)"/><br>
+        Type: <input type="text" value="" id="poptype" name="populateme" onchange = "updateType(value, findme.value)"/><br>
+        Entry: <input type="text" value="" id="popentry" name="populateme" onchange = "updateEntry(value, findme.value)"/><br>
+        Room: <input type="text" value="" id="poproom" name="populateme" onchange = "updateRoom(value, findme.value)"/><br>
+        Gender: <input type='radio' id = 'popfemale' name='genderpop' value='F' onclick = "updateGenderF(findme.value)">Female
+          <input type='radio' id = 'popmale' name='genderpop' value='M' onclick = "updateGenderM(findme.value)" >Male 
 
     </form>
  </div> <!--floating box--> 
