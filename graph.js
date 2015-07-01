@@ -546,6 +546,60 @@ function changeCanvas(){
 
 };
 
+// Get edits from Nodeinfo and store with nodes.
+
+function updateX(newx, i){
+  nodes[i].coords[0] = newx;
+};
+
+function updateY(newy, i){
+  nodes[i].coords[1] = newy;
+};
+
+function updateType(newt, i){
+  // do not needlessly erase important info if user changes to same type
+  if((document.getElementById("popentry").style.display != "none") && (newt !="entry"){
+    document.example.popentry.value = "";
+  }
+  if((document.getElementById("poproom").style.display != "none") && (newt != "room"){
+    document.example.poproom.value = "";
+  }
+  if((document.getElementById("popfemale").style.display != "none") &&(newt != "bathroom")){
+    radiobtn = document.getElementById("popmale");
+    radiobtn.checked = false; 
+    radiobtn1 = document.getElementById("popfemale");
+    radiobtn1.checked = false; 
+  }
+
+  nodes[i].type = newt;
+
+  if(newt == "bathroom"){
+    alert("Please select a gender");
+
+  }
+
+};
+
+function updateEntry(newe, i){
+  nodes[i].entryway = newe;
+};
+
+function updateRoom(newr, i){
+  nodes[i].room = newr;
+};
+
+function updateGender(i){
+  radiobtn = document.getElementById("popfemale");
+  if (radiobtn.checked = true)
+    nodes[i].gender = "F";
+  else
+    nodes[i].gender = "M";
+  
+};
+
+
+
+
 
 
  
