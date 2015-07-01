@@ -48,7 +48,6 @@
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
 
-
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
       toollist[i].addEventListener('change', ev_tool_change, false);
@@ -71,7 +70,9 @@
     canvas.addEventListener('mousedown', ev_canvas, false);
     canvas.addEventListener('mousemove', ev_canvas, false);
     canvas.addEventListener('mouseup',   ev_canvas, false);
-  }
+
+}
+
 //set radius
 function setRadius() {
     //set radius size
@@ -461,6 +462,90 @@ function changeCanvas(){
    context.stroke();
    context.closePath();
  };
+
+ //CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES 
+
+ function updateText(i){
+
+
+  // document.example.populateme.value = JSON.stringify(nodes[5]);
+  
+  // document.example.popid.value = i; // would display id. temp hidden
+  document.example.popx.value = nodes[i].coords[0];
+  document.example.popy.value = nodes[i].coords[1];
+  document.example.poptype.value = nodes[i].type;
+
+  if(nodes[i].type== "room"){  
+    document.getElementById("poproom").style.display = "inline-block";
+    document.example.poproom.value = nodes[i].room;
+    //hide bathroom and entry specific facets and clear fields
+    document.getElementById("popentry").style.display = "none";
+    document.example.popentry.value = "";
+    
+    document.getElementById("popmale").style.display = "none";
+    document.getElementById("popfemale").style.display = "none";
+    radiobtn = document.getElementById("popmale");
+    radiobtn.checked = false; 
+    radiobtn1 = document.getElementById("popfemale");
+    radiobtn1.checked = false; 
+
+  }
+
+
+  else if(nodes[i].type== "entry"){  
+    document.getElementById("popentry").style.display = "inline-block";
+    document.example.popentry.value = nodes[i].entryway;
+
+    //hide bathroom and room specific fields and clear fields
+    document.getElementById("poproom").style.display = "none";
+    document.example.poproom.value = "";
+    
+    document.getElementById("popmale").style.display = "none";
+    document.getElementById("popfemale").style.display = "none";
+    radiobtn = document.getElementById("popmale");
+    radiobtn.checked = false; 
+    radiobtn1 = document.getElementById("popfemale");
+    radiobtn1.checked = false; 
+  }
+
+  else if(nodes[i].type == "bathroom"){
+
+    if(nodes[i].gender == "F"){
+      radiobtn = document.getElementById("popfemale");
+      radiobtn.checked = true;
+    }
+    else{
+      radiobtn = document.getElementById("popmale");
+      radiobtn.checked = true; 
+    }
+
+    //hide room and entry; clear
+    document.getElementById("popentry").style.display = "none";
+    document.example.popentry.value = "";
+    document.getElementById("poproom").style.display = "none";
+    document.example.poproom.value = "";
+
+  }
+  else{
+    // hide all optional elements
+    document.getElementById("popentry").style.display = "none";
+    document.example.popentry.value = "";
+    document.getElementById("poproom").style.display = "none";
+    document.example.poproom.value = "";
+
+    document.getElementById("popmale").style.display = "none";
+    document.getElementById("popfemale").style.display = "none";
+    radiobtn = document.getElementById("popmale");
+    radiobtn.checked = false; 
+    radiobtn1 = document.getElementById("popfemale");
+    radiobtn1.checked = false; 
+
+  }
+
+};
+
+
+
  
  //UNDO AND REDO TOOLS
   function undoIt(ev) {
