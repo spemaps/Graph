@@ -60,10 +60,11 @@ span {
 }
 
 #info {
-	height: 275px;
-	width: 200px;
+	height: 95px;
+	width: 400px;
 	background-color: clear;
-	border-color: #FA58AC;
+	border-color: orange;
 	position: fixed;
-	margin: auto;
+	margin-top:10px;
+	margin-left: 500px;
 }
