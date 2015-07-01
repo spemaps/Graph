@@ -176,9 +176,15 @@ function changeCanvas(){
               document.getElementById('radius').style.display = 'none';
             }
             //add stuff about info box display here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            else if (selectedT == 'info'){
-            }
-            else {
+            else if (selectedT == 'info') {
+              document.getElementById("snapping").style.display = "none";
+              document.getElementById("nodeType").style.display = "none";
+              document.getElementById('gender').style.display = 'none';
+              document.getElementById('roomNumber').style.display = 'none';
+              document.getElementById('entryway').style.display = 'none';
+              document.getElementById('radius').style.display = 'none';
+              //DISPLAY INFO BOX
+            } else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
               document.getElementById('gender').style.display = 'none';
@@ -740,6 +746,7 @@ function changeCanvas(){
 
         //display info box
         //send node_id
+
        }
      };
    };
