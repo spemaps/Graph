@@ -4,7 +4,8 @@
 
 
   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
-  var toollist, radius;
+  var toollist; 
+  var radius = 3;
 
   // The active tool instance.
   var tool;
@@ -40,6 +41,7 @@
     document.getElementById('roomNumber').style.display = 'none'; //hide room number tool
     document.getElementById('entryway').style.display = 'none';
     document.getElementById('radius').style.display = 'inline-block';
+    document.getElementsByName('radius')[0].value = 3;
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
