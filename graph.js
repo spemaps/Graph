@@ -750,6 +750,33 @@ function changeCanvas(){
        }
      };
    };
+
+//drag and drop for box
+ function allowDrop(ev) {
+    ev.preventDefault();
+    return false;
+}
+
+function drag(ev) {
+    var style = window.getComputedStyle(event.target, null);
+    event.dataTransfer.setData("text/plain",
+    (parseInt(style.getPropertyValue("left"),10) - ev._x) + ',' + (parseInt(style.getPropertyValue("top"),10) - ev._y));
+}
+
+function drop(ev) {
+    var offset = event.dataTransfer.getData("text/plain").split(',');
+    var dm = document.getElementById('info');
+    dm.style.left = (ev._x + parseInt(offset[0],10)) + 'px';
+    dm.style.top = (ev._y + parseInt(offset[1],10)) + 'px';
+    event.preventDefault();
+    return false;
+}
+
+var dm = document.getElementById('info');
+dm.addEventListener('drag',drag,false);
+document.body.addEventListener('allowDrop',allowDrop,false);
+document.body.addEventListener('drop',drop,false); 
+
  
  if(window.addEventListener) {
      window.addEventListener('load', init(), false)

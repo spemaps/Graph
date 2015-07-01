@@ -7,6 +7,7 @@ div {
 	padding-left: 0px;
 	border: 5px solid white;
 	position: float;
+
 }
 
 #dtool {
@@ -50,9 +51,19 @@ button {
 }
 
 span {
-	font-family: Georgia;
+	font-family: Verdana;
+	font-size: 19px;
 }
 
 * {
 	font-family: Verdana;
+}
+
+#info {
+	height: 275px;
+	width: 200px;
+	background-color: clear;
+	border-color: #FA58AC;
+	position: fixed;
+	margin: auto;
 }
