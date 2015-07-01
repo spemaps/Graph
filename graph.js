@@ -6,6 +6,7 @@
   var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
   var toollist; 
   var radius = 3;
+  var undo_length = 10;
 
   // The active tool instance.
   var tool;
@@ -266,7 +267,7 @@ function changeCanvas(){
            edges.push([start_id, end_id]);
            //update undo
            undo.push("e"); //add new to end
-           if(undo.length == 10) {
+           if(undo.length == undo_length) { 
              undo.shift(); //only store last 10
            }
          }
@@ -367,7 +368,7 @@ function changeCanvas(){
  
          //update undo
          undo.push("n"); //add new to end
-         if(undo.length == 10) {
+         if(undo.length == undo_length) { 
            undo.shift(); //only store last 10
            }
        }
