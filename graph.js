@@ -139,7 +139,7 @@ function changeCanvas(){
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
       if(toollist[i].checked == true)  {
-             var selectedT = toollist[i].value
+            var selectedT = toollist[i].value
             tool = new tools[selectedT];
          
             if (selectedT == 'node') {
@@ -175,6 +175,9 @@ function changeCanvas(){
               document.getElementById('entryway').style.display = 'none';
               document.getElementById('radius').style.display = 'none';
             }
+            //add stuff about info box display here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            else if (selectedT == 'info'){
+            }
             else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
@@ -183,6 +186,9 @@ function changeCanvas(){
               document.getElementById('entryway').style.display = 'none';
               document.getElementById('radius').style.display = 'none';
             }
+            //clear temporary canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
       }
     }
   }
@@ -195,6 +201,27 @@ function changeCanvas(){
     context.clearRect(0, 0, canvas.width, canvas.height);
    }
  
+ 
+     //closest function
+     //find circle closest to x, y
+     //!!! returns coords,id
+  function closest(x, y){
+    var close = [];
+    var distance = Infinity;
+    var id;
+    for (var i = 0; i < nodes.length; i++) {
+      var c =  nodes[i].coords; //parsing through the coords of every node
+      var d = (x - c[0])*(x - c[0]) + (y - c[1])*(y - c[1]);
+      if (d < distance) {
+        close = c;
+        distance = d;
+        id = nodes[i].id;
+      }
+    }
+    //return array of closest node center coordinates
+    return [close, id];
+  };
+
    // This object holds the implementation of each drawing tool.
    var tools = {};
  
@@ -221,26 +248,6 @@ function changeCanvas(){
        start_id = node[1];
  
      };
- 
-     //closest function
-     //find circle closest to x, y
-     //!!! returns coords,id
-     function closest(x, y){
-           var close = [];
-           var distance = Infinity;
-           var id;
-           for (var i = 0; i < nodes.length; i++) {
-             var c =  nodes[i].coords; //parsing through the coords of every node
-             var d = (x - c[0])*(x - c[0]) + (y - c[1])*(y - c[1]);
-             if (d < distance) {
-               close = c;
-               distance = d;
-               id = nodes[i].id;
-             }
-           }
-           //return array of closest node center coordinates
-           return [close, id];
-       };
  
      this.mousemove = function (ev) {
        if (!tool.started) {
@@ -281,22 +288,30 @@ function changeCanvas(){
        this.type = type;
      };
  
-   function colorFind(node_id){
+   function colorFind(node_id) {
        var nodeType;
-       if (nodes.length == node_id) {
+       var gender;
+       if (nodes.length == node_id) 
          nodeType = findNT();
-       }
-       else {
+       else 
          nodeType = nodes[node_id].type;
-       }
        if (nodeType =='walk')
          return 'black';
-       else if (nodeType =='room' || nodeType =='bathroom')
+       else if (nodeType =='room')
          return 'red';
-       else if (nodeType =='stairs' || nodeType =='elevator')
-         return 'blue';
+       else if (nodeType =='bathroom') {
+        if (nodes.length == node_id) {
+          if (document.getElementsByName("gender")[0].checked) gender = 'F';
+          else gender = 'M';
+        } else gender = nodes[node_id].gender;
+        if (gender == 'M') return '#2ECCFA';
+        else return '#F781BE';
+       } else if (nodeType =='stairs')
+         return '#5858FA';
+       else if (nodeType =='elevator')
+          return '#FFBF00';
        else if (nodeType =='entry')
-         return 'green';
+         return '#3ADF00';
      };
  
     function findNT() {
@@ -312,8 +327,6 @@ function changeCanvas(){
    tools.node = function () {
      var tool = this;
      this.started = false;
- 
- 
  
      this.mousedown = function (ev) {
        tool.started = true;
@@ -700,6 +713,36 @@ function changeCanvas(){
    mouse_context.fillStyle = 'black';
    mouse_context.fillText(message, 10, 20);
  }
+
+//NEW TOOL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ tools.info = function () {
+     var tool = this;
+     this.started = false;
+     var closest_node; //[coords, id]
+ 
+     this.mousedown = function (ev) {
+       tool.started = true;
+       closest_node = closest(ev._x, ev._y); //returns[coords, id]
+
+       //erase other highlighting by clearing temp canvas
+       context.clearRect(0, 0, canvas.width, canvas.height);
+
+       //highlight node
+       draw_node(closest_node[0][0], closest_node[0][1], radius, '#FFFF00', 1);
+     };
+
+ 
+     this.mouseup = function (ev) {
+       if (tool.started) {
+        tool.started = false;
+        //change node highlighting
+        draw_node(closest_node[0][0], closest_node[0][1], radius * 0.5, colorFind(closest_node[1]), 1);
+
+        //display info box
+        //send node_id
+       }
+     };
+   };
  
  if(window.addEventListener) {
      window.addEventListener('load', init(), false)
