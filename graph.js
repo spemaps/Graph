@@ -498,7 +498,6 @@ function setRadius() {
 
   }
 
-    
 
   else if(nodes[node_id].type== "entry"){  
     document.getElementById("popentry").style.display = "inline-block";
