@@ -608,20 +608,29 @@ function updateType(newt, i){
   // do not needlessly erase important info if user changes to same type
   if((document.getElementById("popentry").style.display != "none") && (newt !="entry")){
     document.example.popentry.value = "";
+    document.getElementById('no1').style.display = 'none';
   }
   if((document.getElementById("poproom").style.display != "none") && (newt != "room")){
     document.example.poproom.value = "";
+    document.getElementById('no2').style.display = 'none';
   }
   if((document.getElementById("popfemale").style.display != "none") &&(newt != "bathroom")){
     radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
     radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
+     document.getElementById('no3').style.display = 'none';
+    document.getElementById('no4').style.display = 'none';
+    document.getElementById('no5').style.display = 'none';
+
   }
 
   nodes[i].type = newt;
 
   if(newt == "bathroom"){
+    document.getElementById('no3').style.display = 'inline-block';
+    document.getElementById('no4').style.display = 'inline-block';
+    document.getElementById('no5').style.display = 'inline-block';
      document.getElementById("popmale").style.display = "inline-block";
     document.getElementById("popfemale").style.display = "inline-block";
     radiobtn = document.getElementById("popfemale");
@@ -631,12 +640,14 @@ function updateType(newt, i){
   }
 
   if(newt == "room"){
+    document.getElementById('no2').style.display = 'inline-block';
     document.getElementById("poproom").style.display = "inline-block";
     alert("Room number has not been set.")
 
   }
 
   if(newt == "entry"){
+    document.getElementById('no1').style.display = 'inline-block';
     document.getElementById("popentry").style.display = "inline-block";
     alert("Entry number has not been set.")
   }
