@@ -465,19 +465,19 @@ function changeCanvas(){
 
  //CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES 
 
- function updateText(i){
+ function updateText(node_id){
+  document.example.popx.value = nodes[node_id].coords[0];
+  document.example.popy.value = nodes[node_id].coords[1];
+  document.example.poptype.value = nodes[node_id].type;
 
+  //get nodeID and draw node
+  draw_node(nodes[node_id].coords[0], nodes[node_id].coords[1], radius, '#FFFF00', 1);
+  draw_node(nodes[node_id].coords[0], nodes[node_id].coords[1], radius * 0.5, colorFind(node_id), 1);
+  document.getElementById('findme').value = node_id;
 
-  // document.example.populateme.value = JSON.stringify(nodes[5]);
-  
-  // document.example.popid.value = i; // would display id. temp hidden
-  document.example.popx.value = nodes[i].coords[0];
-  document.example.popy.value = nodes[i].coords[1];
-  document.example.poptype.value = nodes[i].type;
-
-  if(nodes[i].type== "room"){  
+  if(nodes[node_id].type== "room"){  
     document.getElementById("poproom").style.display = "inline-block";
-    document.example.poproom.value = nodes[i].room;
+    document.example.poproom.value = nodes[node_id].room;
     //hide bathroom and entry specific facets and clear fields
     document.getElementById("popentry").style.display = "none";
     document.example.popentry.value = "";
@@ -492,9 +492,9 @@ function changeCanvas(){
   }
 
 
-  else if(nodes[i].type== "entry"){  
+  else if(nodes[node_id].type== "entry"){  
     document.getElementById("popentry").style.display = "inline-block";
-    document.example.popentry.value = nodes[i].entryway;
+    document.example.popentry.value = nodes[node_id].entryway;
 
     //hide bathroom and room specific fields and clear fields
     document.getElementById("poproom").style.display = "none";
@@ -508,9 +508,9 @@ function changeCanvas(){
     radiobtn1.checked = false; 
   }
 
-  else if(nodes[i].type == "bathroom"){
+  else if(nodes[node_id].type == "bathroom"){
 
-    if(nodes[i].gender == "F"){
+    if(nodes[node_id].gender == "F"){
       radiobtn = document.getElementById("popfemale");
       radiobtn.checked = true;
     }
@@ -808,7 +808,7 @@ function changeCanvas(){
    mouse_context.fillText(message, 10, 20);
  }
 
-//NEW TOOL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//NEW TOOL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  tools.info = function () {
      var tool = this;
      this.started = false;
@@ -829,12 +829,9 @@ function changeCanvas(){
      this.mouseup = function (ev) {
        if (tool.started) {
         tool.started = false;
-        //change node highlighting
-        draw_node(closest_node[0][0], closest_node[0][1], radius * 0.5, colorFind(closest_node[1]), 1);
 
-        //display info box
-        //send node_id
-
+        //send node_id to gender box
+        updateText(closest_node[1]);
        }
      };
    };
