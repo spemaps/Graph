@@ -1,5 +1,4 @@
 body {
-	background-color: white;
 }
 
 div {
@@ -35,7 +34,7 @@ button {
 	font-size: 15px;
 	height: 25px;
 	width: 50px;
-	font-family: sans-serif;
+	font-family: Helvetica;
 	border-radius: 7px;
 	position: relative;
 }
@@ -51,12 +50,12 @@ button {
 }
 
 span {
-	font-family: Verdana;
+	font-family: Helvetica;
 	font-size: 19px;
 }
 
 * {
-	font-family: Verdana;
+	font-family: Helvetica;
 }
 
 #info {

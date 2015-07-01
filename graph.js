@@ -43,6 +43,7 @@
     document.getElementById('entryway').style.display = 'none';
     document.getElementById('radius').style.display = 'inline-block';
     document.getElementsByName('radius')[0].value = 3;
+    document.getElementById('info').style.display = 'none';
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -146,6 +147,7 @@ function changeCanvas(){
               document.getElementById("nodeType").style.display = "inline-block";
               document.getElementById("snapping").style.display = "none";
               document.getElementById('radius').style.display = 'inline-block';
+              document.getElementById('info').style.display = 'none';
               if (document.getElementById("nodeType").value == "bathroom") {
                 document.getElementById('gender').style.display = 'inline-block';
                 document.getElementById('roomNumber').style.display = 'none';
@@ -174,8 +176,8 @@ function changeCanvas(){
               document.getElementById('roomNumber').style.display = 'none';
               document.getElementById('entryway').style.display = 'none';
               document.getElementById('radius').style.display = 'none';
+              document.getElementById('info').style.display = 'none';
             }
-            //add stuff about info box display here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             else if (selectedT == 'info') {
               document.getElementById("snapping").style.display = "none";
               document.getElementById("nodeType").style.display = "none";
@@ -183,7 +185,7 @@ function changeCanvas(){
               document.getElementById('roomNumber').style.display = 'none';
               document.getElementById('entryway').style.display = 'none';
               document.getElementById('radius').style.display = 'none';
-              //DISPLAY INFO BOX
+              document.getElementById('info').style.display = 'inline-block';
             } else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
@@ -191,6 +193,7 @@ function changeCanvas(){
               document.getElementById('roomNumber').style.display = 'none';
               document.getElementById('entryway').style.display = 'none';
               document.getElementById('radius').style.display = 'none';
+              document.getElementById('info').style.display = 'none';
             }
             //clear temporary canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -750,7 +753,6 @@ function changeCanvas(){
        }
      };
    };
-
 
  
  if(window.addEventListener) {
