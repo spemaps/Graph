@@ -512,6 +512,8 @@ function setRadius() {
   }
 
   else if(nodes[node_id].type == "bathroom"){
+    document.getElementById("popmale").style.display = "inline-block";
+    document.getElementById("popfemale").style.display = "inline-block";
 
     if(nodes[node_id].gender == "F"){
       radiobtn = document.getElementById("popfemale");
@@ -549,13 +551,17 @@ function setRadius() {
 
 // Get edits from Nodeinfo and store with nodes.
 
+
+
 function updateX(newx, i){
   nodes[i].coords[0] = newx;
 };
 
+
 function updateY(newy, i){
   nodes[i].coords[1] = newy;
 };
+
 
 function updateType(newt, i){
   // do not needlessly erase important info if user changes to same type
@@ -575,8 +581,23 @@ function updateType(newt, i){
   nodes[i].type = newt;
 
   if(newt == "bathroom"){
-    alert("Please select a gender");
+     document.getElementById("popmale").style.display = "inline-block";
+    document.getElementById("popfemale").style.display = "inline-block";
+    radiobtn = document.getElementById("popfemale");
+    radiobtn.checked = true;
 
+    alert("Gender has been set to female by default");
+  }
+
+  if(newt == "room"){
+    document.getElementById("poproom").style.display = "inline-block";
+    alert("Room number has not been set.")
+
+  }
+
+  if(newt == "entry"){
+    document.getElementById("popentry").style.display = "inline-block";
+    alert("Entry number has not been set.")
   }
 
 };
@@ -588,6 +609,8 @@ function updateEntry(newe, i){
 function updateRoom(newr, i){
   nodes[i].room = newr;
 };
+
+
 
 function updateGender(i){
   radiobtn = document.getElementById("popfemale");
