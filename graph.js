@@ -12,6 +12,7 @@
   var tool;
   var tool_default = 'node';
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   function init () {
     // Find the canvas element.
     canvaso = document.getElementById('imageView');
@@ -72,16 +73,6 @@
     canvas.addEventListener('mouseup',   ev_canvas, false);
 
 }
-
-//set radius
-function setRadius() {
-    //set radius size
-    if (document.getElementsByName('radius')[0].value == '') {
-      alert('radius is undefined!');
-    }
-    radius = parseFloat(document.getElementsByName('radius')[0].value);
-}
-
 
 //get file and change canvas background
 function changeCanvas(){
@@ -202,6 +193,13 @@ function changeCanvas(){
       }
     }
   }
+   // This object holds the implementation of each drawing tool.
+   var tools = {};
+ 
+   var nodes = []; //array of nodes
+   var edges = []; //array of the id's of the nodes
+   var undo = [];
+   var redo = [];
 
   // This function draws the #imageTemp canvas on top of #imageView, after which 
   // #imageTemp is cleared. This function is called each time when the user 
@@ -211,7 +209,7 @@ function changeCanvas(){
     context.clearRect(0, 0, canvas.width, canvas.height);
    }
  
- 
+ //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      //closest function
      //find circle closest to x, y
      //!!! returns coords,id
@@ -232,15 +230,59 @@ function changeCanvas(){
     return [close, id];
   };
 
-   // This object holds the implementation of each drawing tool.
-   var tools = {};
+   //Node function out of the Node tool
+   function Node(id,coords,type) {
+       this.id = id;
+       this.coords = coords;
+       this.type = type;
+     };
  
-   var nodes = []; //array of nodes
-   var edges = []; //array of the id's of the nodes
-   var undo = [];
-   var redo = [];
+   function colorFind(node_id) {
+       var nodeType;
+       var gender;
+       if (nodes.length == node_id) 
+         nodeType = findNT();
+       else 
+         nodeType = nodes[node_id].type;
+       if (nodeType =='walk')
+         return 'black';
+       else if (nodeType =='room')
+         return 'red';
+       else if (nodeType =='bathroom') {
+        if (nodes.length == node_id) {
+          if (document.getElementsByName("gender")[0].checked) gender = 'F';
+          else gender = 'M';
+        } else gender = nodes[node_id].gender;
+        if (gender == 'M') return '#2ECCFA';
+        else return '#F781BE';
+       } else if (nodeType =='stairs')
+         return '#5858FA';
+       else if (nodeType =='elevator')
+          return '#FFBF00';
+       else if (nodeType =='entry')
+         return '#3ADF00';
+     };
  
-   // The edge tool.
+    function findNT() {
+       var r = document.getElementById("nodeType").length;
+        for(var i = 0; i<r; i++){
+         var typetrial = document.getElementById("nodeType")[i];
+         if(typetrial.selected)
+           return typetrial.value;
+       }
+     }
+
+//set radius
+function setRadius() {
+    //set radius size
+    if (document.getElementsByName('radius')[0].value == '') {
+      alert('radius is undefined!');
+    }
+    radius = parseFloat(document.getElementsByName('radius')[0].value);
+}
+
+ 
+   // The edge tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    tools.edge = function () {
      var tool = this;
      this.started = false;
@@ -291,49 +333,8 @@ function changeCanvas(){
        }
      }
    };
-   //Node function out of the Node tool
-   function Node(id,coords,type) {
-       this.id = id;
-       this.coords = coords;
-       this.type = type;
-     };
- 
-   function colorFind(node_id) {
-       var nodeType;
-       var gender;
-       if (nodes.length == node_id) 
-         nodeType = findNT();
-       else 
-         nodeType = nodes[node_id].type;
-       if (nodeType =='walk')
-         return 'black';
-       else if (nodeType =='room')
-         return 'red';
-       else if (nodeType =='bathroom') {
-        if (nodes.length == node_id) {
-          if (document.getElementsByName("gender")[0].checked) gender = 'F';
-          else gender = 'M';
-        } else gender = nodes[node_id].gender;
-        if (gender == 'M') return '#2ECCFA';
-        else return '#F781BE';
-       } else if (nodeType =='stairs')
-         return '#5858FA';
-       else if (nodeType =='elevator')
-          return '#FFBF00';
-       else if (nodeType =='entry')
-         return '#3ADF00';
-     };
- 
-    function findNT() {
-       var r = document.getElementById("nodeType").length;
-        for(var i = 0; i<r; i++){
-         var typetrial = document.getElementById("nodeType")[i];
-         if(typetrial.selected)
-           return typetrial.value;
-       }
-     }
- 
-   //node tool
+
+   //node tool~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    tools.node = function () {
      var tool = this;
      this.started = false;
@@ -398,7 +399,7 @@ function changeCanvas(){
      };
    };
  
- //function that removes edges on canvas
+ //function that removes edges on canvas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  function remove_edges(start_coords, end_coords, start_id, end_id) {
    //remove edge drawing
    contexto.globalCompositeOperation = "xor";
@@ -464,7 +465,7 @@ function changeCanvas(){
  };
 
  //CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES CHANGES 
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  function updateText(node_id){
   document.example.popx.value = nodes[node_id].coords[0];
   document.example.popy.value = nodes[node_id].coords[1];
@@ -603,7 +604,7 @@ function updateGender(i){
 
 
  
- //UNDO AND REDO TOOLS
+ //UNDO AND REDO TOOLS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   function undoIt(ev) {
    if (undo.length == 0) {
      alert("Nothing to undo!");
@@ -716,7 +717,7 @@ function updateGender(i){
    }
   };
  
-    // The resize tool.
+    // The resize tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    tools.resize = function () {
      var tool = this;
      this.started = false;
@@ -754,7 +755,7 @@ function updateGender(i){
        }
      };
  
-     //closest function
+     //closest function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      //find node closest to x, y
      function closest(x, y){
            var close = [];
