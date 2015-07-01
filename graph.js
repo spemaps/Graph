@@ -476,18 +476,13 @@ function changeCanvas(){
   document.example.poptype.value = nodes[i].type;
 
   if(nodes[i].type== "room"){  
-    document.getElementById("poproom").style.display = "inline-block";
-    document.example.poproom.value = nodes[i].room;
-    //hide bathroom and entry specific facets and clear fields
-    document.getElementById("popentry").style.display = "none";
-    document.example.popentry.value = "";
-    
-    document.getElementById("popmale").style.display = "none";
-    document.getElementById("popfemale").style.display = "none";
-    radiobtn = document.getElementById("popmale");
-    radiobtn.checked = false; 
-    radiobtn1 = document.getElementById("popfemale");
-    radiobtn1.checked = false; 
+document.getElementById("popx").style.display = 'inline-block';
+document.getElementById("popy").style.display = 'inline-block';
+document.getElementById("poptype").style.display = 'inline-block';
+//document.getElementById("poproom").style.display = 'inline-block';
+document.getElementById("popentry").style.display = 'none';
+document.getElementById("poproom").style.display = 'inline-block';
+document.getElementById("popgender").style.display = 'none';
 
   }
 

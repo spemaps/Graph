@@ -1,5 +1,7 @@
 body {
+
 }
+
 
 div {
 	padding: 5px;
@@ -8,6 +10,7 @@ div {
 	position: float;
 
 }
+
 
 #dtool {
 	cursor: hover;
@@ -59,11 +62,29 @@ span {
 }
 
 #info {
-	height: 95px;
-	width: 400px;
+	height: 125px;
+	width: 360px;
 	background-color: clear;
 	border-color: orange;
 	position: fixed;
 	margin-top:10px;
 	margin-left: 500px;
 }
+
+#example {
+	font-size: 14px;
+}
+
+#no1{
+
+	font-size: 14px;
+}
+
+#no2 {
+	font-size: 14px;
+}
+
+#no3 {
+	font-size: 14px;
+}
+
