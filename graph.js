@@ -550,6 +550,7 @@ function setRadius() {
 // Get edits from Nodeinfo and store with nodes.
 
 function updateX(newx, i){
+  var old_x = nodes[i].coords[0];
   nodes[i].coords[0] = newx;
 };
 
@@ -559,10 +560,10 @@ function updateY(newy, i){
 
 function updateType(newt, i){
   // do not needlessly erase important info if user changes to same type
-  if((document.getElementById("popentry").style.display != "none") && (newt !="entry"){
+  if((document.getElementById("popentry").style.display != "none") && (newt !="entry")){
     document.example.popentry.value = "";
   }
-  if((document.getElementById("poproom").style.display != "none") && (newt != "room"){
+  if((document.getElementById("poproom").style.display != "none") && (newt != "room")){
     document.example.poproom.value = "";
   }
   if((document.getElementById("popfemale").style.display != "none") &&(newt != "bathroom")){
