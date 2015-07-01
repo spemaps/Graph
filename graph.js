@@ -483,9 +483,13 @@ function setRadius() {
     //hide bathroom and entry specific facets and clear fields
     document.getElementById("popentry").style.display = "none";
     document.example.popentry.value = "";
-    
+    document.getElementById('no1').style.display = 'none';
+    document.getElementById('no2').style.display = 'inline-block';
+    document.getElementById('no3').style.display = 'none';
     document.getElementById("popmale").style.display = "none";
     document.getElementById("popfemale").style.display = "none";
+    document.getElementById('no4').style.display = 'none';
+    document.getElementById('no5').style.display = 'none';
     radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
     radiobtn1 = document.getElementById("popfemale");
@@ -494,6 +498,7 @@ function setRadius() {
 
   }
 
+    
 
   else if(nodes[node_id].type== "entry"){  
     document.getElementById("popentry").style.display = "inline-block";
@@ -509,19 +514,31 @@ function setRadius() {
     radiobtn.checked = false; 
     radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
+    document.getElementById('no1').style.display = 'inline-block';
+    document.getElementById('no2').style.display = 'none';
+    document.getElementById('no3').style.display = 'none';
+    document.getElementById('no4').style.display = 'none';
+    document.getElementById('no5').style.display = 'none';
   }
 
   else if(nodes[node_id].type == "bathroom"){
     document.getElementById("popmale").style.display = "inline-block";
     document.getElementById("popfemale").style.display = "inline-block";
+    document.getElementById('no1').style.display = 'none';
+    document.getElementById('no2').style.display = 'none';
+
 
     if(nodes[node_id].gender == "F"){
       radiobtn = document.getElementById("popfemale");
       radiobtn.checked = true;
+      document.getElementById('no4').style.display = 'inline-block';
+      document.getElementById('no5').style.display = 'inline-block';
     }
     else{
       radiobtn = document.getElementById("popmale");
       radiobtn.checked = true; 
+      document.getElementById('no4').style.display = 'inline-block';
+      document.getElementById('no5').style.display = 'inline-block';
     }
 
     //hide room and entry; clear
@@ -544,6 +561,11 @@ function setRadius() {
     radiobtn.checked = false; 
     radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
+    document.getElementById('no1').style.display = 'none';
+    document.getElementById('no2').style.display = 'none';
+    document.getElementById('no3').style.display = 'none';
+    document.getElementById('no4').style.display = 'none';
+    document.getElementById('no5').style.display = 'none';
 
   }
 
