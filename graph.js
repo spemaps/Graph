@@ -46,6 +46,12 @@
     document.getElementById('radius').style.display = 'inline-block';
     document.getElementsByName('radius')[0].value = 3;
     document.getElementById('info').style.display = 'none';
+    document.getElementById('stairset').style.display = 'none';
+    document.getElementById('floorset').style.display = 'none';
+    document.getElementById('stair').style.display = 'none';
+    document.getElementById('stair1').style.display = 'none';
+
+
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -148,25 +154,56 @@ function changeCanvas(){
               document.getElementById("snapping").style.display = "none";
               document.getElementById('radius').style.display = 'inline-block';
               document.getElementById('info').style.display = 'none';
+
               if (document.getElementById("nodeType").value == "bathroom") {
                 document.getElementById('gender').style.display = 'inline-block';
+
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
+                document.getElementById('stairset').style.display = 'none';
+                document.getElementById('floorset').style.display = 'none';
+                document.getElementById('stair').style.display = 'none';
+                document.getElementById('stair1').style.display = 'none';
               }
               else if (document.getElementById("nodeType").value == "room") { // text box appears if node type is room 
                 document.getElementById('roomNumber').style.display = 'inline-block';
+
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
+                document.getElementById('stairset').style.display = 'none';
+                document.getElementById('floorset').style.display = 'none';
+                document.getElementById('stair').style.display = 'none';
+                document.getElementById('stair1').style.display = 'none';
               }
               else if (document.getElementById("nodeType").value == "entry") { // text box appears if node type is room 
                 document.getElementById('entryway').style.display = 'inline-block';
+
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('gender').style.display = 'none';
+                document.getElementById('stairset').style.display = 'none';
+                document.getElementById('floorset').style.display = 'none';
+                document.getElementById('stair').style.display = 'none';
+                document.getElementById('stair1').style.display = 'none';
+
+              }
+              else if (document.getElementById("nodeType").value == "stairs"){
+                document.getElementById('roomNumber').style.display = 'none';
+                document.getElementById('gender').style.display = 'none';
+                document.getElementById('entryway').style.display = 'none';
+                
+                document.getElementById('stairset').style.display = 'inline-block';
+                document.getElementById('floorset').style.display = 'inline-block';
+                document.getElementById('stair').style.display = 'inline-block';
+                document.getElementById('stair1').style.display = 'inline-block';
               }
               else {
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
+                document.getElementById('stairset').style.display = 'none';
+                document.getElementById('floorset').style.display = 'none';
+                document.getElementById('stair').style.display = 'none';
+                document.getElementById('stair1').style.display = 'none';
               }
             }
             else if (selectedT == 'resize'){
@@ -409,6 +446,28 @@ function saveGraph() {
             document.getElementsByName('entryway')[0].value = value.toString();
           }
         }
+        else if (document.getElementById("nodeType").value == 'stairs'){
+          nodes[nodes.length - 1].stairset = document.getElementById("stairset").value;
+          var value = document.getElementById("stairset").value;
+          if (value != "") { //if an entryway number
+            value = parseInt(value) + 1;
+            document.getElementById("stairset").value = value.toString();
+          }
+
+          // array of floors in format like 1, 2, 4
+          var string = document.getElementById("floorset").value;
+          var parts;
+          if (string.indexOf(", ") != -1){
+            parts = string.split(", ");
+          }
+          else if (string.indexOf(",")!= -1){
+            parts = string.split(",");
+          }
+          nodes[nodes.length - 1].floorset = parts;
+
+          alert("HI" + JSON.stringify(nodes[nodes.length-1].floorset));
+          
+        }
  
  
          //update undo
@@ -419,6 +478,8 @@ function saveGraph() {
        }
      };
    };
+
+
  
  //function that removes edges on canvas~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  function remove_edges(start_coords, end_coords, start_id, end_id) {
