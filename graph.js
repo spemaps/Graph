@@ -7,6 +7,7 @@
   var toollist; 
   var radius = 3;
   var undo_length = 10;
+  var newheight;
 
   // The active tool instance.
   var tool;
@@ -80,6 +81,7 @@ function changeCanvas(){
   var fileread = new FileReader();
   var image = new Image();
   var width, height;
+   
   
   //fileread.readAsDataURL(file);
   fileread.onload = function(_file) { //once file has uplaoded
@@ -90,6 +92,8 @@ function changeCanvas(){
 
       height = height * 1000 / width;
       width = 1000;
+      newheight = height;
+
 
       //change canvas
       canvaso.width = width; //edit sizes
@@ -107,6 +111,8 @@ function changeCanvas(){
     image.src = _file.target.result;
   }
   fileread.readAsDataURL(file);
+    document.getElementById('container').height = newheight;
+
 }
 
 

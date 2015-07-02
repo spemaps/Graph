@@ -101,7 +101,7 @@ span {
 }
 
 #graph_info {
-	height: 200px;
+	height: 100px;
 	width: 500px;
 	/*need to add something to make typing tool start at top of textbox*/
 }
@@ -109,3 +109,8 @@ span {
 #empty {
 	height: 115px;
 }
+
+#container {
+
+}
+
