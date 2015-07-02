@@ -503,9 +503,9 @@ function saveGraph() {
     document.getElementById("popfemale").style.display = "none";
     document.getElementById('no4').style.display = 'none';
     document.getElementById('no5').style.display = 'none';
-    radiobtn = document.getElementById("popmale");
+    var radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
-    radiobtn1 = document.getElementById("popfemale");
+    var radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
 
 
@@ -522,9 +522,9 @@ function saveGraph() {
     
     document.getElementById("popmale").style.display = "none";
     document.getElementById("popfemale").style.display = "none";
-    radiobtn = document.getElementById("popmale");
+    var radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
-    radiobtn1 = document.getElementById("popfemale");
+    var radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
     document.getElementById('no1').style.display = 'inline-block';
     document.getElementById('no2').style.display = 'none';
@@ -539,6 +539,8 @@ function saveGraph() {
     document.getElementById('no1').style.display = 'none';
     document.getElementById('no2').style.display = 'none';
     document.getElementById('no3').style.display = 'inline-block';
+
+    var radiobtn;
 
 
     if(nodes[node_id].gender == "F"){
@@ -570,9 +572,9 @@ function saveGraph() {
 
     document.getElementById("popmale").style.display = "none";
     document.getElementById("popfemale").style.display = "none";
-    radiobtn = document.getElementById("popmale");
+    var radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
-    radiobtn1 = document.getElementById("popfemale");
+    var radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
     document.getElementById('no1').style.display = 'none';
     document.getElementById('no2').style.display = 'none';
@@ -613,6 +615,7 @@ function updateY(newy, i){
   //redraw selection
   draw_node(nodes[i].coords[0], newy, radius, '#FFFF00', 1);
   draw_node(nodes[i].coords[0], newy, radius * 0.5, colorFind(i), 1);
+  alert("Have I been redrawn?");
 };
 
 
@@ -640,6 +643,8 @@ function updateType(newt, i){
   nodes[i].type = newt;
 
   if(newt == "bathroom"){
+  
+
     document.getElementById('no3').style.display = 'inline-block';
     document.getElementById('no4').style.display = 'inline-block';
     document.getElementById('no5').style.display = 'inline-block';
@@ -649,9 +654,13 @@ function updateType(newt, i){
     radiobtn.checked = true;
 
     alert("Gender has been set to female by default");
+
+   
   }
 
   if(newt == "room"){
+   
+
     document.getElementById('no2').style.display = 'inline-block';
     document.getElementById("poproom").style.display = "inline-block";
     alert("Room number has not been set.")
@@ -659,6 +668,8 @@ function updateType(newt, i){
   }
 
   if(newt == "entry"){
+    
+
     document.getElementById('no1').style.display = 'inline-block';
     document.getElementById("popentry").style.display = "inline-block";
     alert("Entry number has not been set.")
@@ -673,27 +684,59 @@ function updateType(newt, i){
 
 function updateEntry(newe, i){
   nodes[i].entryway = newe;
-};
 
-function updateRoom(newr, i){
-  nodes[i].room = newr;
-};
-
-
-
-function updateGender(i){
-  radiobtn = document.getElementById("popfemale");
-  if (radiobtn.checked == true)
-    nodes[i].gender = "F";
-  else
-    nodes[i].gender = "M";
-  
   draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(i), 1);
   img_update();
   //redraw selection
   draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, '#FFFF00', 1);
   draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
+   alert("Have I been redrawn?");
 };
+
+function updateRoom(newr, i){
+  nodes[i].room = newr;
+
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(i), 1);
+  img_update();
+  //redraw selection
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, '#FFFF00', 1);
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
+    alert("Have I been redrawn?");
+};
+
+
+
+function updateGender(i){
+  var radiobtn = document.getElementById("popfemale");
+  if (radiobtn.checked == true)
+    nodes[i].gender = "F";
+  else
+    nodes[i].gender = "M";
+
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(i), 1);
+  img_update();
+  //redraw selection
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, '#FFFF00', 1);
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
+  alert("Have I been redrawn?");
+  
+};
+
+
+/*function updateGenderM(i){
+  radiobtn = document.getElementById("popmale");
+  if (radiobtn.checked = true)
+    nodes[i].gender = "M";
+  else
+    nodes[i].gender = "F";
+  
+  draw_node(nodes[i].coords[0], newy, radius, '#FFFF00', 1);
+  draw_node(nodes[i].coords[0], newy, radius * 0.5, colorFind(i), 1);
+    alert(Have I been redrawn?)
+};*/
+
+
+
 
 
  
