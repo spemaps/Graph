@@ -1,5 +1,5 @@
 #hopeitfloats {
-position: fixed;
+	position: fixed;
 }
 
 
@@ -8,7 +8,6 @@ div {
 	padding-left: 0px;
 	border: 5px solid transparent;
 	position: float;
-
 }
 
 
@@ -104,8 +103,3 @@ span {
 #empty {
 	height: 115px;
 }
-
-#container {
-
-}
-
