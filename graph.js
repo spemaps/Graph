@@ -184,7 +184,7 @@ function changeCanvas(){
                 document.getElementById('stair1').style.display = 'none';
 
               }
-              else if (document.getElementById("nodeType").value == "stairs"){
+              else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
@@ -476,7 +476,7 @@ function loadGraph() {
             document.getElementsByName('entryway')[0].value = value.toString();
           }
         }
-        else if (document.getElementById("nodeType").value == 'stairs'){
+        else if ((document.getElementById("nodeType").value == 'stairs') || (document.getElementById("nodeType").value == 'elevator')){
           nodes[nodes.length - 1].stairset = document.getElementById("stairset").value;
           var value = document.getElementById("stairset").value;
           if (value != "") { //if an entryway number
@@ -495,7 +495,7 @@ function loadGraph() {
           }
           nodes[nodes.length - 1].floorset = parts;
 
-          alert("HI" + JSON.stringify(nodes[nodes.length-1].floorset));
+          
           
         }
  
