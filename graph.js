@@ -367,7 +367,17 @@ function loadGraph() {
   img_update();
 
   //set background IF no current background
-  
+}
+
+function clearGraph() {
+  //clear image
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  contexto.clearRect(0, 0, canvaso.width, canvaso.height);
+  backgroundContext.clearRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+
+  //clear nodes and edges
+  nodes = [];
+  edges = [];
 }
 
    // The edge tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -819,17 +829,6 @@ function updateGender(i){
   draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
   
 };
-
-
-<<<<<<< Updated upstream
-=======
-
-
-
-
-
->>>>>>> Stashed changes
-
  
  //UNDO AND REDO TOOLS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   function undoIt(ev) {
