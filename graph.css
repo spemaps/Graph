@@ -7,14 +7,10 @@ div {
 	padding: 5px;
 	padding-left: 0px;
 	border: 5px solid transparent;
-	position:relative;
+	position: float;
 
 }
 
-#toolbar {
-	display: float;
-	position: fixed;
-}
 
 #dtool {
 	cursor: hover;
@@ -103,8 +99,6 @@ span {
 #graph_info {
 	height: 100px;
 	width: 500px;
-	/*need to add something to make typing tool start at top of textbox*/
-	position: absolute;
 }
 
 #empty {

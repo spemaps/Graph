@@ -18,6 +18,7 @@
         <textarea value="" id="graph_info" name="graph_info"></textarea>  
       </div>
      
+
 <div id="info" style= "z-index: 10"><!--floating box-->
 <form id="example" name="example">
          Node ID: <input type="text" value="" id="findme" name="populateme" onchange= "updateText(value)" />
@@ -27,8 +28,8 @@
         Type: <input type="text" value="" id="poptype" name="populateme" onchange = "updateType(value, findme.value)"/><br>
         <span id='no1'>Entry: </span> <input type="text" value="" id="popentry" name="populateme" onchange = "updateEntry(value, findme.value)"/><br>
         <span id="no2">Room: </span> <input type="text" value="" id="poproom" name="populateme" onchange = "updateRoom(value, findme.value)"/><br>
-        <span id="no3">Gender: </span> <input type='radio' id = 'popfemale' name='genderpop' value='F' onclick = "updateGender(findme.value)"><span id='no4'>Female</span>
-          <input type='radio' id = 'popmale' name='genderpop' value='M' onclick = "updateGender(findme.value)" ><span id='no5'>Male</span>
+        <span id="no3">Gender: </span> <input type='radio' id = 'popfemale' name='genderpop' value='F' onclick = "updateGenderF(findme.value)"><span id='no4'>Female</span>
+          <input type='radio' id = 'popmale' name='genderpop' value='M' onclick = "updateGenderM(findme.value)" ><span id='no5'>Male</span>
 
     </form>
  </div> <!--floating box--> 
