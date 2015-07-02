@@ -231,7 +231,7 @@ function changeCanvas(){
   };
 
    //Node function out of the Node tool
-   function Node(id,coords,type) {
+   function Node(id, coords, type) {
        this.id = id;
        this.coords = coords;
        this.type = type;
@@ -282,6 +282,19 @@ function setRadius() {
 }
 
  
+function saveGraph() {
+  var image = document.getElementById('image').value;
+  image = image.substr(12);
+
+  function Graph() {
+    this.image = image;
+    this.nodes = nodes;
+    this.edges = edges;
+  }
+  document.getElementById('graph_info').value = JSON.stringify(new Graph());
+}
+
+
    // The edge tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    tools.edge = function () {
      var tool = this;
