@@ -103,6 +103,8 @@ function changeCanvas(){
       backgroundCanvas.width = width;
       backgroundCanvas.height = height;
       backgroundContext.drawImage(image, 0, 0, width, height);
+      document.getElementById('container').height = height;
+      document.getElementById('space').height = height - 272;
 
       //clear all nodes and edges
       edges = [];
