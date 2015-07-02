@@ -11,12 +11,6 @@
         </style>
     </head>
     <body>
-
-     <div height = '100'>
-        <button type="button" id='save' onclick='saveGraph()'> Save </button>
-        <button type="button" id='load'> Load </button><br>
-        <textarea value="" id="graph_info" name="graph_info"></textarea>  
-      </div>
      
 
 <div id="info" style= "z-index: 10"><!--floating box-->
@@ -75,8 +69,15 @@
         </div>
 
       </div>
+
       <!--Empty box on top of the canvas-->
       <div id="empty"></div>
+
+      <div height = '100'>
+        <button type="button" id='save' onclick='saveGraph()'> Save </button>
+        <button type="button" id='load'> Load </button><br>
+        <textarea value="" id="graph_info" name="graph_info"></textarea>  
+      </div>
 
       <div id="container">
       <canvas id='background' width='563' height='272' style="position: absolute; left: 0; top: 0;"></canvas>
