@@ -1,12 +1,12 @@
-#toolbar {
-display = fixed;
+#hopeitfloats {
+position: fixed;
 }
 
 
 div {
 	padding: 5px;
 	padding-left: 0px;
-	border: 5px solid black;
+	border: 5px solid transparent;
 	position: float;
 
 }
@@ -71,8 +71,8 @@ span {
 	background-color: clear;
 	border-color: orange;
 	position: fixed;
-	margin-top:10px;
-	margin-left: 500px;
+	margin-top:0px;
+	margin-left: 575px;
 }
 
 #example {
@@ -103,4 +103,7 @@ span {
 #graph_info {
 	height: 200px;
 	width: 500px;
+
+#empty {
+	height: 115px;
 }

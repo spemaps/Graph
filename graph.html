@@ -12,34 +12,37 @@
     </head>
     <body>
 
- <div id='float'><div id="info" style= "z-index: 10">
+
+<div id="info" style= "z-index: 10"><!--floating box-->
 <form id="example" name="example">
          Node ID: <input type="text" value="" id="findme" name="populateme" onchange= "updateText(value)" />
          <br>
-
-       X Coordinate: <input type="text" value="" id="popx" name="populateme" onchange = "updateX(value, findme.value)" /><br>
+        X Coordinate: <input type="text" value="" id="popx" name="populateme" onchange = "updateX(value, findme.value)" /><br>
         Y Coordinate: <input type="text" value="" id="popy" name="populateme" onchange = "updateY(value, findme.value)"/><br>
         Type: <input type="text" value="" id="poptype" name="populateme" onchange = "updateType(value, findme.value)"/><br>
         <span id='no1'>Entry: </span> <input type="text" value="" id="popentry" name="populateme" onchange = "updateEntry(value, findme.value)"/><br>
         <span id="no2">Room: </span> <input type="text" value="" id="poproom" name="populateme" onchange = "updateRoom(value, findme.value)"/><br>
-        <span id="no3">Gender: </span> <input type='radio' id = 'popfemale' name='genderpop' value='F' onclick = "updateGender(findme.value)"><span id='no4'>Female</span>
-
-          <input type='radio' id = 'popmale' name='genderpop' value='M' onclick = "updateGender(findme.value)" ><span id='no5'>Male</span>
+        <span id="no3">Gender: </span> <input type='radio' id = 'popfemale' name='genderpop' value='F' onclick = "updateGenderF(findme.value)"><span id='no4'>Female</span>
+          <input type='radio' id = 'popmale' name='genderpop' value='M' onclick = "updateGenderM(findme.value)" ><span id='no5'>Male</span>
 
     </form>
  </div> <!--floating box--> 
 
-      <div><input type="file" name="image_file" id="image"/>
+      <div id="hopeitfloats" style ="z-index:10"><input type="file" name="image_file" id="image"/>
       <input type="button" value="Upload" onclick="changeCanvas()" id="upload"/>
         <button type="button" id="undo" class="undoredo"> Undo </button>
         <button type="button" id='redo' class="undoredo"> Redo </button>
-<div id="toolbar">
-        <div></div><label><form id="dtool"><span>Drawing tool:</span> 
+
+        <div></div>
+
+        <label><form id="dtool"><span>Drawing tool:</span> 
           <input type='radio' name='dtool' value='node' checked='checked'>Node
           <input type='radio' name='dtool' value='edge'>Edge    
           <input type='radio' name='dtool' value='resize'>Move 
           <input type='radio' name='dtool' value='info'>Node Info
-        </form></label></div><div>
+        </form></label>
+
+        <div>
         <form id= "radius"> <span>Radius:</span> <input type = 'text' name ='radius' id='radiustext'></form>
         <select id='nodeType'>
           <option value="walk">Walk</option>
@@ -64,7 +67,12 @@
           <input type='radio' name='gender' value='M' checked='checked'>Male    
         </form>
         </div>
-      </div></div>
+
+
+      </div>
+      <!--Empty box on top of the canvas-->
+      <div id = "empty"></div>
+
         <div id="container">
       <canvas id='background' width='563' height='272' style="position: absolute; left: 0; top: 0;"></canvas>
       <canvas id="imageView" width="563" height="272" style="position: absolute; left: 0; top: 0;" >
