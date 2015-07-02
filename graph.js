@@ -580,14 +580,12 @@ function updateX(newx, i){
   nodes[i].coords[0] = newx;
   remove_nodes([old_x, nodes[i].coords[1]]);
   context.clearRect(0, 0, canvas.width, canvas.height);
-  alert("changed!");
   //move node
   draw_node(newx, nodes[i].coords[1], radius, colorFind(i), 1);
   img_update();
   //redraw selection
   draw_node(newx, nodes[i].coords[1], radius, '#FFFF00', 1);
   draw_node(newx, nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
-  alert("drawn!");
 };
 
 
@@ -670,26 +668,19 @@ function updateRoom(newr, i){
 
 
 
-function updateGenderF(i){
+function updateGender(i){
   radiobtn = document.getElementById("popfemale");
-  if (radiobtn.checked = true)
+  if (radiobtn.checked == true)
     nodes[i].gender = "F";
   else
     nodes[i].gender = "M";
   
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(i), 1);
+  img_update();
+  //redraw selection
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, '#FFFF00', 1);
+  draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
 };
-
-function updateGenderM(i){
-  radiobtn = document.getElementById("popmale");
-  if (radiobtn.checked = true)
-    nodes[i].gender = "M";
-  else
-    nodes[i].gender = "F";
-  
-};
-
-
-
 
 
  
