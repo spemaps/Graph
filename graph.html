@@ -35,7 +35,7 @@
       <input type="button" value="Upload" onclick="changeCanvas()" id="upload"/>
         <button type="button" id="undo" class="undoredo"> Undo </button>
         <button type="button" id='redo' class="undoredo"> Redo </button>
-
+<div id="toolbar">
         <div></div><label><form id="dtool"><span>Drawing tool:</span> 
           <input type='radio' name='dtool' value='node' checked='checked'>Node
           <input type='radio' name='dtool' value='edge'>Edge    
@@ -66,6 +66,7 @@
           <input type='radio' name='gender' value='M' checked='checked'>Male    
         </form>
         </div>
+      </div>
       </div>
         <div id="container">
       <canvas id='background' width='563' height='272' style="position: absolute; left: 0; top: 0;"></canvas>

@@ -525,6 +525,7 @@ function setRadius() {
     document.getElementById("popfemale").style.display = "inline-block";
     document.getElementById('no1').style.display = 'none';
     document.getElementById('no2').style.display = 'none';
+    document.getElementById('no3').style.display = 'inline-block';
 
 
     if(nodes[node_id].gender == "F"){
