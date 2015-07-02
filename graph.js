@@ -109,8 +109,6 @@ function changeCanvas(){
       backgroundCanvas.width = width;
       backgroundCanvas.height = height;
       backgroundContext.drawImage(image, 0, 0, width, height);
-      document.getElementById('container').height = height;
-      document.getElementById('space').height = height - 272;
 
       //clear all nodes and edges
       edges = [];
@@ -339,6 +337,38 @@ function saveGraph() {
   document.getElementById('graph_info').value = JSON.stringify(new Graph());
 }
 
+function loadGraph() {
+  var graph = document.getElementById('graph_info').value;
+  graph = JSON.parse(graph);
+  var node_length = nodes.length;
+  var edge_length = edges.length;
+
+  //add new edges and nodes
+  var new_nodes = graph.nodes;
+  var new_edges = graph.edges;
+  for (var i = 0; i < new_nodes.length; i++) {
+    nodes.push(new_nodes[i]);
+
+  }
+  for (var i = 0; i < new_edges.length; i++) {
+    edges.push(new_edges[i]);
+  }
+  //clear temp canvas
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  //draw on temp canvas
+  for (var i = edge_length; i < edges.length; i++) {
+    draw_edge(nodes[edges[i][0]].coords[0], nodes[edges[i][0]].coords[1], nodes[edges[i][1]].coords[0], nodes[edges[i][1]].coords[1], 'black', 2);
+  }
+  for (var i = node_length; i < nodes.length; i++) {
+    draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(i), 1);
+  }
+ 
+  img_update();
+
+  //set background IF no current background
+  
+}
 
    // The edge tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    tools.edge = function () {
@@ -787,24 +817,8 @@ function updateGender(i){
   //redraw selection
   draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, '#FFFF00', 1);
   draw_node(nodes[i].coords[0], nodes[i].coords[1], radius * 0.5, colorFind(i), 1);
-  alert("Have I been redrawn?");
   
 };
-
-
-/*function updateGenderM(i){
-  radiobtn = document.getElementById("popmale");
-  if (radiobtn.checked = true)
-    nodes[i].gender = "M";
-  else
-    nodes[i].gender = "F";
-  
-  draw_node(nodes[i].coords[0], newy, radius, '#FFFF00', 1);
-  draw_node(nodes[i].coords[0], newy, radius * 0.5, colorFind(i), 1);
-    alert(Have I been redrawn?)
-};*/
-
-
 
 
 
