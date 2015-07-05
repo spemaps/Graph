@@ -731,10 +731,10 @@ function undoIt(ev) {
    if (oops == 'e') {
      //remove edge from array
      var bye_edge = edges.pop();
-     start_coords = nodeID(bye_edge[0]).coords;
-     end_coords = nodeID(bye_edge[1]).coords;
+     start_coords = nodeID(bye_edge.coords[0]).coords;
+     end_coords = nodeID(bye_edge.coords[1]).coords;
      
-     remove_edges(start_coords, end_coords, bye_edge[0], bye_edge[1]);//remove photo
+     remove_edges(start_coords, end_coords, bye_edge.coords[0], bye_edge.coords[1]);//remove photo
 
      redo.push(['e', bye_edge]); //add to redo
    } else if (oops == 'n') {
@@ -785,13 +785,13 @@ function redoIt(ev) {
    var redo_edge = jk[1];
    edges.push(redo_edge); //add edge to array
    //get edge coordinates
-   start_coords = nodeID(redo_edge[0]).coords;
-   end_coords = nodeID(redo_edge[1]).coords;
+   start_coords = nodeID(redo_edge.coords[0]).coords;
+   end_coords = nodeID(redo_edge.coords[1]).coords;
    //draw edge
    draw_edge(start_coords[0], start_coords[1], end_coords[0], end_coords[1], 'black', 2);
    //draw two noes around it
-   draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge[0]), 1);
-   draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge[1]), 1);
+   draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge.coords[0]), 1);
+   draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge.coords[1]), 1);
    img_update();
 
    undo.push('e'); //add back to undo
@@ -918,7 +918,7 @@ tools.info = function () {
          draw_node(nodeID(end_id).coords[0], nodeID(end_id).coords[1], radius, colorFind(end_id), 1);
          img_update();
          //////append new edge to array of edges
-         edges.push([start_id, end_id]);
+         edges.push(new Edge([start_id, end_id]));
          //update undo
          undo.push("e"); //add new to end
          if(undo.length == undo_length) { 
@@ -1033,11 +1033,11 @@ tools.info = function () {
 
     //parse through edge array to find connected edges
      for (var i = 0; i < edges.length; i++) { //for every edge
-        if (edges[i][0] == node_id) {
-           connect_id.push(edges[i][1]); //push id of the other node
+        if (edges[i].coords[0] == node_id) {
+           connect_id.push(edges[i].coords[1]); //push id of the other node
         }
-        else if (edges[i][1] == node_id){
-           connect_id.push(edges[i][0]); //push id of the other node
+        else if (edges[i].coords[1] == node_id){
+           connect_id.push(edges[i].coords[0]); //push id of the other node
         }
      }
      //prepare first_run
@@ -1186,7 +1186,7 @@ function loadGraph() {
 
   //draw on temp canvas
   for (var i = edge_length; i < edges.length; i++) {
-    draw_edge(nodeID(edges[i][0]).coords[0], nodeID(edges[i][0]).coords[1], nodeID(edges[i][1]).coords[0], nodeID(edges[i][1]).coords[1], 'black', 2);
+    draw_edge(nodeID(edges[i].coords[0]).coords[0], nodeID(edges[i].coords[0]).coords[1], nodeID(edges[i].coords[1]).coords[0], nodeID(edges[i].coords[1]).coords[1], 'black', 2);
   }
   for (var i = node_length; i < nodes.length; i++) {
     draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
