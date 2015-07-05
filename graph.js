@@ -2,8 +2,9 @@
  * https://dev.opera.com/articles/html5-canvas-painting/
  */
 
-
-var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext, mouse_canvas, mouse_context;
+//Global variables
+var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext
+var mouse_canvas, mouse_context;
 var toollist; 
 var radius = 3;
 var undo_length = 10;
@@ -22,7 +23,7 @@ var edges = []; //array of the id's of the nodes
 var undo = [];
 var redo = [];
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Initialization~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   function init () {
     // Find the canvas element.
     canvaso = document.getElementById('imageView');
@@ -60,8 +61,6 @@ var redo = [];
     document.getElementById('stair').style.display = 'none';
     document.getElementById('stair1').style.display = 'none';
 
-
-
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
 
@@ -69,7 +68,6 @@ var redo = [];
     for(var i = 0; i < toollist.length; i++) {  
       toollist[i].addEventListener('change', ev_tool_change, false);
     }
-
 
     // Activate the default tool.
     if (tools[tool_default]) {
@@ -87,11 +85,10 @@ var redo = [];
     canvas.addEventListener('mousedown', ev_canvas, false);
     canvas.addEventListener('mousemove', ev_canvas, false);
     canvas.addEventListener('mouseup',   ev_canvas, false);
-
 }; // END INITIALIZATION
 
-// EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
      window.addEventListener('load', init(), false)
  }
@@ -123,7 +120,6 @@ function changeCanvas(){
   var image = new Image();
   var width, height;
    
-  
   //fileread.readAsDataURL(file);
   fileread.onload = function(_file) { //once file has uplaoded
     //make sure the image has loaded
@@ -131,10 +127,10 @@ function changeCanvas(){
       width = this.width;
       height = this.height
 
+      //resizing the uploaded image
       height = height * 1000 / width;
       width = 1000;
       newheight = height;
-
 
       //change canvas
       canvaso.width = width; //edit sizes
@@ -151,10 +147,8 @@ function changeCanvas(){
     }
     image.src = _file.target.result;
   } 
-
   fileread.readAsDataURL(file);
     document.getElementById('container').height = newheight;
-
 }; 
 
  // This function draws the #imageTemp canvas on top of #imageView, after which 
@@ -180,7 +174,6 @@ function changeCanvas(){
 
               if (document.getElementById("nodeType").value == "bathroom") {
                 document.getElementById('gender').style.display = 'inline-block';
-
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
                 document.getElementById('stairset').style.display = 'none';
@@ -188,9 +181,9 @@ function changeCanvas(){
                 document.getElementById('stair').style.display = 'none';
                 document.getElementById('stair1').style.display = 'none';
               }
+
               else if (document.getElementById("nodeType").value == "room") { // text box appears if node type is room 
                 document.getElementById('roomNumber').style.display = 'inline-block';
-
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
                 document.getElementById('stairset').style.display = 'none';
@@ -198,27 +191,27 @@ function changeCanvas(){
                 document.getElementById('stair').style.display = 'none';
                 document.getElementById('stair1').style.display = 'none';
               }
+
               else if (document.getElementById("nodeType").value == "entry") { // text box appears if node type is room 
                 document.getElementById('entryway').style.display = 'inline-block';
-
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('stairset').style.display = 'none';
                 document.getElementById('floorset').style.display = 'none';
                 document.getElementById('stair').style.display = 'none';
                 document.getElementById('stair1').style.display = 'none';
-
               }
+
               else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
                 document.getElementById('roomNumber').style.display = 'none';
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('entryway').style.display = 'none';
-                
                 document.getElementById('stairset').style.display = 'inline-block';
                 document.getElementById('floorset').style.display = 'inline-block';
                 document.getElementById('stair').style.display = 'inline-block';
                 document.getElementById('stair1').style.display = 'inline-block';
               }
+
               else {
                 document.getElementById('gender').style.display = 'none';
                 document.getElementById('roomNumber').style.display = 'none';
@@ -228,7 +221,9 @@ function changeCanvas(){
                 document.getElementById('stair').style.display = 'none';
                 document.getElementById('stair1').style.display = 'none';
               }
+
             }
+
             else if (selectedT == 'resize'){
               document.getElementById("snapping").style.display = "inline-block";
               document.getElementById("nodeType").style.display = "none";
@@ -238,6 +233,7 @@ function changeCanvas(){
               document.getElementById('radius').style.display = 'none';
               document.getElementById('info').style.display = 'none';
             }
+
             else if (selectedT == 'info') {
               document.getElementById("snapping").style.display = "none";
               document.getElementById("nodeType").style.display = "none";
@@ -246,7 +242,9 @@ function changeCanvas(){
               document.getElementById('entryway').style.display = 'none';
               document.getElementById('radius').style.display = 'none';
               document.getElementById('info').style.display = 'inline-block';
-            } else {
+            } 
+
+            else {
               document.getElementById("nodeType").style.display = "none";
               document.getElementById("snapping").style.display = "none";
               document.getElementById('gender').style.display = 'none';
@@ -257,13 +255,9 @@ function changeCanvas(){
             }
             //clear temporary canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
-
       }
     }
   }
-
-
- 
  
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
@@ -274,7 +268,6 @@ function nodeID(node_id) {
       return nodes[i]; 
   }
 }
-
 
  //find circle closest to x, y. returns coords,id
 function closest(x, y){
@@ -341,8 +334,6 @@ function setRadius() {
 }
 
 
-  
-
 // DRAWING TOOLS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //function that removes edges on canvas - - - - - - - - - -- - - - - - - - - - - - - - - -- - - 
@@ -400,6 +391,7 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
    context.stroke();
    context.closePath();
  };
+
  function draw_edge(start_x, start_y, end_x, end_y, color, line_width) {
    context.beginPath();
    context.moveTo(start_x, start_y);
@@ -449,10 +441,7 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
     document.getElementById('popfloors').style.display = 'none';
     document.example.popset.value = "";
     document.example.popfloors.value = "";
-
-
   }
-
 
   else if(nodeID(node_id).type== "entry"){  
     document.getElementById("popentry").style.display = "inline-block";
@@ -461,7 +450,6 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
     //hide bathroom and room specific fields and clear fields
     document.getElementById("poproom").style.display = "none";
     document.example.poproom.value = "";
-    
     document.getElementById("popmale").style.display = "none";
     document.getElementById("popfemale").style.display = "none";
     var radiobtn = document.getElementById("popmale");
@@ -492,13 +480,13 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
 
     var radiobtn;
 
-
     if(nodeID(node_id).gender == "F"){
       radiobtn = document.getElementById("popfemale");
       radiobtn.checked = true;
       document.getElementById('no4').style.display = 'inline-block';
       document.getElementById('no5').style.display = 'inline-block';
     }
+
     else{
       radiobtn = document.getElementById("popmale");
       radiobtn.checked = true; 
@@ -519,7 +507,6 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
     document.getElementById('popfloors').style.display = 'none';
     document.example.popset.value = "";
     document.example.popfloors.value = "";
-
   }
 
   else if((nodeID(node_id).type == "stairs") || (nodeID(node_id).type == "elevator")){
@@ -538,7 +525,6 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
     document.example.popentry.value = "";
     document.getElementById("poproom").style.display = "none";
     document.example.poproom.value = "";
-
     document.getElementById("popmale").style.display = "none";
     document.getElementById("popfemale").style.display = "none";
     var radiobtn = document.getElementById("popmale");
@@ -558,9 +544,7 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
     document.getElementById('popfloors').style.display = 'none';
     document.example.popset.value = nodeID(node_id).stairset;
     document.example.popfloors.value = nodeID(node_id).floorset;
-
   }
-
 };
 
 // Get edits from Nodeinfo and store with nodes.
@@ -597,7 +581,6 @@ function updateX(newx, i){
   draw_node(newx, nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
 };
 
-
 function updateY(newy, i){
   var old_y = nodeID(i).coords[1];
   nodeID(i).coords[1] = newy;
@@ -611,7 +594,6 @@ function updateY(newy, i){
   draw_node(nodeID(i).coords[0], newy, radius * 0.5, colorFind(i), 1);
   alert("Have I been redrawn?");
 };
-
 
 function updateType(newt, i){
   // do not needlessly erase important info if user changes to same type
@@ -631,7 +613,6 @@ function updateType(newt, i){
      document.getElementById('no3').style.display = 'none';
     document.getElementById('no4').style.display = 'none';
     document.getElementById('no5').style.display = 'none';
-
   }
 
   nodeID(i).type = newt;
@@ -646,16 +627,12 @@ function updateType(newt, i){
     radiobtn.checked = true;
 
     alert("Gender has been set to female by default");
-
-   
   }
 
   if(newt == "room"){
-  
     document.getElementById('no2').style.display = 'inline-block';
     document.getElementById("poproom").style.display = "inline-block";
     alert("Room number has not been set.")
-
   }
 
   if(newt == "entry"){
@@ -673,18 +650,15 @@ function updateType(newt, i){
 
 function updateEntry(newe, i){
   nodeID(i).entryway = newe;
-
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
-  
 };
 
 function updateRoom(newr, i){
   nodeID(i).room = newr;
-
   /*draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
   img_update();
   //redraw selection
@@ -692,8 +666,6 @@ function updateRoom(newr, i){
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
     alert("Have I been redrawn?");*/
 };
-
-
 
 function updateGender(i){
   var radiobtn = document.getElementById("popfemale");
@@ -707,9 +679,7 @@ function updateGender(i){
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
-  
 };
-
 
 function updateSet(news, i){
   nodeID(i).stairset = news;
@@ -718,7 +688,6 @@ function updateSet(news, i){
 function updateFloor(newf, i){
   nodeID(i).floorset = newf;
 };
-
 
  
  // UNDO AND REDO TOOLS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -733,29 +702,27 @@ function undoIt(ev) {
      var bye_edge = edges.pop();
      start_coords = nodeID(bye_edge.coords[0]).coords;
      end_coords = nodeID(bye_edge.coords[1]).coords;
-     
      remove_edges(start_coords, end_coords, bye_edge.coords[0], bye_edge.coords[1]);//remove photo
-
      redo.push(['e', bye_edge]); //add to redo
-   } else if (oops == 'n') {
+   } 
+
+   else if (oops == 'n') {
      //remove node from array
      var bye_node = nodes.pop();
-
      remove_nodes(bye_node.coords);//remove node from drawing
-
      redo.push(['n', bye_node]);//add to redo
-   } else { //undoing resize
+   } 
+
+   else { //undoing resize
      var node_id = oops[0];
      var coords = oops[1]; //coordinates to reset the node to
      var connected_edges = oops[2];
      var old_coords = nodeID(node_id).coords;
-
      //remove new drawings
      for (var i = 0; i < connected_edges.length; i++) {
        remove_edges(nodeID(connected_edges[i]).coords, old_coords, connected_edges[i], node_id); 
      }
      remove_nodes(old_coords);
-
      //add new drawings
      for (var i = 0; i < connected_edges.length; i++) { //draw edges
        draw_edge(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], 
@@ -764,6 +731,7 @@ function undoIt(ev) {
      for (var i = 0; i < connected_edges.length; i++) { //draw nodes
        draw_node(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], radius, colorFind(connected_edges[i]), 1); 
      }
+
      draw_node(coords[0], coords[1], radius, colorFind(node_id), 1);
      
      nodeID(node_id).coords = coords; //update coords of node
@@ -775,11 +743,11 @@ function undoIt(ev) {
  }
 };
  
-
 function redoIt(ev) {
  if (redo.length == 0) {
    alert("Nothing to redo!");
- } else {
+ } 
+ else {
   var jk = redo.pop();
   if (jk[0] == 'e') { //REDO EDGES
    var redo_edge = jk[1];
@@ -793,28 +761,28 @@ function redoIt(ev) {
    draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge.coords[0]), 1);
    draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge.coords[1]), 1);
    img_update();
-
    undo.push('e'); //add back to undo
-  } else if (jk[0] == 'n') { //REDO NODES
+  } 
+
+  else if (jk[0] == 'n') { //REDO NODES
    var redo_node = jk[1];
    nodes.push(redo_node); //add node to array
    //draw node
    draw_node(redo_node.coords[0], redo_node.coords[1], radius, colorFind(redo_node.id), 1);
    img_update();
-
    undo.push('n'); //add back to undo
-  } else { //REDO RESIZE
+  } 
+
+  else { //REDO RESIZE
    var node_id = jk[0];
    var coords = jk[1]; //coordinates to reset the node to
    var connected_edges = jk[2];
    var old_coords = nodeID(node_id).coords; //current coords of node
-
    //remove new drawings
    for (var i = 0; i < connected_edges.length; i++) {
      remove_edges(nodeID(connected_edges[i]).coords, old_coords, connected_edges[i], node_id); 
    }
    remove_nodes(old_coords);
-
    //add new drawings
    for (var i = 0; i < connected_edges.length; i++) { //redraw edges
      draw_edge(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], 
@@ -824,6 +792,7 @@ function redoIt(ev) {
      draw_node(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], 
        radius, colorFind(connected_edges[i]), 1); 
    }
+
    draw_node(coords[0], coords[1], radius, colorFind(node_id), 1);
    nodeID(node_id).coords = coords; //update coords of node
    img_update();
@@ -836,8 +805,7 @@ function redoIt(ev) {
  
 
 // THE TOOLS SECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//NEW TOOL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+//NEW TOOL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Node function out of the Node tool
 function Node(id, coords, type) {
    this.id = id;
@@ -858,14 +826,11 @@ tools.info = function () {
    this.mousedown = function (ev) {
      tool.started = true;
      closest_node = closest(ev._x, ev._y); //returns[coords, id]
-
      //erase other highlighting by clearing temp canvas
      context.clearRect(0, 0, canvas.width, canvas.height);
-
      //highlight node
      draw_node(closest_node[0][0], closest_node[0][1], radius, '#FFFF00', 1);
    };
-
 
    this.mouseup = function (ev) {
      if (tool.started) {
@@ -893,7 +858,6 @@ tools.info = function () {
      start_x = node[0][0];
      start_y = node[0][1];
      start_id = node[1];
-
    };
 
    this.mousemove = function (ev) {
@@ -929,7 +893,6 @@ tools.info = function () {
    }
  };   //end edge tool
 
-
 //node tool~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  tools.node = function () {
    var tool = this;
@@ -946,7 +909,6 @@ tools.info = function () {
      if (!tool.started) {
        return;
      }
-
      context.clearRect(0, 0, canvas.width, canvas.height);
      draw_node(tool.x0, tool.y0, radius, colorFind(nodes.length), 1);
    };
@@ -969,14 +931,16 @@ tools.info = function () {
         else {
           nodeID(new_id - 1).gender = 'M'; //if male is checked
         }
-      } else if (document.getElementById("nodeType").value == "room") {
+      } 
+      else if (document.getElementById("nodeType").value == "room") {
         nodeID(new_id - 1).room = document.getElementsByName('numtextbox')[0].value;
         var value = document.getElementsByName('numtextbox')[0].value;
         if (value != "") { //if not no room number
           value = parseInt(value) + 1;
           document.getElementsByName('numtextbox')[0].value = value.toString();
         }
-      } else if (document.getElementById("nodeType").value == 'entry') {
+      } 
+      else if (document.getElementById("nodeType").value == 'entry') {
         nodeID(new_id - 1).entryway = document.getElementsByName('entryway')[0].value;
         var value = document.getElementsByName('entryway')[0].value;
         if (value != "") { //if an entryway number
@@ -1002,13 +966,13 @@ tools.info = function () {
           parts = string.split(",");
         }
         nodeID(new_id - 1).floorset = parts;
-      }
+        }
 
        //update undo
        undo.push("n"); //add new to end
        if(undo.length == undo_length) { 
          undo.shift(); //only store last 10
-         }
+       }
      }
    };
  }; //end tools.node
@@ -1087,7 +1051,8 @@ tools.info = function () {
      if (!snapping) {
        current_x = ev._x;
        current_y = ev._y;
-     } else {
+     } 
+     else {
        if (snapping_x) {current_x = ev._x;}
        if (snapping_y) {current_y = ev._y;}
      }
@@ -1123,7 +1088,7 @@ tools.info = function () {
       draw_node(nodeID(connect_id[i]).coords[0], nodeID(connect_id[i]).coords[1], radius, colorFind(connect_id[i]), 1)
      }
 
-      draw_node(current_x, current_y, radius, colorFind(node_id), 1);  //draw new node
+    draw_node(current_x, current_y, radius, colorFind(node_id), 1);  //draw new node
      
      end_x = current_x;
      end_y = current_y;
@@ -1148,8 +1113,6 @@ tools.info = function () {
      }
    };
  }; //end tools.resize
-
-
  
 // SAVE, LOAD Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 function saveGraph() {
@@ -1176,14 +1139,12 @@ function loadGraph() {
   var new_edges = graph.edges;
   for (var i = 0; i < new_nodes.length; i++) {
     nodes.push(new_nodes[i]);
-
   }
   for (var i = 0; i < new_edges.length; i++) {
     edges.push(new_edges[i]);
   }
   //clear temp canvas
   context.clearRect(0, 0, canvas.width, canvas.height);
-
   //draw on temp canvas
   for (var i = edge_length; i < edges.length; i++) {
     draw_edge(nodeID(edges[i].coords[0]).coords[0], nodeID(edges[i].coords[0]).coords[1], nodeID(edges[i].coords[1]).coords[0], nodeID(edges[i].coords[1]).coords[1], 'black', 2);
@@ -1191,9 +1152,7 @@ function loadGraph() {
   for (var i = node_length; i < nodes.length; i++) {
     draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
   }
- 
   img_update();
-
   //set background IF no current background
 }
 
@@ -1208,9 +1167,7 @@ function clearGraph() {
   edges = [];
 }
 
-
 // Mouse Coordinates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
  function mouseCoords(x, y) {
    var message = 'Mouse position: ' + x + ', ' + y;
    mouse_context.clearRect(0, 0, mouse_canvas.width, mouse_canvas.height);
