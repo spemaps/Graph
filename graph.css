@@ -115,3 +115,43 @@ span {
 #stairset {
 	width: 35px;
 }
+
+#snapping{
+	display: none;
+}
+#gender{
+	display: none;
+}
+#roomNumber{
+	display: none;
+}
+#entryway{
+	display: none;
+}
+#radius{
+	display: inline-block;
+}    
+#info{
+	display: none;
+}
+#stairset{
+	display: none;
+}
+#floorset{
+	display: none;
+}
+#stair{
+	display: none;
+}
+#stair1{
+	display: none;
+}    
+#dedit{
+	display: none;
+}
+#vertical{
+	display: none;
+}
+
+
+    

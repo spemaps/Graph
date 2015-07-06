@@ -53,20 +53,7 @@ var redo = [];
     mouse_canvas = document.getElementById('mouse');
     mouse_context = mouse_canvas.getContext('2d');
 
-    //hide all tools --> MOVE TO CSS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    document.getElementById("snapping").style.display = "none"; //hide snapping tool
-    document.getElementById('gender').style.display = 'none'; //hide gender tool
-    document.getElementById('roomNumber').style.display = 'none'; //hide room number tool
-    document.getElementById('entryway').style.display = 'none';
-    document.getElementById('radius').style.display = 'inline-block';
     document.getElementsByName('radius')[0].value = 3;
-    document.getElementById('info').style.display = 'none';
-    document.getElementById('stairset').style.display = 'none';
-    document.getElementById('floorset').style.display = 'none';
-    document.getElementById('stair').style.display = 'none';
-    document.getElementById('stair1').style.display = 'none';
-    document.getElementById('dedit').style.display = 'none';
-    document.getElementById('vertical').style.display = 'none';
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -181,7 +168,7 @@ function changeCanvas(){
    }
 
 function display(id, style) {
-  document.getElementById(id).style.display = style;
+  document.getElementById(id).style.display = style
 }
 
  // The event handler for any changes made to the tool selector. 
@@ -606,8 +593,8 @@ function updateVert(){
 
 //takes display status and nodeid
 function showRoom(status, id){
-  document.getElementById('no2').style.display = status;
-  document.getElementById("poproom").style.display = status;
+  display('no2', 'status');
+  display('poproom', 'status');
   if (id == ""){
      document.example.poproom.value = "";
   }
@@ -618,11 +605,11 @@ function showRoom(status, id){
 
 //takes displays status and gender
 function showBathroom(status, gen){
-  document.getElementById('no3').style.display = status;
-  document.getElementById('no4').style.display = status;
-  document.getElementById('no5').style.display = status;
-  document.getElementById("popmale").style.display = status;
-  document.getElementById("popfemale").style.display = status;
+  display('no3', 'status');
+  display('no4', 'status');
+  display('no5', 'status');
+  display('popmale', 'status');
+  display('popfemale', 'status');
   var radiobtn;
   var radiobtn1;
   if(status == "none"){
@@ -649,8 +636,8 @@ function showBathroom(status, gen){
 
 //takes display status and node id
 function showEntry(status, id){
-  document.getElementById('no1').style.display = status;
-  document.getElementById("popentry").style.display = status;
+  display('no1', 'status');
+  display('popentry', 'status');
   if (id == ""){
     document.example.popentry.value = "";
   }
@@ -662,9 +649,8 @@ function showEntry(status, id){
 
 //takes display status and node_id
 function showStairs(status, id){
-    document.getElementById('no6').style.display = status;
-    document.getElementById('popset').style.display = status;
-    
+  display('no6', 'status');
+  display('popset', 'status');
 
     // Is this right? 
     if (status == "none"){
@@ -697,12 +683,12 @@ function showStairs(status, id){
 
     function stairSpec(stat, id){
       alert("hi stairs"+ stat);
-      document.getElementById('popup').style.display = stat;
-      document.getElementById('popdown').style.display = stat;
-      document.getElementById('popboth').style.display = stat;
-      document.getElementById('no8').style.display = stat;
-      document.getElementById('no9').style.display = stat;
-      document.getElementById('no10').style.display = stat;
+      display('popup', 'stat');
+      display('popdown', 'stat');
+      display('popboth', 'stat');
+      display('no8', 'stat');
+      display('no9', 'stat');
+      display('no10', 'stat');
 
        //RADIOBUTTONS GO HERE
       if (stat != "none"){ 
@@ -725,8 +711,8 @@ function showStairs(status, id){
 
     function elevatorSpec(stat, id){
         alert("hi ele"+ stat);
-        document.getElementById('popfloors').style.display = stat;
-        document.getElementById('no7').style.display = stat;
+        display('popfloors', 'stat');
+        display('no7', 'stat');
         if (stat != "none"){
           document.example.popfloors.value = nodeID(id).floorset;
         }
