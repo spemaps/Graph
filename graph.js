@@ -88,9 +88,6 @@ var redo = [];
 }; // END INITIALIZATION
 
 
-// EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
 // CANVAS SET-UP and BASIC EVENT HANDLER~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*The general-purpose event handler. This function just determines the mouse 
 position relative to the canvas element.*/
@@ -335,7 +332,7 @@ function colorFind(node_id, new_node) {
     if (new_id == node_id) { 
       if (document.getElementsByName("gender")[0].checked) gender = 'F';
       else gender = 'M';
-    } else gender = nodeID(node_id).gender;
+    } 
     if (gender == 'M') return '#2ECCFA';
     else return '#F781BE';
    } else if (nodeType =='stairs')
@@ -465,7 +462,7 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
   }
 
   else if(nodeID(node_id).type == "bathroom"){
-    showBathroom("inline-block", node_id(node_id).gender);
+    showBathroom("inline-block", nodeID(node_id).gender);
     // hide
     showRoom('none',"");
     showEntry('none',"");
@@ -649,22 +646,24 @@ function showBathroom(status, gen){
   document.getElementById('no5').style.display = status;
    document.getElementById("popmale").style.display = status;
   document.getElementById("popfemale").style.display = status;
-  if(status = "none"){
-    var radiobtn = document.getElementById("popmale");
+  var radiobtn;
+  var radiobtn1;
+  if(status == "none"){
+     radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
-    var radiobtn1 = document.getElementById("popfemale");
+    radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
   }
-  else if(gen = "M"){
-    var radiobtn = document.getElementById("popmale");
+  else if(gen == "M"){
+    radiobtn = document.getElementById("popmale");
     radiobtn.checked = true; 
   }
-  else if(gen = "F"){
+  else if(gen == "F"){
     radiobtn = document.getElementById("popfemale");
       radiobtn.checked = true;
   }
   else{
-    var radiobtn = document.getElementById("popfemale");
+    radiobtn = document.getElementById("popfemale");
     radiobtn.checked = true;
     alert("Gender has been set to female by default");
   }
@@ -693,7 +692,7 @@ function showStairs(status, id){
     document.getElementById('popfloors').style.display = status;
 
     // Is this right? 
-    if (id = ""){
+    if (status = "none"){
         document.example.popset.value = "";
         document.example.popfloors.value = "";
     }
@@ -1276,6 +1275,8 @@ tools.delete = function(){
  }
 };
 
+ // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
-     window.addEventListener('load', init(), false)
+     window.addEventListener('load', init(), false);
+
  }
