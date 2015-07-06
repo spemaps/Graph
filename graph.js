@@ -60,6 +60,7 @@ var redo = [];
     document.getElementById('floorset').style.display = 'none';
     document.getElementById('stair').style.display = 'none';
     document.getElementById('stair1').style.display = 'none';
+    document.getElementById('vertical').style.display = 'none';
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -173,6 +174,7 @@ function changeCanvas(){
             document.getElementById('floorset').style.display = 'none';
             document.getElementById('stair').style.display = 'none';
             document.getElementById('stair1').style.display = 'none';
+            document.getElementById('vertical').style.display = 'none';
             
             if(selectedT == 'node'){
                 //display
@@ -187,9 +189,14 @@ function changeCanvas(){
                     document.getElementById('entryway').style.display = 'inline-block';
                 }else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
                     document.getElementById('stairset').style.display = 'inline-block';
-                    document.getElementById('floorset').style.display = 'inline-block';
                     document.getElementById('stair').style.display = 'inline-block';
-                    document.getElementById('stair1').style.display = 'inline-block';
+                    if(document.getElementById("nodeType").value == "elevator"){
+                      document.getElementById('floorset').style.display = 'inline-block';
+                      document.getElementById('stair1').style.display = 'inline-block';
+                    }
+                    else{
+                      document.getElementById('vertical').style.display = 'inline-block';
+                    } 
                 }
              }
             else if (selectedT == 'resize'){
@@ -465,7 +472,7 @@ function updateType(newt, i){
   if((document.getElementById("popfemale").style.display != "none") &&(newt != "bathroom")){
    showBathroom("none", "");
   }
-  if((document.getElementById("popset").style.display != "none") &&(newt != "entryway") && (document.getElementById("popfloors").style.display != "none") &&(newt != "elevator")) {
+  if((document.getElementById("popset").style.display != "none") &&(newt != "stairs") &&(newt != "elevator")) {
     showStairs("none", "");
   }
 
@@ -511,12 +518,6 @@ function updateEntry(newe, i){
 
 function updateRoom(newr, i){
   nodeID(i).room = newr;
-  /*draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i,false), 1);
-  img_update();
-  //redraw selection
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
-    alert("Have I been redrawn?");*/
 };
 
 function updateGender(i){
@@ -542,14 +543,13 @@ function updateFloor(newf, i){
 };
 
 function updateVert(){
-  var radiobtn = document.getElementById("");
+  var radiobtn = document.getElementById("popup");
+  var radiobtn1 = document.getElementById("popdown");
   if (radiobtn.checked == true)
-    nodeID(i).gender = "";
-  else
-    nodeID(i).gender = "";
-
-
-
+    nodeID(i).direction = "U";
+  else if(radiobtn.checked ==true)
+    nodeID(i).direction = "D";
+  else nodeID(i).direction = "B";
 };
 
 // HIDING FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -572,12 +572,12 @@ function showBathroom(status, gen){
   document.getElementById('no3').style.display = status;
   document.getElementById('no4').style.display = status;
   document.getElementById('no5').style.display = status;
-   document.getElementById("popmale").style.display = status;
+  document.getElementById("popmale").style.display = status;
   document.getElementById("popfemale").style.display = status;
   var radiobtn;
   var radiobtn1;
   if(status == "none"){
-     radiobtn = document.getElementById("popmale");
+    radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
     radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
@@ -613,21 +613,78 @@ function showEntry(status, id){
 
 //takes display status and node_id
 function showStairs(status, id){
-
     document.getElementById('no6').style.display = status;
-    document.getElementById('no7').style.display = status;
     document.getElementById('popset').style.display = status;
-    document.getElementById('popfloors').style.display = status;
+    
 
     // Is this right? 
     if (status == "none"){
-        document.example.popset.value = "";
-        document.example.popfloors.value = "";
+        document.example.popset.value = ""; 
+        stairSpec(status);
+        elevatorSpec(status);
+
     }
+    //show elevator, hide stairs (FLOOR SETS)
+    else if(nodeID(id).type == "elevator"){ 
+      elevatorSpec(status);
+      stairSpec('none');
+    }
+    //show stairs, hide elevator (THIS IS UP DOWN)
     else{
-    document.example.popset.value = nodeID(id).stairset;
-    document.example.popfloors.value = nodeID(id).floorset;
+      // general
+      document.example.popset.value = nodeID(id).stairset;
+
+      // show elevator. hide stairs
+      if(nodeID(id).type == "elevator"){ 
+        elevatorSpec(status, id);
+        stairSpec('none', "");
+      }
+      //show stairs, hid elevator
+      else{ 
+        stairSpec(status, id);
+        elevatorSpec('none',"");
+      }
     }
+
+    function stairSpec(stat, id){
+      alert("hi stairs"+ stat);
+      document.getElementById('popup').style.display = stat;
+      document.getElementById('popdown').style.display = stat;
+      document.getElementById('popboth').style.display = stat;
+      document.getElementById('no8').style.display = stat;
+      document.getElementById('no9').style.display = stat;
+      document.getElementById('no10').style.display = stat;
+
+       //RADIOBUTTONS GO HERE
+      if (stat != "none"){ 
+        var radiobtn1 = document.getElementById("popup");
+        var radiobtn2 = document.getElementById("popdown");
+        var radiobtn3  = document.getElementById("popboth");
+        var dir = nodeID(id).direction;
+        
+        if (dir== "U") radiobtn1.checked = true; 
+        else if (dir == "D") radiobtn2.checked = true;
+        else radiobtn3.checked = true;
+      }
+      // set radiobuttons off b/c none
+      else{
+        radiobtn1.checked = false; 
+        radiobtn2.checked = false; 
+        radiobtn3.checked = false; 
+      }
+    };
+
+    function elevatorSpec(stat, id){
+        alert("hi ele"+ stat);
+        document.getElementById('popfloors').style.display = stat;
+        document.getElementById('no7').style.display = stat;
+        if (stat != "none"){
+          document.example.popfloors.value = nodeID(id).floorset;
+        }
+        else{
+          document.example.popfloors.value = "";
+        }
+    };
 
 };
  
@@ -896,17 +953,32 @@ tools.info = function () {
           value = parseInt(value) + 1;
           document.getElementById("stairset").value = value.toString();
         }
+        if (document.getElementById("nodeType").value == 'elevator'){
 
-        // array of floors in format like 1, 2, 4
-        var string = document.getElementById("floorset").value;
-        var parts;
-        if (string.indexOf(", ") != -1){
-          parts = string.split(", ");
-        }
-        else if (string.indexOf(",")!= -1){
-          parts = string.split(",");
-        }
-        nodeID(new_id - 1).floorset = parts;
+          // array of floors in format like 1, 2, 4
+          var string = document.getElementById("floorset").value;
+          var parts;
+          if (string.indexOf(", ") != -1){
+            parts = string.split(", ");
+          }
+          else if (string.indexOf(",")!= -1){
+            parts = string.split(",");
+          }
+          nodeID(new_id - 1).floorset = parts;
+          }
+          // stairs
+          else{
+            if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[0].checked)  {
+              nodeID(new_id - 1).vertical = 'U'; 
+            }
+            else if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[1].checked){
+              nodeID(new_id - 1).vertical = 'D'; 
+            }
+            else{
+              nodeID(new_id - 1).vertical = 'B'; 
+            }
+
+          }
         }
 
        //update undo
