@@ -60,11 +60,8 @@ var redo = [];
     document.getElementById('floorset').style.display = 'none';
     document.getElementById('stair').style.display = 'none';
     document.getElementById('stair1').style.display = 'none';
-<<<<<<< HEAD
     document.getElementById('edittools').style.display = 'none';
-=======
     document.getElementById('vertical').style.display = 'none';
->>>>>>> 9270281f01846206175eaf75e44b4963a08ebf95
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
@@ -172,7 +169,6 @@ function display(id, style) {
             tool = new tools[selectedT];
          
              //hide all. 
-<<<<<<< HEAD
             display('nodeType', 'none');
             display('radius', 'none');
             display('info', 'none');
@@ -186,20 +182,7 @@ function display(id, style) {
             display('stair1', 'none');
             display('edittools', 'none');
             display('snapping','none');
-=======
-            document.getElementById("nodeType").style.display = "none";
-            document.getElementById('radius').style.display = 'none';
-            document.getElementById("snapping").style.display = "none";
-            document.getElementById('info').style.display = 'none';
-            document.getElementById('gender').style.display = 'none';
-            document.getElementById('roomNumber').style.display = 'none';
-            document.getElementById('entryway').style.display = 'none';
-            document.getElementById('stairset').style.display = 'none';
-            document.getElementById('floorset').style.display = 'none';
-            document.getElementById('stair').style.display = 'none';
-            document.getElementById('stair1').style.display = 'none';
-            document.getElementById('vertical').style.display = 'none';
->>>>>>> 9270281f01846206175eaf75e44b4963a08ebf95
+
             
             if(selectedT == 'node'){
                 //display
@@ -207,7 +190,6 @@ function display(id, style) {
                 display('radius', 'inline-block');
 
                 if (document.getElementById("nodeType").value == "bathroom") {
-<<<<<<< HEAD
                   display('gender', 'inline-block');
                 }
                 else if(document.getElementById("nodeType").value == "room"){
@@ -222,23 +204,6 @@ function display(id, style) {
                     display('stair', 'inline-block');
                     display('stair1', 'inline-block');
                     display('stairinfo', 'inline-block');
-=======
-                    document.getElementById('gender').style.display = 'inline-block';
-                }else if(document.getElementById("nodeType").value == "room"){
-                    document.getElementById('roomNumber').style.display = 'inline-block';
-                }else if (document.getElementById("nodeType").value == "entry"){
-                    document.getElementById('entryway').style.display = 'inline-block';
-                }else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
-                    document.getElementById('stairset').style.display = 'inline-block';
-                    document.getElementById('stair').style.display = 'inline-block';
-                    if(document.getElementById("nodeType").value == "elevator"){
-                      document.getElementById('floorset').style.display = 'inline-block';
-                      document.getElementById('stair1').style.display = 'inline-block';
-                    }
-                    else{
-                      document.getElementById('vertical').style.display = 'inline-block';
-                    } 
->>>>>>> 9270281f01846206175eaf75e44b4963a08ebf95
                 }
              }
 
@@ -1308,13 +1273,26 @@ function regionDetection(x, y) {
   return [closest, location];
 }
 
-<<<<<<< HEAD
-var remove;
-function delete() {
-=======
+//The edit tool
+tools.edit = function() {
+  var tool = this;
+  this.started = false;
 
-tools.delete = function(){
->>>>>>> 9270281f01846206175eaf75e44b4963a08ebf95
+  if(document.getElementById('edittools')[0].checked == true) {
+    resize(ev); 
+  }
+  else if(document.getElementById('edittools')[1].checked == true) {
+    deleted(ev);
+  }
+  else if(document.getElementById('edittools')[2].checked == true) {
+  straightline(ev);
+  }
+  else if(document.getElementById('edittools')[3].checked == true){
+  autonode(ev);
+  }
+}
+
+function deleted(ev) {
    var tool = this;
    this.started = false;
    var closest;
@@ -1414,24 +1392,6 @@ function removeEdge(remove_id) {
   img_update();
 }
 
-//The edit tool
-tools.edit = function(){
-  var tool = this;
-  this.started = false;
-
-  if(document.getElementById('edittools')[0].checked == true) {
-    resize(); 
-  }
-  else if(document.getElementById('edittools')[1].checked == true) {
-    delete();
-  }
-  else if(document.getElementById('edittools')[2]).checked == true) {
-  straightline();
-  }
-  else if(document.getElementById('edittools')[3]).checked == true){
-  autonode();
-  }
-}
 
  // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
