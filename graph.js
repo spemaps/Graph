@@ -15,8 +15,13 @@ var tool;
 var tool_default = 'node';
 var new_id = 0;
 
+//active edit instance
+var edit;
+var edit_default = 'resize';
+
 // This object holds the implementation of each drawing tool.
 var tools = {};
+var edits = {};
 
 var nodes = []; //array of nodes
 var edges = []; //array of the id's of the nodes
@@ -60,12 +65,12 @@ var redo = [];
     document.getElementById('floorset').style.display = 'none';
     document.getElementById('stair').style.display = 'none';
     document.getElementById('stair1').style.display = 'none';
-    document.getElementById('edittools').style.display = 'none';
+    document.getElementById('dedit').style.display = 'none';
     document.getElementById('vertical').style.display = 'none';
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
-    document.getElementById('edittools').addEventListener('change', ev_tool_change, false);
+    document.getElementById('dedit').addEventListener('change', ev_tool_change, false);
 
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
@@ -76,6 +81,17 @@ var redo = [];
     if (tools[tool_default]) {
       tool = new tools[tool_default]();
       toollist.value = tool_default;
+    }
+
+    editlist = document.getElementsByName("dedit"); 
+    for(var i = 0; i < editlist.length; i++) {  
+      editlist[i].addEventListener('change', ev_tool_change, false);
+    }
+
+    // Activate the default edit.
+    if (edits[edit_default]) {
+      edit = new edits[edit_default]();
+      editlist.value = edit_default;
     }
 
     //work with the undo/redo button
@@ -105,9 +121,16 @@ function ev_canvas (ev) {
   }
 
   // Call the event handler of the tool.
-  var func = tool[ev.type];
-  if (func){
-    func(ev);
+  if(!document.getElementById('dtool')[2].checked) {
+    var func = tool[ev.type];
+    if (func){
+      func(ev);
+    }
+  } else {
+    var func = edit[ev.type];
+    if (func){
+      func(ev);
+    }
   }
 }
 
@@ -165,7 +188,7 @@ function display(id, style) {
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
       if(toollist[i].checked == true)  {
-            var selectedT = toollist[i].value
+            var selectedT = toollist[i].value;
             tool = new tools[selectedT];
          
              //hide all. 
@@ -180,7 +203,7 @@ function display(id, style) {
             display('floorset', 'none');
             display('stair', 'none');
             display('stair1', 'none');
-            display('edittools', 'none');
+            display('dedit', 'none');
             display('snapping','none');
 
             
@@ -212,8 +235,13 @@ function display(id, style) {
             } 
 
             else if (selectedT == 'edit') {
-              display('edittools', 'inline-block');
-              edit();
+              display('dedit', 'inline-block');
+              for(var i = 0; i < editlist.length; i++) {  
+                if(editlist[i].checked == true) {
+                  var selectedE = editlist[i].value;
+                  edit = new edits[selectedE]; 
+                }
+              }
             }
             //clear temporary canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -1054,8 +1082,8 @@ tools.info = function () {
  }; //end tools.node
 
 // The resize tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- function resize(){
-   var tool = this;
+ edits.resize = function(){
+   var edit = this;
    this.started = false;
 
    var old_x, old_y, end_x, end_y, snapping_x, snapping_y, current_x, current_y;
@@ -1065,7 +1093,7 @@ tools.info = function () {
    var snapping;
 
    this.mousedown = function (ev) {
-     tool.started = true;
+     edit.started = true;
      var close = closest(ev._x, ev._y);
      old_x = close[0][0]; //remember the xcoor of the node
      old_y = close[0][1]; //remember the ycoor of the node
@@ -1085,7 +1113,7 @@ tools.info = function () {
    };
 
    this.mousemove = function (ev) {
-     if (!tool.started) {
+     if (!edit.started) {
        return;
      }
      if (first_run) {
@@ -1145,9 +1173,9 @@ tools.info = function () {
    };
 
    this.mouseup = function (ev) {
-     if (tool.started) {
-       tool.mousemove(ev);
-       tool.started = false;
+     if (edit.started) {
+       edit.mousemove(ev);
+       edit.started = false;
        img_update();
        mouse_context.clearRect(0, 0, mouse_canvas.width, mouse_canvas.height);
 
@@ -1277,34 +1305,24 @@ function regionDetection(x, y) {
 tools.edit = function() {
   var tool = this;
   this.started = false;
-
-  if(document.getElementById('edittools')[0].checked == true) {
-    resize(ev); 
-  }
-  else if(document.getElementById('edittools')[1].checked == true) {
-    deleted(ev);
-  }
-  else if(document.getElementById('edittools')[2].checked == true) {
-  straightline(ev);
-  }
-  else if(document.getElementById('edittools')[3].checked == true){
-  autonode(ev);
-  }
+  if(nodes.length == 0) 
+    alert("No nodes to edit!");
 }
 
-function deleted(ev) {
-   var tool = this;
+edits.deleted = function() {
+   var edit = this;
    this.started = false;
+
    var closest;
    var remove;
    var remove_id;
 
    this.mousedown = function (ev) {
-     tool.started = true;
+     edit.started = true;
    }
 
    this.mousemove = function (ev) {
-     if (!tool.started) {
+     if (!edit.started) {
        return;
      }
      context.clearRect(0, 0, canvas.width, canvas.height);
@@ -1326,9 +1344,9 @@ function deleted(ev) {
    };
 
    this.mouseup = function (ev) {
-     if (tool.started) {
-      tool.mousemove(ev);
-      tool.started = false;
+     if (edit.started) {
+      edit.mousemove(ev);
+      edit.started = false;
       if (closest != 'none') {
         //remove closest
         context.clearRect(0, 0, canvas.width, canvas.height);
