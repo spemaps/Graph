@@ -89,9 +89,7 @@ var redo = [];
 
 
 // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- if (window.addEventListener) {
-     window.addEventListener('load', init(), false);
- }
+
 
 // CANVAS SET-UP and BASIC EVENT HANDLER~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*The general-purpose event handler. This function just determines the mouse 
@@ -238,10 +236,10 @@ function closest(x, y){
 };
 
  
-function colorFind(node_id) {
+function colorFind(node_id, new_node) {
    var nodeType;
    var gender;
-   if (new_id == node_id) 
+   if (new_node) 
      nodeType = findNT();
    else 
      nodeType = nodeID(node_id).type;
@@ -302,18 +300,18 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
  //draw nodes over where line was erased
  contexto.beginPath();
  contexto.arc(start_coords[0], start_coords[1], radius, 0, 2 * Math.PI);
- contexto.fillStyle = colorFind(start_id);
+ contexto.fillStyle = colorFind(start_id, false);
  contexto.fill();
  contexto.lineWidth = 1;
- contexto.strokeStyle = colorFind(start_id);
+ contexto.strokeStyle = colorFind(start_id, false);
  contexto.stroke();
  contexto.closePath();
 
  contexto.beginPath();
  contexto.arc(end_coords[0], end_coords[1], radius, 0, 2 * Math.PI);
- contexto.fillStyle = colorFind(end_id);
+ contexto.fillStyle = colorFind(end_id, false);
  contexto.fill();
- contexto.strokeStyle = colorFind(end_id);
+ contexto.strokeStyle = colorFind(end_id, false);
  contexto.stroke();
  contexto.closePath();
 };
@@ -362,7 +360,7 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
 
   //get nodeID and draw node
   draw_node(nodeID(node_id).coords[0], nodeID(node_id).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(node_id).coords[0], nodeID(node_id).coords[1], radius * 0.5, colorFind(node_id), 1);
+  draw_node(nodeID(node_id).coords[0], nodeID(node_id).coords[1], radius * 0.5, colorFind(node_id,false), 1);
   document.getElementById('findme').value = node_id;
   // document.example.populateme.value = JSON.stringify(nodes[5]);
 
@@ -424,11 +422,11 @@ function updateCoord(newc, i, c){
 
   context.clearRect(0, 0, canvas.width, canvas.height);
   //move node
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i, false), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i, false), 1);
 };
 
 function updateX(newx, i){
@@ -437,11 +435,11 @@ function updateX(newx, i){
   remove_nodes([old_x, nodeID(i).coords[1]]);
   context.clearRect(0, 0, canvas.width, canvas.height);
   //move node
-  draw_node(newx, nodeID(i).coords[1], radius, colorFind(i), 1);
+  draw_node(newx, nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
   //redraw selection
   draw_node(newx, nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(newx, nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
+  draw_node(newx, nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
 };
 
 function updateY(newy, i){
@@ -450,11 +448,11 @@ function updateY(newy, i){
   remove_nodes([nodeID(i).coords[0], old_y]);
   context.clearRect(0, 0, canvas.width, canvas.height);
   //move node
-  draw_node(nodeID(i).coords[0], newy, radius, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], newy, radius, colorFind(i,false), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], newy, radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], newy, radius * 0.5, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], newy, radius * 0.5, colorFind(i,false), 1);
   alert("Have I been redrawn?");
 };
 
@@ -497,29 +495,29 @@ function updateType(newt, i){
 
   }
 
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
 };
 
 function updateEntry(newe, i){
   nodeID(i).entryway = newe;
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
 };
 
 function updateRoom(newr, i){
   nodeID(i).room = newr;
-  /*draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
+  /*draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
     alert("Have I been redrawn?");*/
 };
 
@@ -530,11 +528,11 @@ function updateGender(i){
   else
     nodeID(i).gender = "M";
 
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
   //redraw selection
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i), 1);
+  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
 };
 
 function updateSet(news, i){
@@ -661,10 +659,10 @@ function undoIt(ev) {
          coords[0], coords[1], 'black', 2); 
      }
      for (var i = 0; i < connected_edges.length; i++) { //draw nodes
-       draw_node(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], radius, colorFind(connected_edges[i]), 1); 
+       draw_node(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], radius, colorFind(connected_edges[i],false), 1); 
      }
 
-     draw_node(coords[0], coords[1], radius, colorFind(node_id), 1);
+     draw_node(coords[0], coords[1], radius, colorFind(node_id,false), 1);
      
      nodeID(node_id).coords = coords; //update coords of node
      img_update();
@@ -690,8 +688,8 @@ function redoIt(ev) {
    //draw edge
    draw_edge(start_coords[0], start_coords[1], end_coords[0], end_coords[1], 'black', 2);
    //draw two noes around it
-   draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge.coords[0]), 1);
-   draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge.coords[1]), 1);
+   draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge.coords[0],false), 1);
+   draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge.coords[1],false), 1);
    img_update();
    undo.push('e'); //add back to undo
   } 
@@ -700,7 +698,7 @@ function redoIt(ev) {
    var redo_node = jk[1];
    nodes.push(redo_node); //add node to array
    //draw node
-   draw_node(redo_node.coords[0], redo_node.coords[1], radius, colorFind(redo_node.id), 1);
+   draw_node(redo_node.coords[0], redo_node.coords[1], radius, colorFind(redo_node.id,false), 1);
    img_update();
    undo.push('n'); //add back to undo
   } 
@@ -722,10 +720,10 @@ function redoIt(ev) {
    }
    for (var i = 0; i < connected_edges.length; i++) { //redraw nodes
      draw_node(nodeID(connected_edges[i]).coords[0], nodeID(connected_edges[i]).coords[1], 
-       radius, colorFind(connected_edges[i]), 1); 
+       radius, colorFind(connected_edges[i],false), 1); 
    }
 
-   draw_node(coords[0], coords[1], radius, colorFind(node_id), 1);
+   draw_node(coords[0], coords[1], radius, colorFind(node_id,false), 1);
    nodeID(node_id).coords = coords; //update coords of node
    img_update();
    
@@ -810,10 +808,10 @@ tools.info = function () {
          tool.mousemove(ev);
          tool.started = false;
          //draw the endpoints onto the nodes
-         draw_node(start_x, start_y, radius, colorFind(start_id), 1);
-         draw_node(nodeID(end_id).coords[0], nodeID(end_id).coords[1], radius, colorFind(end_id), 1);
+         draw_node(start_x, start_y, radius, colorFind(start_id,false), 1);
+         draw_node(nodeID(end_id).coords[0], nodeID(end_id).coords[1], radius, colorFind(end_id,false), 1);
          img_update();
-         //////append new edge to array of edges
+         //////append new edge to array of edges,false
          edges.push(new Edge([start_id, end_id]));
          //update undo
          undo.push("e"); //add new to end
@@ -842,7 +840,7 @@ tools.info = function () {
        return;
      }
      context.clearRect(0, 0, canvas.width, canvas.height);
-     draw_node(tool.x0, tool.y0, radius, colorFind(nodes.length), 1);
+     draw_node(tool.x0, tool.y0, radius, colorFind(nodes.length, true), 1);
    };
 
    this.mouseup = function (ev) {
@@ -947,25 +945,6 @@ tools.info = function () {
      }
    };
 
-   //closest function (part of tools.resize) ~~~~~~~~~~~~~~~~~~~~~~~~~
-   //find node closest to x, y
-   function closest(x, y){
-         var close = [];
-         var distance = Infinity;
-         var id;
-         for (var i = 0; i < nodes.length; i++) {
-           var c =  nodes[i].coords; //parsing through the coords of every node
-           var d = (x - c[0])*(x - c[0]) + (y - c[1])*(y - c[1]);
-           if (d < distance) {
-             close = c;
-             distance = d;
-             id = nodeID(i).id;
-           }
-         }
-         //return array of closest node center coordinates and id
-         return [close, id];
-     };
-
    this.mousemove = function (ev) {
      if (!tool.started) {
        return;
@@ -1017,10 +996,10 @@ tools.info = function () {
      }
 
      for (var i = 0; i < connect_id.length; i++) {
-      draw_node(nodeID(connect_id[i]).coords[0], nodeID(connect_id[i]).coords[1], radius, colorFind(connect_id[i]), 1)
+      draw_node(nodeID(connect_id[i]).coords[0], nodeID(connect_id[i]).coords[1], radius, colorFind(connect_id[i], false), 1)
      }
 
-    draw_node(current_x, current_y, radius, colorFind(node_id), 1);  //draw new node
+    draw_node(current_x, current_y, radius, colorFind(node_id, false), 1);  //draw new node
      
      end_x = current_x;
      end_y = current_y;
@@ -1082,7 +1061,7 @@ function loadGraph() {
     draw_edge(nodeID(edges[i].coords[0]).coords[0], nodeID(edges[i].coords[0]).coords[1], nodeID(edges[i].coords[1]).coords[0], nodeID(edges[i].coords[1]).coords[1], 'black', 2);
   }
   for (var i = node_length; i < nodes.length; i++) {
-    draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i), 1);
+    draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i, false), 1);
   }
   img_update();
   //set background IF no current background
@@ -1107,3 +1086,112 @@ function clearGraph() {
    mouse_context.fillStyle = 'black';
    mouse_context.fillText(message, 10, 20);
  } 
+
+// my new fun tools ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//given the mouse coordinates determines if in range of node or edge - if so returns
+//whichever object it is closest to
+function regionDetection(x, y) { 
+  var closest; //closest object
+  var distance = Infinity; //distance of closest object
+  var location; //location of object in array
+  var range = 2;
+
+  //check nodes
+  for (var i = 0; i < nodes.length; i++) {
+    var c =  nodes[i].coords; //parsing through the coords of every node
+    var dist = (x - c[0])*(x - c[0]) + (y - c[1])*(y - c[1]);
+    if (Math.sqrt(dist) <= (range + radius)) {
+      if (dist < distance) {
+        closest = 'n';
+        distance = dist;
+        location = i;
+      }
+    }
+  }
+
+  //check edges
+  for (var i = 0; i < edges.length; i++) {
+    var end_nodes = edges[i].coords;
+    var coordsA = nodeID(end_nodes[0]).coords;
+    var coordsB = nodeID(end_nodes[1]).coords;
+    var range = 3;
+
+    //check range
+    if ((Math.min(coordsA[0], coordsB[0]) - range) <= x <= (Math.max(coordsA[0], coordsB[0]) + range) && //x coords
+        (Math.min(coordsA[1], coordsB[1]) - range) <= y <= (Math.max(coordsA[1], coordsB[1]) + range)) { //y coords
+      //find distance to line
+      var m = (coordsA[1] - coordsB[1]) / (coordsA[0] - coordsB[0]);
+      var dist = Math.abs(y - coordsA[1] - m * x + m * coordsA[0]) / Math.sqrt(1 + m * m);
+      if (dist < range && dist < distance) {
+        closest = 'e';
+        distance = dist;
+        location = i;
+      }
+    }
+  }
+
+  if (distance == Infinity) return 'none';
+  return [closest, location];
+}
+
+var remove;
+tools.delete = function(){
+   var tool = this;
+   this.started = false;
+   var closest;
+   //var remove;
+   var remove_id;
+
+   this.mousedown = function (ev) {
+     tool.started = true;
+   }
+
+   this.mousemove = function (ev) {
+     if (!tool.started) {
+       return;
+     }
+     context.clearRect(0, 0, canvas.width, canvas.height);
+     //region detection
+     closest = regionDetection(ev._x, ev._y);
+     if (closest != 'none') { //if returned something
+      remove_id = closest[1];
+
+       //highlight node or edge
+       if (closest[0] == 'e') {
+        remove = edges[remove_id];
+         draw_edge(nodeID(remove.coords[0]).coords[0], nodeID(remove.coords[0]).coords[1], nodeID(remove.coords[1]).coords[0], nodeID(remove.coords[1]).coords[1], 'yellow', 2);
+       }
+       if (closest[0] == 'n') {
+         remove = nodes[remove_id];
+         draw_node(remove.coords[0], remove.coords[1], radius, 'yellow', 1);
+       }
+     }
+   };
+
+   this.mouseup = function (ev) {
+     if (tool.started) {
+      tool.mousemove(ev);
+      tool.started = false;
+      if (closest != 'none') {
+        //remove closest
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        if (closest[0] == 'e') {
+         remove = edges.splice(remove_id, 1)[0];
+         remove_edges(nodeID(remove.coords[0]).coords, nodeID(remove.coords[1]).coords, remove.coords[0], remove.coords[1]); //remove from screen
+         }
+         if (closest[0] == 'n') {
+           remove = nodes.splice(remove_id, 1)[0];
+           remove_nodes(remove.coords); //remove from screen
+         }
+
+        img_update();
+
+        //ADD TO UNDO
+      }
+   }
+ }
+};
+
+ if (window.addEventListener) {
+     window.addEventListener('load', init(), false)
+ }
