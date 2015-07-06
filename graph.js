@@ -1410,6 +1410,51 @@ function removeEdge(remove_id) {
   img_update();
 }
 
+edits.autonode = function() {
+  var edit = this;
+  this.started = false;
+
+  this.mousedown = function (ev) {
+    edit.started = true;
+    
+  }
+
+  this.mousemove = function (ev) {
+    if (!edit.started) {
+      return;
+    }
+  };
+
+  this.mouseup = function (ev) {
+    if (edit.started) {
+      edit.mousemove(ev);
+      edit.started = false;
+    }
+  }
+}
+
+edits.straightline = function() {
+  var edit = this;
+  this.started = false;
+
+  this.mousedown = function (ev) {
+    edit.started = true;
+    
+  }
+
+  this.mousemove = function (ev) {
+    if (!edit.started) {
+      return;
+    }
+  };
+
+  this.mouseup = function (ev) {
+    if (edit.started) {
+      edit.mousemove(ev);
+      edit.started = false;
+    }
+  }
+}
 
  // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
