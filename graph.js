@@ -286,6 +286,18 @@ function setRadius() {
     radius = parseFloat(document.getElementsByName('radius')[0].value);
 }
 
+function connectedEdges(node_id) {
+  var connect_id = [];
+  for (var i = 0; i < edges.length; i++) { //for every edge
+        if (edges[i].coords[0] == node_id) {
+           connect_id.push(edges[i].coords[1]); //push id of the other node
+        }
+        else if (edges[i].coords[1] == node_id){
+           connect_id.push(edges[i].coords[0]); //push id of the other node
+        }
+     }
+  return connect_id;
+}
 
 // DRAWING TOOLS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -687,7 +699,7 @@ function showStairs(status, id){
     };
 
 };
- 
+
  // UNDO AND REDO TOOLS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function undoIt(ev) {
  if (undo.length == 0) {
@@ -711,6 +723,32 @@ function undoIt(ev) {
      redo.push(['n', bye_node]);//add to redo
    } 
 
+   else if (oops[0] == 'dn') { //undo delete node
+    var removed = oops[1];
+    var removed_edges = oops[2];
+
+    //add node and edges back to arrays
+    nodes.push(removed);
+    for (var i = 0; i < removed_edges.length; i++) {
+      edges.push(removed_edges[i]);
+      draw_edge(nodeID(removed_edges[i].coords[0]).coords[0], nodeID(removed_edges[i].coords[0]).coords[1], nodeID(removed_edges[i].coords[1]).coords[0], nodeID(removed_edges[i].coords[1]).coords[1], 'black', 2); //redraw edge
+    }
+
+    draw_node(removed.coords[0], removed.coords[1], radius, colorFind(removed.id, false), 1); 
+   
+    //add to redo
+    redo.push(['dn', removed.id]);  
+   }
+
+   else if (oops[0] == 'de') { //undo delete edge
+    var removed = oops[1];
+    edges.push(removed);
+    draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
+
+    //add to redo
+    redo.push(['de', removed]);
+   }
+
    else { //undoing resize
      var node_id = oops[0];
      var coords = oops[1]; //coordinates to reset the node to
@@ -733,11 +771,11 @@ function undoIt(ev) {
      draw_node(coords[0], coords[1], radius, colorFind(node_id,false), 1);
      
      nodeID(node_id).coords = coords; //update coords of node
-     img_update();
 
      //push to redo
      redo.push([node_id, old_coords, connected_edges]); //node id, old coordinates, connect_id[]
    }
+   img_update();
  }
 };
  
@@ -770,6 +808,22 @@ function redoIt(ev) {
    img_update();
    undo.push('n'); //add back to undo
   } 
+
+  else if (jk[0] == 'de') {
+    var removed = jk[1];
+    var remove_id;
+    //find ID of removed edge
+    for(var i = 0; i < edges.length; i++) {
+      if(edges[i].coords[0] == removed.coords[0] && edges[i].coords[1] == remove.coords[1])
+        remove_id = i;
+    }
+
+    removeEdge(remove_id);
+  }
+
+  else if (jk[0] == 'dn') {
+    removeNode(jk[1]);
+  }
 
   else { //REDO RESIZE
    var node_id = jk[0];
@@ -1009,14 +1063,7 @@ tools.info = function () {
      node_id = close[1];
 
     //parse through edge array to find connected edges
-     for (var i = 0; i < edges.length; i++) { //for every edge
-        if (edges[i].coords[0] == node_id) {
-           connect_id.push(edges[i].coords[1]); //push id of the other node
-        }
-        else if (edges[i].coords[1] == node_id){
-           connect_id.push(edges[i].coords[0]); //push id of the other node
-        }
-     }
+     connect_id = connectedEdges(node_id);
      //prepare first_run
      first_run = true;
 
@@ -1205,7 +1252,7 @@ function regionDetection(x, y) {
       //find distance to line
       var m = (coordsA[1] - coordsB[1]) / (coordsA[0] - coordsB[0]);
       var dist = Math.abs(y - coordsA[1] - m * x + m * coordsA[0]) / Math.sqrt(1 + m * m);
-      if (dist < range && dist < distance) {
+      if (dist < range && dist + radius + range < distance) {
         closest = 'e';
         distance = dist;
         location = i;
@@ -1217,12 +1264,12 @@ function regionDetection(x, y) {
   return [closest, location];
 }
 
-var remove;
+
 tools.delete = function(){
    var tool = this;
    this.started = false;
    var closest;
-   //var remove;
+   var remove;
    var remove_id;
 
    this.mousedown = function (ev) {
@@ -1244,7 +1291,7 @@ tools.delete = function(){
         remove = edges[remove_id];
          draw_edge(nodeID(remove.coords[0]).coords[0], nodeID(remove.coords[0]).coords[1], nodeID(remove.coords[1]).coords[0], nodeID(remove.coords[1]).coords[1], 'yellow', 2);
        }
-       if (closest[0] == 'n') {
+       else if (closest[0] == 'n') {
          remove = nodes[remove_id];
          draw_node(remove.coords[0], remove.coords[1], radius, 'yellow', 1);
        }
@@ -1259,21 +1306,64 @@ tools.delete = function(){
         //remove closest
         context.clearRect(0, 0, canvas.width, canvas.height);
         if (closest[0] == 'e') {
-         remove = edges.splice(remove_id, 1)[0];
-         remove_edges(nodeID(remove.coords[0]).coords, nodeID(remove.coords[1]).coords, remove.coords[0], remove.coords[1]); //remove from screen
-         }
-         if (closest[0] == 'n') {
-           remove = nodes.splice(remove_id, 1)[0];
-           remove_nodes(remove.coords); //remove from screen
-         }
-
-        img_update();
-
-        //ADD TO UNDO
+         removeEdge(remove_id);
+        }
+        else if (closest[0] == 'n') {
+          removeNode(nodes[remove_id].id);
+        }
       }
-   }
+    }
+  }
  }
-};
+
+function removeNode(remove_id) {
+  var remove;
+  var remove_location;
+  for (var i = 0; i < nodes.length; i++) { //find node location
+    if (nodes[i].id == remove_id) {
+      remove = nodes[i];
+      remove_location = i;
+    } 
+  }
+
+  var connect_id = [];
+  var removed_edges = [];
+  var removed_edges_id = [];
+  for (var i = 0; i < edges.length; i++) { //for every edge
+    if (edges[i].coords[0] == remove_id) {
+      connect_id.push(edges[i].coords[1]); //push id of the other node
+      removed_edges.push(edges[i]);
+      removed_edges_id.push(i);
+    }
+    else if (edges[i].coords[1] == remove_id){
+      connect_id.push(edges[i].coords[0]); //push id of the other node
+      removed_edges.push(edges[i]);
+      removed_edges_id.push(i);
+    }
+  }
+  //remove edges from array
+  for (var i = removed_edges_id.length - 1; i >= 0; i--) {
+    edges.splice(removed_edges_id[i], 1);
+  }
+  for (var i = 0; i < connect_id.length; i++) {
+    remove_edges(nodeID(connect_id[i]).coords, remove.coords, connect_id[i], remove.id);
+  }
+  remove = nodes.splice(remove_location, 1)[0];
+  remove_nodes(remove.coords); //remove node from screen
+
+  //ADD TO UNDO
+  undo.push(['dn', remove, removed_edges]);
+  img_update();
+}
+
+function removeEdge(remove_id) {
+  remove = edges.splice(remove_id, 1)[0];
+  remove_edges(nodeID(remove.coords[0]).coords, nodeID(remove.coords[1]).coords, remove.coords[0], remove.coords[1]); //remove from screen
+         
+  //ADD TO UNDO
+  undo.push(['de', remove]);
+  img_update();
+}
 
  // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
