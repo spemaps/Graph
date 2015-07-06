@@ -39,8 +39,7 @@
         <label><form id="dtool"><span>Drawing tool:</span> 
           <input type='radio' name='dtool' value='node' checked='checked'>Node
           <input type='radio' name='dtool' value='edge'>Edge    
-          <input type='radio' name='dtool' value='resize'>Move 
-          <input type='radio' name='dtool' value='delete'>Delete
+          <input type='radio' name='dtool' value='edit'>Edit
           <input type='radio' name='dtool' value='info'>Node Info
         </form></label>
 
@@ -72,7 +71,14 @@
         <form id= "entryway">
           Entryway Number: <input type = 'text' name ='entryway'>
         </form>   
-       
+
+        <!-- Tools for editing -->
+        <form id="edittools">
+          <input type='radio' name='dtool' value="resize">Move
+          <input type='radio' name='dtool' value='delete'>Delete 
+          <input type='radio' name='dtool' value='straightline'>Straight Line
+          <input type='radio' name='dtool' value='autonode'>Auto Node
+        </form>
         <form id="snapping">
           <input type='radio' name='snapping' value='on'>Snapping On
           <input type='radio' name='snapping' value='off' checked='checked'>Off    

@@ -60,9 +60,11 @@ var redo = [];
     document.getElementById('floorset').style.display = 'none';
     document.getElementById('stair').style.display = 'none';
     document.getElementById('stair1').style.display = 'none';
+    document.getElementById('edittools').style.display = 'none';
 
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
+    document.getElementById('edittools').addEventListener('change', ev_tool_change, false);
 
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
@@ -154,6 +156,10 @@ function changeCanvas(){
     context.clearRect(0, 0, canvas.width, canvas.height);
    }
 
+function display(id, style) {
+  document.getElementById(id).style.display = style;
+}
+
  // The event handler for any changes made to the tool selector. 
   function ev_tool_change (ev) {
     for(var i = 0; i < toollist.length; i++) {  
@@ -162,49 +168,57 @@ function changeCanvas(){
             tool = new tools[selectedT];
          
              //hide all. 
-            document.getElementById("nodeType").style.display = "none";
-            document.getElementById('radius').style.display = 'none';
-            document.getElementById("snapping").style.display = "none";
-            document.getElementById('info').style.display = 'none';
-            document.getElementById('gender').style.display = 'none';
-            document.getElementById('roomNumber').style.display = 'none';
-            document.getElementById('entryway').style.display = 'none';
-            document.getElementById('stairset').style.display = 'none';
-            document.getElementById('floorset').style.display = 'none';
-            document.getElementById('stair').style.display = 'none';
-            document.getElementById('stair1').style.display = 'none';
+            display('nodeType', 'none');
+            display('radius', 'none');
+            display('info', 'none');
+            display('gender', 'none');
+            display('roomNumber', 'none');
+            display('entryway', 'none');
+            display('stairset', 'none');
+            display('stairinfo', 'none');
+            display('floorset', 'none');
+            display('stair', 'none');
+            display('stair1', 'none');
+            display('edittools', 'none');
+            display('snapping','none');
             
             if(selectedT == 'node'){
                 //display
-                document.getElementById("nodeType").style.display = "inline-block";
-                document.getElementById('radius').style.display = 'inline-block';
+                display('nodeType', 'inline-block');
+                display('radius', 'inline-block');
 
                 if (document.getElementById("nodeType").value == "bathroom") {
-                    document.getElementById('gender').style.display = 'inline-block';
-                }else if(document.getElementById("nodeType").value == "room"){
-                    document.getElementById('roomNumber').style.display = 'inline-block';
-                }else if (document.getElementById("nodeType").value == "entry"){
-                    document.getElementById('entryway').style.display = 'inline-block';
-                }else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
-                    document.getElementById('stairset').style.display = 'inline-block';
-                    document.getElementById('floorset').style.display = 'inline-block';
-                    document.getElementById('stair').style.display = 'inline-block';
-                    document.getElementById('stair1').style.display = 'inline-block';
+                  display('gender', 'inline-block');
+                }
+                else if(document.getElementById("nodeType").value == "room"){
+                  display('roomNumber', 'inline-block');
+                }
+                else if (document.getElementById("nodeType").value == "entry"){
+                  display('entryway', 'inline-block');
+                }
+                else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
+                    display('stairset', 'inline-block');
+                    display('floorset', 'inline-block');
+                    display('stair', 'inline-block');
+                    display('stair1', 'inline-block');
+                    display('stairinfo', 'inline-block');
                 }
              }
-            else if (selectedT == 'resize'){
-              document.getElementById("snapping").style.display = "inline-block";
-            }
 
             else if (selectedT == 'info') {
-              document.getElementById('info').style.display = 'inline-block';
+              display('info', 'inline-block');
             } 
+
+            else if (selectedT == 'edit') {
+              display('edittools', 'inline-block');
+              edit();
+            }
             //clear temporary canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
       }
     }
   }
- 
+
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //function to find nodeID, returns the node
@@ -919,7 +933,7 @@ tools.info = function () {
  }; //end tools.node
 
 // The resize tool.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- tools.resize = function(){
+ function resize(){
    var tool = this;
    this.started = false;
 
@@ -1146,7 +1160,7 @@ function regionDetection(x, y) {
 }
 
 var remove;
-tools.delete = function(){
+function delete() {
    var tool = this;
    this.started = false;
    var closest;
@@ -1202,6 +1216,25 @@ tools.delete = function(){
    }
  }
 };
+
+//The edit tool
+tools.edit = function(){
+  var tool = this;
+  this.started = false;
+
+  if(document.getElementById('edittools')[0].checked == true) {
+    resize(); 
+  }
+  else if(document.getElementById('edittools')[1].checked == true) {
+    delete();
+  }
+  else if(document.getElementById('edittools')[2]).checked == true) {
+  straightline();
+  }
+  else if(document.getElementById('edittools')[3]).checked == true){
+  autonode();
+  }
+}
 
  // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
