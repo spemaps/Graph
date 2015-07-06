@@ -23,6 +23,9 @@
         <span class="infobox" id='no3'>Gender: </span> <input type='radio' id = 'popfemale' name='genderpop' value='F' onclick = "updateGender(findme.value)"><span class='ForM' id='no4'>Female</span><input type='radio' id = 'popmale' name='genderpop' value='M' onclick = "updateGender(findme.value)" ><span class='ForM' id='no5'>Male</span><br>
         <span class = "infobox" id='no6'>Stair/Elevator Set</span><input type="text" value="" id="popset" name="populateme" onchange = "updateSet(value, findme.value)"/><br>
         <span class = "infobox" id='no7'>Floors</span> <input type="text" value="" id="popfloors" name="populateme" onchange = "updateFloor(value, findme.value)"/><br>
+
+        <span class="infobox" id='no8'>Direction: </span> <input type='radio' id = 'popup' name='up' value='U' onclick = "updateVert(findme.value)"><span class='Forup' id='no9'>Up</span><input type='radio' id = 'popdown' name='down' value='D' onclick = "updateVert(findme.value)" ><span class='Forup' id='no10'>Down</span><input type='radio' id = 'popboth' name='both' value='B' onclick = "updateVert(findme.value)" ><span class='Forup' id='no11'>Both</span><br>
+
     </form>
  </div> <!--floating box--> 
 
@@ -53,6 +56,11 @@
         </select> 
          <form id="stairinfo" name="stairinfo"><span id="stair">S/E set: </span><input type='text' name='stairset' id='stairset' size='10'>
         <span id="stair1">Floors: </span><input type='text'id='floorset' name='floorset' size='10'>
+        </form>
+         <form id="vertical">
+          <input type='radio' name='up' value='u'>Up
+          <input type='radio' name='down' value='d'>Down   
+          <input type='radio' name='both' value='b'>Both   
         </form>
         <form id="gender">
           <input type='radio' name='gender' value='F'>Female

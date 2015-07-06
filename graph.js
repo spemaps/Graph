@@ -161,7 +161,7 @@ function changeCanvas(){
             var selectedT = toollist[i].value
             tool = new tools[selectedT];
          
-            //hide all. 
+             //hide all. 
             document.getElementById("nodeType").style.display = "none";
             document.getElementById('radius').style.display = 'none';
             document.getElementById("snapping").style.display = "none";
@@ -169,119 +169,36 @@ function changeCanvas(){
             document.getElementById('gender').style.display = 'none';
             document.getElementById('roomNumber').style.display = 'none';
             document.getElementById('entryway').style.display = 'none';
-            document.getElementById('stairinfo').style.display = 'none';
             document.getElementById('stairset').style.display = 'none';
             document.getElementById('floorset').style.display = 'none';
             document.getElementById('stair').style.display = 'none';
             document.getElementById('stair1').style.display = 'none';
             
-            if (selectedT == 'node') {
-              document.getElementById("nodeType").style.display = "inline-block";
-              document.getElementById("snapping").style.display = "none";
-              document.getElementById('radius').style.display = 'inline-block';
-              document.getElementById('info').style.display = 'none';
+            if(selectedT == 'node'){
+                //display
+                document.getElementById("nodeType").style.display = "inline-block";
+                document.getElementById('radius').style.display = 'inline-block';
 
-              if (document.getElementById("nodeType").value == "bathroom") {
-                document.getElementById('gender').style.display = 'inline-block';
-                document.getElementById('roomNumber').style.display = 'none';
-                document.getElementById('entryway').style.display = 'none';
-                document.getElementById('stairinfo').style.display = 'none';
-                document.getElementById('stairset').style.display = 'none';
-                document.getElementById('floorset').style.display = 'none';
-                document.getElementById('stair').style.display = 'none';
-                document.getElementById('stair1').style.display = 'none';
-              }
-
-              else if (document.getElementById("nodeType").value == "room") { // text box appears if node type is room 
-                document.getElementById('roomNumber').style.display = 'inline-block';
-                document.getElementById('gender').style.display = 'none';
-                document.getElementById('entryway').style.display = 'none';
-                document.getElementById('stairinfo').style.display = 'none';
-                document.getElementById('stairset').style.display = 'none';
-                document.getElementById('floorset').style.display = 'none';
-                document.getElementById('stair').style.display = 'none';
-                document.getElementById('stair1').style.display = 'none';
-              }
-
-              else if (document.getElementById("nodeType").value == "entry") { // text box appears if node type is room 
-                document.getElementById('entryway').style.display = 'inline-block';
-                document.getElementById('roomNumber').style.display = 'none';
-                document.getElementById('gender').style.display = 'none';
-                document.getElementById('stairinfo').style.display = 'none';
-                document.getElementById('stairset').style.display = 'none';
-                document.getElementById('floorset').style.display = 'none';
-                document.getElementById('stair').style.display = 'none';
-                document.getElementById('stair1').style.display = 'none';
-              }
-
-              else if (document.getElementById("nodeType").value == "stairs") {
-                document.getElementById('roomNumber').style.display = 'none';
-                document.getElementById('gender').style.display = 'none';
-                document.getElementById('entryway').style.display = 'none';
-                document.getElementById('stairinfo').style.display = 'inline-block';
-                document.getElementById('stairset').style.display = 'inline-block';
-                document.getElementById('floorset').style.display = 'inline-block';
-                document.getElementById('stair').style.display = 'inline-block';
-                document.getElementById('stair1').style.display = 'inline-block';
-              }
-
-              else if (document.getElementById("nodeType").value == "elevator"){
-                document.getElementById('roomNumber').style.display = 'none';
-                document.getElementById('gender').style.display = 'none';
-                document.getElementById('entryway').style.display = 'none';
-                document.getElementById('stairinfo').style.display = 'inline-block';
-                document.getElementById('stairset').style.display = 'inline-block';
-                document.getElementById('floorset').style.display = 'inline-block';
-                document.getElementById('stair').style.display = 'inline-block';
-                document.getElementById('stair1').style.display = 'inline-block';
-              }
-
-              else {
-                document.getElementById('gender').style.display = 'none';
-                document.getElementById('roomNumber').style.display = 'none';
-                document.getElementById('entryway').style.display = 'none';
-                document.getElementById('stairinfo').style.display = 'none';
-                document.getElementById('stairset').style.display = 'none';
-                document.getElementById('floorset').style.display = 'none';
-                document.getElementById('stair').style.display = 'none';
-                document.getElementById('stair1').style.display = 'none';
-              }
-
-            }
+                if (document.getElementById("nodeType").value == "bathroom") {
+                    document.getElementById('gender').style.display = 'inline-block';
+                }else if(document.getElementById("nodeType").value == "room"){
+                    document.getElementById('roomNumber').style.display = 'inline-block';
+                }else if (document.getElementById("nodeType").value == "entry"){
+                    document.getElementById('entryway').style.display = 'inline-block';
+                }else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
+                    document.getElementById('stairset').style.display = 'inline-block';
+                    document.getElementById('floorset').style.display = 'inline-block';
+                    document.getElementById('stair').style.display = 'inline-block';
+                    document.getElementById('stair1').style.display = 'inline-block';
+                }
+             }
             else if (selectedT == 'resize'){
               document.getElementById("snapping").style.display = "inline-block";
-              document.getElementById("snapping").style.display = "inline-block";
-              document.getElementById("nodeType").style.display = "none";
-              document.getElementById('gender').style.display = 'none';
-              document.getElementById('roomNumber').style.display = 'none';
-              document.getElementById('entryway').style.display = 'none';
-              document.getElementById('radius').style.display = 'none';
-              document.getElementById('info').style.display = 'none';
-              document.getElementById('stairinfo').style.display = 'none';
             }
 
             else if (selectedT == 'info') {
               document.getElementById('info').style.display = 'inline-block';
-              document.getElementById("snapping").style.display = "none";
-              document.getElementById("nodeType").style.display = "none";
-              document.getElementById('gender').style.display = 'none';
-              document.getElementById('roomNumber').style.display = 'none';
-              document.getElementById('entryway').style.display = 'none';
-              document.getElementById('radius').style.display = 'none';
-              document.getElementById('info').style.display = 'inline-block';
-              document.getElementById('stairinfo').style.display = 'none';
             } 
-
-            else {
-              document.getElementById("nodeType").style.display = "none";
-              document.getElementById("snapping").style.display = "none";
-              document.getElementById('gender').style.display = 'none';
-              document.getElementById('roomNumber').style.display = 'none';
-              document.getElementById('entryway').style.display = 'none';
-              document.getElementById('radius').style.display = 'none';
-              document.getElementById('info').style.display = 'none';
-              document.getElementById('stairinfo').style.display = 'none';
-            }
             //clear temporary canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
       }
@@ -624,6 +541,17 @@ function updateFloor(newf, i){
   nodeID(i).floorset = newf;
 };
 
+function updateVert(){
+  var radiobtn = document.getElementById("");
+  if (radiobtn.checked == true)
+    nodeID(i).gender = "";
+  else
+    nodeID(i).gender = "";
+
+
+
+};
+
 // HIDING FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -692,7 +620,7 @@ function showStairs(status, id){
     document.getElementById('popfloors').style.display = status;
 
     // Is this right? 
-    if (status = "none"){
+    if (status == "none"){
         document.example.popset.value = "";
         document.example.popfloors.value = "";
     }
