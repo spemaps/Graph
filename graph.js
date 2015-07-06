@@ -90,7 +90,7 @@ var redo = [];
 
 // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
-     window.addEventListener('load', init(), false)
+     window.addEventListener('load', init(), false);
  }
 
 // CANVAS SET-UP and BASIC EVENT HANDLER~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,7 +108,7 @@ function ev_canvas (ev) {
 
   // Call the event handler of the tool.
   var func = tool[ev.type];
-  if (func) {
+  if (func){
     func(ev);
   }
 }
@@ -486,12 +486,12 @@ function updateType(newt, i){
     alert("Room number has not been set.")
   }
 
-  if(newt == "entry"{
+  if(newt == "entry"){
     showEntry('inline-block',"");
     alert("Entry number has not been set.")
   }
 
-  if((newt == "stairs") || (newt == "elevator"){
+  if((newt == "stairs") || (newt == "elevator")){
     showStairs('inline-block',"");
     alert("You might be missing some information. Feel free to fill it in.");
 
@@ -577,7 +577,7 @@ function showBathroom(status, gen){
     var radiobtn = document.getElementById("popmale");
     radiobtn.checked = true; 
   }
-  else if(gen = "F"{
+  else if(gen = "F"){
     radiobtn = document.getElementById("popfemale");
       radiobtn.checked = true;
   }
