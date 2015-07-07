@@ -1374,7 +1374,8 @@ function saveGraph() {
 }
 
 function loadGraph() {
-  clearGraph();
+  nodes = [];
+  edges = [];
   var graph = document.getElementById('graph_info').value;
   graph = JSON.parse(graph);
   var node_length = nodes.length;
@@ -1785,9 +1786,7 @@ function unscale(coord){
 }
 
 function rescale(coord){
-  if (scale == 1) {
     coord = coord * scale;
-  }
   return coord;
 }
 
