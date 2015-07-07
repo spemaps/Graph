@@ -1789,7 +1789,7 @@ function unscale(coord){
 }
 
 function rescale(coord){
-    coord = coord * scale;
+  coord = coord * scale;
   return coord;
 }
 
