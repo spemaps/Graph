@@ -61,7 +61,7 @@ var redo = [];
     //add event listener for nodeType
     document.getElementById('nodeType').addEventListener('change', ev_tool_change, false);
     document.getElementById('dedit').addEventListener('change', ev_tool_change, false);
-    document.getElementById('zoom').addEventListener('change', ev_tool_change, false);
+    
     toollist = document.getElementsByName("dtool"); 
     for(var i = 0; i < toollist.length; i++) {  
       toollist[i].addEventListener('change', ev_tool_change, false);

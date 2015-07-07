@@ -168,5 +168,11 @@ span {
 #zoomname {
 	font-size: 16px;
 }
+#scaleMe {
+	display: none;
+}
+#units {
+	display: none;
+}
 
     
