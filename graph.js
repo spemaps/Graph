@@ -1155,30 +1155,103 @@ function storeUnits(realDist){
  tools.node = function () {
    var tool = this;
    this.started = false;
+   var closest, x, y, near;
+   var auto_node = false;
+   var auto_edge = false;
 
    this.mousedown = function (ev) {
      tool.started = true;
      tool.x0 = ev._x;
      tool.y0 = ev._y;
-     setRadius();
-   };
+     setRadius();     
+     if (document.getElementsByName('auto')[0].checked) {
+        closest = regionDetection(ev._x, ev._y);
+        if (closest[0] == 'n') {
+          auto_node = false;
+          auto_edge = true;
+        } else if (closest[0] == 'e') {
+          auto_node = true;
+          auto_edge = false;
+        } else {
+          auto_edge = false;
+          auto_node = false;
+        }
+      }
+   }; 
 
    this.mousemove = function (ev) {
      if (!tool.started) {
        return;
      }
      context.clearRect(0, 0, canvas.width, canvas.height);
-     draw_node(tool.x0, tool.y0, radius, colorFind(nodes.length, true), 1);
+      if (auto_node) {
+        var snap_coords = autonode_mousemove(ev._x, ev._y, closest);
+        x = snap_coords[0];
+        y = snap_coords[1];
+        draw_node(x, y, radius, findNT(), 1); //assuming walking node
+      } else if (auto_edge) {
+        near = regionDetection(ev._x, ev._y);
+        if (near[0] == 'n') {
+          //draw edge to node
+          draw_edge(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], nodeID(near[1]).coords[0], nodeID(near[1]).coords[1], 'black', 2);
+          draw_node(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], radius, colorFind(nodeID(closest[1]).id, false), 1);
+          draw_node(nodeID(near[1]).coords[0], nodeID(near[1]).coords[1], radius, colorFind(nodeID(near[1]).id, false), 1);
+        } else {
+          //draw edge and node on the end
+          draw_edge(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], ev._x, ev._y, 'black', 2);
+          draw_node(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], radius, colorFind(nodeID(closest[1]).id, false), 1);
+          draw_node(ev._x, ev._y, radius, 'black', 1); //just draw a black one
+        }
+      } else {
+        draw_node(tool.x0, tool.y0, radius, colorFind(nodes.length, true), 1);
+      }
    };
 
    this.mouseup = function (ev) {
      if (tool.started) {
       tool.mousemove(ev);
       tool.started = false;
-      img_update();
 
-      nodes.push(new Node(new_id,[tool.x0, tool.y0], findNT()));
-      new_id++;
+      if (auto_edge && near[0] == 'n') {
+          //set edge
+          edges.push(new Edge([nodeID(closest[1]).id, nodeID(near[1]).id]));
+          undo.push("e"); //add new to end
+           if(undo.length == undo_length) { 
+             undo.shift(); //only store last 10
+           }
+         
+        img_update();
+      } else {
+        if (auto_edge) {
+          //set edge
+          edges.push(new Edge([new_id, nodeID(closest[1]).id]));
+          nodes.push(new Node(new_id, [ev._x, ev._y], findNT()));
+          new_id++;
+
+          undo.push("n"); //add new to end
+           if(undo.length == undo_length) { 
+             undo.shift(); //only store last 10
+           }
+          undo.push("e"); //add new to end
+           if(undo.length == undo_length) { 
+             undo.shift(); //only store last 10
+           }
+        }
+        else if (auto_node) {
+          nodes.push(new Node(new_id, [x, y], findNT()));
+          autonode_mouseup(x, y, closest);
+        } else {
+          nodes.push(new Node(new_id,[tool.x0, tool.y0], findNT()));
+          new_id++;
+
+           //update undo
+           undo.push("n"); //add new to end
+           if(undo.length == undo_length) { 
+             undo.shift(); //only store last 10
+           }
+        }
+
+      img_update();
 
       //add extra attributes
       //add bathroom things
@@ -1235,13 +1308,11 @@ function storeUnits(realDist){
           }
         }
       }
-
-       //update undo
-       undo.push("n"); //add new to end
-       if(undo.length == undo_length) { 
-         undo.shift(); //only store last 10
-       }
+        //redraw added node
+        var last_node = nodes[nodes.length - 1];
+        draw_node(last_node.coords[0], last_node.coords[1], radius, colorFind(last_node.id, false), 1);
      }
+    }
    };
  }; //end tools.node
 
@@ -1471,7 +1542,7 @@ function regionDetection(x, y) {
     }
   }
 
-  if (distance == Infinity) return 'none';
+  if (distance == Infinity) return ['none'];
   return [closest, location];
 }
 
@@ -1502,7 +1573,7 @@ edits.deleted = function() {
      context.clearRect(0, 0, canvas.width, canvas.height);
      //region detection
      closest = regionDetection(ev._x, ev._y);
-     if (closest != 'none') { //if returned something
+     if (closest[0] != 'none') { //if returned something
       remove_id = closest[1];
 
        //highlight node or edge
@@ -1521,7 +1592,7 @@ edits.deleted = function() {
      if (edit.started) {
       edit.mousemove(ev);
       edit.started = false;
-      if (closest != 'none') {
+      if (closest[0] != 'none') {
         //remove closest
         context.clearRect(0, 0, canvas.width, canvas.height);
         if (closest[0] == 'e') {
@@ -1606,15 +1677,9 @@ edits.autonode = function() {
     closest = regionDetection(ev._x, ev._y);
     if (closest[0] != 'none') {
       if (closest[0] == 'e') {
-        var endpoints = edges[closest[1]].coords;
-        var a = nodeID(endpoints[0]).coords;
-        var b = nodeID(endpoints[1]).coords;
-        var u = (x - a[0])*(b[0] - a[0]) + (y - a[1])*(b[1] - a[1]);
-        var udenom = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1]);
-        u /= udenom;
-        x = a[0] + u * (b[0] - a[0]);
-        y = a[1] + u * (b[1] - a[1]);
-
+        var new_coords = autonode_mousemove(x, y, closest);
+        x = new_coords[0];
+        y = new_coords[1];
         draw_node(x, y, radius, 'black', 1); //assuming walking node
       }
     }
@@ -1629,27 +1694,41 @@ edits.autonode = function() {
         if (closest[0] == 'e') {
           //add node
           nodes.push(new Node(new_id,[x, y], 'walk'));
-          //remove edge, add two new edges
-          coords = edges[closest[1]].coords;
-          removeEdge(closest[1]);
-          edges.push(new Edge([new_id, coords[0]]));
-          edges.push(new Edge([new_id, coords[1]]));
-          new_id++;
 
-          //draw
-          draw_edge(x, y, nodeID(coords[0]).coords[0], nodeID(coords[0]).coords[1], 'black', 2);
-          draw_edge(x, y, nodeID(coords[1]).coords[0], nodeID(coords[1]).coords[1], 'black', 2);
-          draw_node(x, y, radius, 'black', 1);
-          draw_node(nodeID(coords[0]).coords[0], nodeID(coords[0]).coords[1], radius, colorFind(coords[0]), 1);
-          draw_node(nodeID(coords[1]).coords[0], nodeID(coords[1]).coords[1], radius, colorFind(coords[1]), 1);
-
+          autonode_mouseup(x, y, closest);
           img_update();
-
-          undo.push(['an', new_id - 1, coords[0], coords[1]]);
         }
       }
     }
   }
+}
+
+  function autonode_mousemove(x, y, closest) { //returns coordinates
+    var endpoints = edges[closest[1]].coords;
+    var a = nodeID(endpoints[0]).coords;
+    var b = nodeID(endpoints[1]).coords;
+    var u = (x - a[0])*(b[0] - a[0]) + (y - a[1])*(b[1] - a[1]);
+    var udenom = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1]);
+    u /= udenom;
+    x = a[0] + u * (b[0] - a[0]);
+    y = a[1] + u * (b[1] - a[1]);
+    return([x, y]);
+  }
+function autonode_mouseup(x, y, closest) {
+  //remove edge, add two new edges
+  var coords = edges[closest[1]].coords;
+  removeEdge(closest[1]);
+  edges.push(new Edge([new_id, coords[0]]));
+  edges.push(new Edge([new_id, coords[1]]));
+  new_id++;
+
+  //draw
+  draw_edge(x, y, nodeID(coords[0]).coords[0], nodeID(coords[0]).coords[1], 'black', 2);
+  draw_edge(x, y, nodeID(coords[1]).coords[0], nodeID(coords[1]).coords[1], 'black', 2);
+  draw_node(x, y, radius, colorFind(new_id - 1), 1);
+  draw_node(nodeID(coords[0]).coords[0], nodeID(coords[0]).coords[1], radius, colorFind(coords[0]), 1);
+  draw_node(nodeID(coords[1]).coords[0], nodeID(coords[1]).coords[1], radius, colorFind(coords[1]), 1);
+  undo.push(['an', new_id - 1, coords[0], coords[1]]);
 }
 
 
@@ -1675,7 +1754,7 @@ edits.straightline = function() {
      }
      //region detection
      closest = regionDetection(ev._x, ev._y);
-     if (closest != 'none') { //if returned something
+     if (closest[0] != 'none') { //if returned something
       remove_id = closest[1];
 
        //highlight node or edge
