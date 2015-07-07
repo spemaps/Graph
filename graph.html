@@ -12,7 +12,7 @@
     </head>
     <body>
      
-<div id="info" style= "z-index: 10"><!--floating box-->
+<div id="info" class = 'nodisplay' style= "z-index: 10"><!--floating box-->
 <form id="example" name="example">
         Node ID: <input type="text" value="" id="findme" name="populateme" onchange= "updateText(value)" />
         X-Coord: <input type="text" value="" id="popx" name="populateme" onchange = "updateCoord(value, findme.value, 0)" />
@@ -53,7 +53,7 @@
 
         <div>
           <form action='' id="auto"><input type="checkbox" name='auto' value ='auto'/> Auto</form>
-        <form id= "radius"> <span>Radius:</span> <input type = 'text' name ='radius' id='radiustext'></form>
+        <form id= "radius" class = 'nodisplay'> <span>Radius:</span> <input type = 'text' name ='radius' id='radiustext'></form>
         <select id='nodeType'>
           <option value="walk">Walk</option>
           <option value="room">Room</option>
@@ -62,22 +62,22 @@
           <option value="elevator">Elevator</option>
           <option value="entry">Entry</option>
         </select> 
-         <form id="stairinfo" name="stairinfo"><span id="stair">S/E set: </span><input type='text' name='stairset' id='stairset' size='10'>
-        <span id="stair1">Floors: </span><input type='text'id='floorset' name='floorset' size='10'>
+         <form id="stairinfo" name="stairinfo"><span id="stair" class = 'nodisplay'>S/E set: </span><input type='text' name='stairset' id='stairset' class = 'nodisplay' size='10'>
+        <span id="stair1" class = 'nodisplay'>Floors: </span><input type='text'id='floorset' class = 'nodisplay' name='floorset' size='10'>
         </form>
-         <form id="vertical">
+         <form id="vertical" class = 'nodisplay'>
           <input type='radio' name="dirnodes" value='u'checked='checked'>Up
           <input type='radio' name="dirnodes" value='d'>Down   
           <input type='radio' name="dirnodes" value='b'>Both   
         </form>
-        <form id="gender">
+        <form id="gender" class = 'nodisplay'>
           <input type='radio' name='gender' value='F'>Female
           <input type='radio' name='gender' value='M' checked='checked'>Male     
         </form>
-        <form id= "roomNumber">
+        <form id= "roomNumber" class = 'nodisplay'>
           Room Number: <input type = 'text' name ='numtextbox'>
         </form>  
-        <form id= "entryway">
+        <form id= "entryway" class = 'nodisplay'>
           Entryway Number: <input type = 'text' name ='entryway'>
         </form>  
         <form id= "scaleMe" class = 'scalers'>
@@ -92,13 +92,13 @@
         </select></label>
 
         <!-- Tools for editing -->
-        <form id="dedit">
+        <form id="dedit" class = 'nodisplay'>
           <input type='radio' name='dedit' value="resize" checked='checked'>Move
           <input type='radio' name='dedit' value='deleted' >Delete 
           <input type='radio' name='dedit' value='straightline'>Straight Line
           <input type='radio' name='dedit' value='autonode'>Add Node
         </form>
-        <form action='' id="snapping">
+        <form action='' id="snapping" class = 'nodisplay'>
           <input type='checkbox' name='snapping' value='snapping'>Snapping  
         </form>   
         </form>

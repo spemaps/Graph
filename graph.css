@@ -123,42 +123,13 @@ span {
 	width: 35px;
 }
 
-#snapping{
+.nodisplay{
 	display: none;
 }
-#gender{
+.scalers{
 	display: none;
 }
-#roomNumber{
-	display: none;
-}
-#entryway{
-	display: none;
-}
-#radius{
-	display: inline-block;
-}    
-#info{
-	display: none;
-}
-#stairset{
-	display: none;
-}
-#floorset{
-	display: none;
-}
-#stair{
-	display: none;
-}
-#stair1{
-	display: none;
-}    
-#dedit{
-	display: none;
-}
-#vertical{
-	display: none;
-}
+
 .Forup {
 	font-size: 14px;
 }   
@@ -167,12 +138,4 @@ span {
 }
 #zoomname {
 	font-size: 16px;
-}
-#scaleMe {
-	display: none;
-}
-#units {
-	display: none;
-}
-
-    
+}    
