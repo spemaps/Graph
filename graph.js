@@ -192,6 +192,7 @@ function display(id, style) {
             display('stair1', 'none');
             display('dedit', 'none');
             display('snapping','none');
+            display('vertical', 'none');
 
             
             if(selectedT == 'node'){
@@ -210,10 +211,17 @@ function display(id, style) {
                 }
                 else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
                     display('stairset', 'inline-block');
-                    display('floorset', 'inline-block');
                     display('stair', 'inline-block');
-                    display('stair1', 'inline-block');
                     display('stairinfo', 'inline-block');
+
+                    if (document.getElementById("nodeType").value == "stairs") {
+                      display('vertical', 'inline-block');
+
+                    }
+                    else{
+                      display('floorset', 'inline-block');
+                      display('stair1', 'inline-block');
+                    }
                 }
              }
 
@@ -578,7 +586,22 @@ function updateSet(news, i){
 };
 
 function updateFloor(newf, i){
-  nodeID(i).floorset = newf;
+
+ // nodeID(i).floorset = newf;
+
+ // array of floors in format like 1, 2, 4
+  var string = newf;
+  var parts;
+  if (string.indexOf(", ") != -1){
+    parts = string.split(",");
+    for(x in parts){
+      if (x.indexOf(" ")!= -1){
+        x = x.replace(/^\s+|\s+$/g,'');
+      }
+    }
+  }
+  nodeID(i).floorset = parts;
+
 };
 
 function updateVert(){
@@ -685,39 +708,49 @@ function showStairs(status, id){
     }
 
     function stairSpec(stat, id){
-      alert("hi stairs"+ stat);
+      
       display('popup', 'stat');
       display('popdown', 'stat');
       display('popboth', 'stat');
       display('no8', 'stat');
       display('no9', 'stat');
       display('no10', 'stat');
+      display('no11', 'stat');
+
+     
+      var radiobtn1 = document.getElementById("popup");
+      var radiobtn2 = document.getElementById("popdown");
+      var radiobtn3  = document.getElementById("popboth");
+
+      radiobtn1.checked = false; 
+      radiobtn2.checked = false; 
+      radiobtn3.checked = false; 
+
 
        //RADIOBUTTONS GO HERE
       if (stat != "none"){ 
-        var radiobtn1 = document.getElementById("popup");
-        var radiobtn2 = document.getElementById("popdown");
-        var radiobtn3  = document.getElementById("popboth");
-        var dir = nodeID(id).direction;
         
-        if (dir== "U") radiobtn1.checked = true; 
-        else if (dir == "D") radiobtn2.checked = true;
-        else radiobtn3.checked = true;
-      }
-      // set radiobuttons off b/c none
-      else{
-        radiobtn1.checked = false; 
-        radiobtn2.checked = false; 
-        radiobtn3.checked = false; 
+        dir = nodeID(id).vertical;
+        
+        if (dir== "U") {
+          radiobtn1.checked = true; 
+        }
+        else if (dir == "D") {
+          radiobtn2.checked = true;
+        }
+        else {
+          radiobtn3.checked = true;
+        }
       }
     };
 
     function elevatorSpec(stat, id){
-        alert("hi ele"+ stat);
         display('popfloors', 'stat');
         display('no7', 'stat');
+
         if (stat != "none"){
           document.example.popfloors.value = nodeID(id).floorset;
+          document.example.popset.value = nodeID(id).stairset;
         }
         else{
           document.example.popfloors.value = "";
