@@ -193,13 +193,12 @@ function display(id, style) {
             display('dedit', 'none');
             display('snapping','none');
             display('vertical', 'none');
-            display('auto', 'none');
+
             
             if(selectedT == 'node'){
                 //display
                 display('nodeType', 'inline-block');
                 display('radius', 'inline-block');
-                display('auto', 'inline-block');
 
                 if (document.getElementById("nodeType").value == "bathroom") {
                   display('gender', 'inline-block');
@@ -588,25 +587,21 @@ function updateSet(news, i){
 
 function updateFloor(newf, i){
 
+ // nodeID(i).floorset = newf;
+
  // array of floors in format like 1, 2, 4
   var string = newf;
-  var parts = parseFloor(string);
-  nodeID(i).floorset = parts;
-
-};
-
-// called on by node and by update FLoor~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function parseFloor(string){
   var parts;
-  if (string.indexOf(",") != -1){
+  if (string.indexOf(", ") != -1){
     parts = string.split(",");
     for(x in parts){
       if (x.indexOf(" ")!= -1){
-        x = x.replace(" ",'');
+        x = x.replace(/^\s+|\s+$/g,'');
       }
     }
   }
-  return parts//.sort(compareFunction);
+  nodeID(i).floorset = parts;
+
 };
 
 function updateVert(){
@@ -686,14 +681,14 @@ function showStairs(status, id){
     // Is this right? 
     if (status == "none"){
         document.example.popset.value = ""; 
-        stairSpec(status, "");
-        elevatorSpec(status, "");
+        stairSpec(status);
+        elevatorSpec(status);
 
     }
     //show elevator, hide stairs (FLOOR SETS)
     else if(nodeID(id).type == "elevator"){ 
-      elevatorSpec(status, id);
-      stairSpec('none', "");
+      elevatorSpec(status);
+      stairSpec('none');
     }
     //show stairs, hide elevator (THIS IS UP DOWN)
     else{
@@ -759,7 +754,6 @@ function showStairs(status, id){
         }
         else{
           document.example.popfloors.value = "";
-          document.example.popset.value = "";
         }
     };
 
@@ -1135,25 +1129,30 @@ tools.info = function () {
         if (document.getElementById("nodeType").value == 'elevator'){
 
           // array of floors in format like 1, 2, 4
-
-          
           var string = document.getElementById("floorset").value;
-          var parts = parseFloor(string)
+          var parts;
+          if (string.indexOf(", ") != -1){
+            parts = string.split(", ");
+          }
+          else if (string.indexOf(",")!= -1){
+            parts = string.split(",");
+          }
           nodeID(new_id - 1).floorset = parts;
-        }
+          }
           // stairs
-        else{
-          if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[0].checked)  {
-            nodeID(new_id - 1).vertical = 'U'; 
-          }
-          else if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[1].checked){
-            nodeID(new_id - 1).vertical = 'D'; 
-          }
           else{
-            nodeID(new_id - 1).vertical = 'B'; 
+            if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[0].checked)  {
+              nodeID(new_id - 1).vertical = 'U'; 
+            }
+            else if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[1].checked){
+              nodeID(new_id - 1).vertical = 'D'; 
+            }
+            else{
+              nodeID(new_id - 1).vertical = 'B'; 
+            }
+
           }
         }
-      }
 
        //update undo
        undo.push("n"); //add new to end
