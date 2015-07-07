@@ -80,11 +80,11 @@
         <form id= "entryway">
           Entryway Number: <input type = 'text' name ='entryway'>
         </form>  
-        <form id= "scaleMe">
+        <form id= "scaleMe" class = 'scalers'>
           Pixels:<input type='text' id = 'pixels' name='pixels' size = "6" value=''>
           Enter Distance: <input type='text' id = 'scaleDist' name='scaleDist' value='' size = "6" onchange = "storeUnits(value)"/>
         </form> 
-        <label><select id="units">
+        <label><select class = "scalers" id="units">
             <option value="meters">meters</option>
             <option value="centimeters">centimeters</option>
             <option value="yards">yards</option>

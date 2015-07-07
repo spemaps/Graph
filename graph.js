@@ -173,11 +173,11 @@ function changeCanvas(){
   function img_update () {
     contexto.drawImage(canvas, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
-   }
+   };
 
 function display(id, style) {
-  document.getElementById(id).style.display = style
-}
+  document.getElementById(id).style.display = style;
+};
 
  // The event handler for any changes made to the tool selector. 
   function ev_tool_change (ev) {
@@ -202,6 +202,10 @@ function display(id, style) {
             display('snapping','none');
             display('vertical', 'none');
             display('auto', 'none');
+            var scaleItemList = document.getElementsByClassName("scalers");
+            for(var x = 0; x < scaleItemList.length; x++){
+              display(scaleItemList[x].id, 'none');
+            }
             
             if(selectedT == 'node'){
                 //display
@@ -250,19 +254,21 @@ function display(id, style) {
                 }
               }
             }
+            else if(selectedT == 'scale'){
+              var scaleItemList = document.getElementsByClassName("scalers");
+              for(var x = 0; x < scaleItemList.length; x++){
+                display(scaleItemList[x].id, 'inline-block');
+              }
+            }
             //clear temporary canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
       }
     }
   }
 
+  // event handler for unit drop down menu.
   function ev_unit_change(ev){
-    for(var i = 0; i < unitlist.length; i++) {  
-      if(unitlist[i].checked == true)  {
-        scaleConversion.units = unitlist[i];
-        break;
-      }
-    }
+    scaleConversion.units = document.getElementById('units').value;
   };
 
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
