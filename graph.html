@@ -47,6 +47,7 @@
           <input type='radio' name='dtool' value='node' checked='checked'>Node
           <input type='radio' name='dtool' value='edge'>Edge    
           <input type='radio' name='dtool' value='edit'>Edit
+          <input type='radio' name='dtool' value='scale'>Scale
           <input type='radio' name='dtool' value='info'>Node Info
         </form></label>
 
@@ -78,7 +79,17 @@
         </form>  
         <form id= "entryway">
           Entryway Number: <input type = 'text' name ='entryway'>
-        </form>   
+        </form>  
+        <form id= "scaleMe">
+          Pixels:<input type='text' id = 'pixels' name='pixels' size = "6" value=''>
+          Enter Distance: <input type='text' id = 'scaleDist' name='scaleDist' value='' size = "6" onchange = "storeUnits(value)"/>
+        </form> 
+        <label><select id="units">
+            <option value="meters">meters</option>
+            <option value="centimeters">centimeters</option>
+            <option value="yards">yards</option>
+            <option value="feet">feet</option>
+        </select></label>
 
         <!-- Tools for editing -->
         <form id="dedit">

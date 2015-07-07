@@ -10,6 +10,8 @@ var radius = 3;
 var undo_length = 10;
 var newheight;
 var scale;
+var unitlist;
+var scaleConversion = {pixel:"", realDistance:"", units:"" };
 
 // The active tool instance.
 var tool;
@@ -81,6 +83,9 @@ var redo = [];
       edit = new edits[edit_default]();
       editlist.value = edit_default;
     }
+
+    unitlist = document.getElementById('units');
+    unitlist.addEventListener('change', ev_unit_change, false);
 
     //work with the undo/redo button
     var undo_click = document.getElementById('undo');
@@ -250,6 +255,15 @@ function display(id, style) {
       }
     }
   }
+
+  function ev_unit_change(ev){
+    for(var i = 0; i < unitlist.length; i++) {  
+      if(unitlist[i].checked == true)  {
+        scaleConversion.units = unitlist[i];
+        break;
+      }
+    }
+  };
 
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1072,6 +1086,67 @@ tools.info = function () {
      }
    }
  };   //end edge tool
+
+tools.scale = function() {
+  //draw a line to be the length of the scale.
+  // consider referencing parts of edge for this
+  var tool = this;
+  this.started = false;
+
+  var start_x = 0;
+  var start_y = 0;
+  var end_x = 0;
+  var end_y = 0;
+  var pixeldist;
+
+  this.mousedown = function (ev) {
+    tool.started = true;
+    tool.x0 = ev._x;
+    tool.y0 = ev._y;
+    //////save start coordinates
+    start_x = ev._x;
+    start_y = ev._y;
+   // new_line.coords = [];
+  };
+
+  this.mousemove = function (ev) {
+    if (!tool.started) {
+      return;
+    }
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    context.beginPath();
+    context.moveTo(tool.x0, tool.y0);
+    context.lineTo(ev._x,   ev._y);
+    context.lineWidth = 1;
+    context.stroke();
+    context.closePath();
+  };
+
+  this.mouseup = function (ev) {
+    if (tool.started) {
+      tool.mousemove(ev);
+      end_x = ev._x; //save end coords
+      end_y = ev._y; //save end coords
+      tool.started = false;
+      //img_update();
+     
+    pixelDist = Math.round(Math.sqrt(((start_x - end_x) * (start_x - end_x))+ ((start_y - end_y)*(start_y - end_y))));
+    // set textfield value to pixelDist
+    document.getElementById('pixels').value = pixelDist;
+    scaleConversion.pixel = pixelDist;
+    }
+  }
+
+};
+
+function storeUnits(realDist){
+  scaleConversion.realDistance = realDist;
+
+  // set units to default
+  scaleConversion.units = document.getElementById('units').value;
+};
 
 //node tool~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  tools.node = function () {
