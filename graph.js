@@ -1280,9 +1280,16 @@ function saveGraph() {
   var image = document.getElementById('image').value;
   image = image.substr(12);
 
+  var nodes_scaled = [];
+  for (var i = 0; i < nodes.length; i++){
+    nodes_scaled.push(nodes[i]);
+    nodes_scaled[i].coords[0] = unscale(nodes_scaled[i].coords[0]);
+    nodes_scaled[i].coords[1] = unscale(nodes_scaled[i].coords[1]);
+  }
+
   function Graph() {
     this.image = image;
-    this.nodes = nodes;
+    this.nodes = nodes_scaled;
     this.edges = edges;
   }
   document.getElementById('graph_info').value = JSON.stringify(new Graph());
@@ -1299,6 +1306,8 @@ function loadGraph() {
   var new_nodes = graph.nodes;
   var new_edges = graph.edges;
   for (var i = 0; i < new_nodes.length; i++) {
+    new_nodes[i].coords[0] = rescale(new_nodes[i].coords[0]);
+    new_nodes[i].coords[1] = rescale(new_nodes[i].coords[1]);
     nodes.push(new_nodes[i]);
   }
   for (var i = 0; i < new_edges.length; i++) {
