@@ -193,12 +193,13 @@ function display(id, style) {
             display('dedit', 'none');
             display('snapping','none');
             display('vertical', 'none');
-
+            display('auto', 'none');
             
             if(selectedT == 'node'){
                 //display
                 display('nodeType', 'inline-block');
                 display('radius', 'inline-block');
+                display('auto', 'inline-block');
 
                 if (document.getElementById("nodeType").value == "bathroom") {
                   display('gender', 'inline-block');
