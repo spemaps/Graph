@@ -16,7 +16,7 @@ div {
 }
 
 #undo {
-	margin-left: 50px;
+	margin-left: 15px;
 	position: relative;
 }
 
@@ -104,6 +104,13 @@ span {
 	width: 40px;
 }
 
+#popset {
+	width: 80px;
+}
+
+#popfloors {
+	width: 80px;
+}
 #stair {
 	font-size: 16px;
 }
@@ -152,9 +159,14 @@ span {
 #vertical{
 	display: none;
 }
+.Forup {
+	font-size: 14px;
+}   
 #auto{
 	display: inline-block;
 }
-
+#zoomname {
+	font-size: 16px;
+}
 
     

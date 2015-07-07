@@ -33,7 +33,14 @@
       <input type="button" value="Upload" onclick="changeCanvas()" id="upload"/>
         <button type="button" id="undo" class="undoredo"> Undo </button>
         <button type="button" id='redo' class="undoredo"> Redo </button>
-
+        <span id = 'zoomname'>Zoom: </span>
+          <select id = "zoom">
+            <option value = '1'> 1X </option>
+            <option value = '2'> 2X </option>
+            <option value = '3'> 3X </option>
+            <option value = '4'> 4X </option>
+            <option value = '5'> 5X </option>
+          </select>
         <div></div>
 
         <label><form id="dtool"><span>Drawing tool:</span> 
@@ -80,9 +87,9 @@
           <input type='radio' name='dedit' value='straightline'>Straight Line
           <input type='radio' name='dedit' value='autonode'>Auto Node
         </form>
-        <form id="snapping">
-          <input type='radio' name='snapping' value='on'>Snapping On
-          <input type='radio' name='snapping' value='off' checked='checked'>Off    
+        <form action='' id="snapping">
+          <input type='checkbox' name='snapping' value='snapping'>Snapping  
+        </form>   
         </form>
         </div>
 
