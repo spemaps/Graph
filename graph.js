@@ -136,8 +136,8 @@ function changeCanvas(){
       height = this.height
 
       //resizing the uploaded image
-      height = height * 1000 / width;
-      width = 1000;
+      height = height * 1000 / width * document.getElementById('zoom').value;
+      width = 1000 * document.getElementById('zoom').value;
       newheight = height;
 
       //change canvas
@@ -227,6 +227,9 @@ function display(id, style) {
                 if(editlist[i].checked == true) {
                   var selectedE = editlist[i].value;
                   edit = new edits[selectedE]; 
+                  if (editlist[i].value == 'resize'){
+                    display('snapping', 'block');
+                  }
                 }
               }
             }
