@@ -185,23 +185,17 @@ function display(id, style) {
       if(toollist[i].checked == true)  {
             var selectedT = toollist[i].value;
             tool = new tools[selectedT];
-         
-             //hide all. 
+            
+            // hide things
             display('nodeType', 'none');
-            display('radius', 'none');
-            display('info', 'none');
-            display('gender', 'none');
-            display('roomNumber', 'none');
-            display('entryway', 'none');
-            display('stairset', 'none');
-            display('stairinfo', 'none');
-            display('floorset', 'none');
-            display('stair', 'none');
-            display('stair1', 'none');
-            display('dedit', 'none');
-            display('snapping','none');
-            display('vertical', 'none');
             display('auto', 'none');
+            display('stair1', 'none');
+
+            var hideItemList = document.getElementsByClassName("nodisplay");
+            for(var x = 0; x < hideItemList.length; x++){
+              display(hideItemList[x].id, 'none');
+            }
+
             var scaleItemList = document.getElementsByClassName("scalers");
             for(var x = 0; x < scaleItemList.length; x++){
               display(scaleItemList[x].id, 'none');
