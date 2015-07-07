@@ -206,7 +206,7 @@ function display(id, style) {
             if(selectedT == 'node'){
                 //display
                 display('nodeType', 'inline-block');
-                display('radius', 'inline-block');
+
                 display('auto', 'inline-block');
 
                 if (document.getElementById("nodeType").value == "bathroom") {
