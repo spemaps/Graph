@@ -9,6 +9,7 @@ var toollist;
 var radius = 3;
 var undo_length = 10;
 var newheight;
+var scale;
 
 // The active tool instance.
 var tool;
@@ -139,6 +140,8 @@ function changeCanvas(){
       height = height * 1000 / width * document.getElementById('zoom').value;
       width = 1000 * document.getElementById('zoom').value;
       newheight = height;
+
+      scale = document.getElementById('zoom').value;
 
       //change canvas
       canvaso.width = width; //edit sizes
@@ -1699,7 +1702,19 @@ edits.straightline = function() {
   }
 }
 
+function unscale(coord){
+  if (scale != 1) {
+    coord = coord/scale;
+  }
+  return coord;
+}
 
+function rescale(coord){
+  if (scale == 1) {
+    coord = coord * scale;
+  }
+  return coord;
+}
 
  // EVENT LISTENERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  if (window.addEventListener) {
