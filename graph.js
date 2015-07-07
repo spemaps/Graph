@@ -310,6 +310,9 @@ function colorFind(node_id, new_node) {
       if (document.getElementsByName("gender")[0].checked) gender = 'F';
       else gender = 'M';
     } 
+    else{
+      gender = nodeID(node_id).gender;
+    }
     if (gender == 'M') return '#2ECCFA';
     else return '#F781BE';
    } else if (nodeType =='stairs')
@@ -1073,7 +1076,7 @@ tools.info = function () {
          tool.started = false;
          //draw the endpoints onto the nodes
          draw_node(start_x, start_y, radius, colorFind(start_id,false), 1);
-         draw_node(nodeID(end_id).coords[0], nodeID(end_id).coords[1], radius, colorFind(end_id,false), 1);
+         draw_node(nodeID(end_id).coords[0], nodeID(end_id).coords[1], radius, colorFind(end_id, false), 1);
          img_update();
          //////append new edge to array of edges,false
          edges.push(new Edge([start_id, end_id]));
