@@ -810,14 +810,14 @@ function undoIt(ev) {
      redo.push(['n', bye_node]);//add to redo
    } 
 
-   else if (oops[0] == 'dn') { //undo delete node
+   else if (oops[0] == 'dn') { //undo delete node //['dn', remove, removed_edges]
     var removed = oops[1];
     var removed_edges = oops[2];
 
     //add node and edges back to arrays
     nodes.push(removed);
     for (var i = 0; i < removed_edges.length; i++) {
-      edges.push(new Edge(removed_edges[i]));
+      edges.push(removed_edges[i]);
       draw_edge(nodeID(removed_edges[i].coords[0]).coords[0], nodeID(removed_edges[i].coords[0]).coords[1], nodeID(removed_edges[i].coords[1]).coords[0], nodeID(removed_edges[i].coords[1]).coords[1], 'black', 2); //redraw edge
     }
 
@@ -827,13 +827,13 @@ function undoIt(ev) {
     redo.push(['dn', removed.id]);  
    }
 
-   else if (oops[0] == 'de') { //undo delete edge
+   else if (oops[0] == 'de') { //undo delete edge //['de', remove]
     var removed = oops[1];
     edges.push(removed);
     draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
 
     //add to redo
-    redo.push(['de', removed]);
+    redo.push(['de', edges.length - 1]);
    }
 
    else if (oops[0] == 'an') { //undo auto node --  ['an', node id, endpoint node id, endpoint node id]
@@ -924,13 +924,7 @@ function redoIt(ev) {
   } 
 
   else if (jk[0] == 'de') {
-    var removed = jk[1];
-    var remove_id;
-    //find ID of removed edge
-    for(var i = 0; i < edges.length; i++) {
-      if(edges[i].coords[0] == removed.coords[0] && edges[i].coords[1] == remove.coords[1])
-        remove_id = i;
-    }
+    var remove_id = jk[1];
 
     undoPush(removeEdge(remove_id));
   }
@@ -1576,7 +1570,7 @@ edits.deleted = function() {
         //remove closest
         context.clearRect(0, 0, canvas.width, canvas.height);
         if (closest[0] == 'e') {
-         removeEdge(remove_id);
+         undoPush(removeEdge(remove_id));
         }
         else if (closest[0] == 'n') {
           undoPush(removeNode(nodes[remove_id].id));
