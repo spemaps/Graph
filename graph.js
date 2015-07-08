@@ -1177,13 +1177,13 @@ function storeUnits(realDist){
         near = regionDetection(ev._x, ev._y);
         if (near[0] == 'n') {
           //draw edge to node
-          draw_edge(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], nodes[near[1]].coords[0], nodes[near[1]].coords[1], 'black', 2);
-          draw_node(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], radius, colorFind(nodes[closest[1]].id, false), 1);
-          draw_node(nodes[near[1]].coords[0], nodes[near[1]].coords[1], radius, colorFind(nodes[near[1]].id, false), 1);
+          draw_edge(closest[2].coords[0], closest[2].coords[1], near[2].coords[0], near[2].coords[1], 'black', 2);
+          draw_node(closest[2].coords[0], closest[2].coords[1], radius, colorFind(closest[2].id, false), 1);
+          draw_node(near[2].coords[0], near[2].coords[1], radius, colorFind(near[2].id, false), 1);
         } else {
           //draw edge and node on the end
-          draw_edge(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], ev._x, ev._y, 'black', 2);
-          draw_node(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], radius, colorFind(nodes[closest[1]].id, false), 1);
+          draw_edge(closest[2].coords[0], closest[2].coords[1], ev._x, ev._y, 'black', 2);
+          draw_node(closest[2].coords[0], closest[2].coords[1], radius, colorFind(closest[2].id, false), 1);
           draw_node(ev._x, ev._y, radius, 'black', 1); //just draw a black one
         }
       } else {
@@ -1198,12 +1198,12 @@ function storeUnits(realDist){
 
       if (auto_edge && near[0] == 'n') {
           //set edge
-          edges.push(new Edge([nodes[closest[1]].id, nodes[near[1]].id]));
+          edges.push(new Edge([closest[2].id, near[2].id]));
           undoPush(["e", edges[edges.length - 1]]); //add new to end
       } else {
         if (auto_edge) {
           //set edge
-          edges.push(new Edge([new_id, nodes[closest[1]].id]));
+          edges.push(new Edge([new_id, closest[2].id]));
           nodes.push(new Node(new_id, [ev._x, ev._y], findNT()));
           new_id++;
 
@@ -1488,7 +1488,7 @@ function regionDetection(x, y) {
       }
     }
   }
-  if (distance != Infinity) return [closest, object];
+  if (distance != Infinity) return [closest, location, object];
 
   //check edges
   for (var i = 0; i < edges.length; i++) {
