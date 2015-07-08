@@ -806,7 +806,7 @@ function undoIt(ev) {
    else if (oops == 'n') {
      //remove node from array
      var bye_node = nodes.pop();
-     remove_nodes(bye_node.coords);//remove node from drawing
+     remove_nodes(bye_node.coords);//remove node from drawing\
      redo.push(['n', bye_node]);//add to redo
    } 
 
@@ -1211,9 +1211,6 @@ function storeUnits(realDist){
           //set edge
           edges.push(new Edge([nodes[closest[1]].id, nodes[near[1]].id]));
           undoPush("e"); //add new to end
-
-         
-        img_update();
       } else {
         if (auto_edge) {
           //set edge
@@ -1234,8 +1231,6 @@ function storeUnits(realDist){
            //update undo
            undoPush("n"); //add new to end
         }
-
-      img_update();
 
       //add extra attributes
       //add bathroom things
@@ -1296,6 +1291,7 @@ function storeUnits(realDist){
         var last_node = nodes[nodes.length - 1];
         draw_node(last_node.coords[0], last_node.coords[1], radius, colorFind(last_node.id, false), 1);
      }
+     img_update();
     }
    };
  }; //end tools.node
