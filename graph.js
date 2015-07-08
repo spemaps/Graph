@@ -1147,10 +1147,11 @@ function storeUnits(realDist){
 };
 
 //node tool~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ var near, closest;
  tools.node = function () {
    var tool = this;
    this.started = false;
-   var closest, x, y, near;
+   var x, y;
    var auto_node = false;
    var auto_edge = false;
 
@@ -1188,13 +1189,13 @@ function storeUnits(realDist){
         near = regionDetection(ev._x, ev._y);
         if (near[0] == 'n') {
           //draw edge to node
-          draw_edge(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], nodeID(near[1]).coords[0], nodeID(near[1]).coords[1], 'black', 2);
-          draw_node(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], radius, colorFind(nodeID(closest[1]).id, false), 1);
-          draw_node(nodeID(near[1]).coords[0], nodeID(near[1]).coords[1], radius, colorFind(nodeID(near[1]).id, false), 1);
+          draw_edge(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], nodes[near[1]].coords[0], nodes[near[1]].coords[1], 'black', 2);
+          draw_node(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], radius, colorFind(nodes[closest[1]].id, false), 1);
+          draw_node(nodes[near[1]].coords[0], nodes[near[1]].coords[1], radius, colorFind(nodes[near[1]].id, false), 1);
         } else {
           //draw edge and node on the end
-          draw_edge(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], ev._x, ev._y, 'black', 2);
-          draw_node(nodeID(closest[1]).coords[0], nodeID(closest[1]).coords[1], radius, colorFind(nodeID(closest[1]).id, false), 1);
+          draw_edge(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], ev._x, ev._y, 'black', 2);
+          draw_node(nodes[closest[1]].coords[0], nodes[closest[1]].coords[1], radius, colorFind(nodes[closest[1]].id, false), 1);
           draw_node(ev._x, ev._y, radius, 'black', 1); //just draw a black one
         }
       } else {
@@ -1209,7 +1210,7 @@ function storeUnits(realDist){
 
       if (auto_edge && near[0] == 'n') {
           //set edge
-          edges.push(new Edge([nodeID(closest[1]).id, nodeID(near[1]).id]));
+          edges.push(new Edge([nodes[closest[1]].id, nodes[near[1]].id]));
           undoPush("e"); //add new to end
 
          
@@ -1217,7 +1218,7 @@ function storeUnits(realDist){
       } else {
         if (auto_edge) {
           //set edge
-          edges.push(new Edge([new_id, nodeID(closest[1]).id]));
+          edges.push(new Edge([new_id, nodes[closest[1]].id]));
           nodes.push(new Node(new_id, [ev._x, ev._y], findNT()));
           new_id++;
 
