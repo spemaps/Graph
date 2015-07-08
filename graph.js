@@ -1322,7 +1322,7 @@ function storeUnits(realDist){
      if (first_run) {
        //removal of original edges to the moved node
        for (var i = 0; i < connect_id.length; i++) {
-         remove_edges(nodes[connect_id[i]].coords, [old_x, old_y], connect_id[i], node_id);
+         remove_edges(nodeID(connect_id[i]).coords, [old_x, old_y], connect_id[i], node_id);
         }
        //remove original node
        remove_nodes([old_x, old_y]);
@@ -1344,7 +1344,7 @@ function storeUnits(realDist){
 
      if (snapping) { //if snapping is on
        for (var i = 0; i < connect_id.length; i++) { //for all neighbors of the node
-         var coords = nodes[connect_id[i]].coords;
+         var coords = nodeID(connect_id[i]).coords;
          if (snapping_x) {
            if (Math.abs(coords[0] - current_x) <= tolerance) {
              current_x = coords[0];
