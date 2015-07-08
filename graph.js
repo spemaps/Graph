@@ -167,6 +167,7 @@ function changeCanvas(){
   } 
   fileread.readAsDataURL(file);
     document.getElementById('container').height = newheight;
+  img_update();
 }; 
 
  // This function draws the #imageTemp canvas on top of #imageView, after which 
