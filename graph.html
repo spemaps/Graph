@@ -34,7 +34,7 @@
         <button type="button" id="undo" class="undoredo"> Undo </button>
         <button type="button" id='redo' class="undoredo"> Redo </button>
         <span id = 'zoomname'>Zoom: </span>
-          <select id = "zoom">
+          <select id = "zoom" onchange="changeCanvas()">
             <option value = '1.0'> 1X </option>
             <option value = '2.0'> 2X </option>
             <option value = '3.0'> 3X </option>
