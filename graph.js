@@ -262,6 +262,7 @@ function display(id, style) {
     }
   }
 
+//<<<<<<< Updated upstream
   // event handler for unit drop down menu.
   function ev_unit_change(ev){
     scaleConversion.units = document.getElementById('units').value;
@@ -712,11 +713,6 @@ function showStairs(status, id){
         elevatorSpec(status, "");
 
     }
-    //show elevator, hide stairs (FLOOR SETS)
-    else if(nodeID(id).type == "elevator"){ 
-      elevatorSpec(status, id);
-      stairSpec('none', "");
-    }
     //show stairs, hide elevator (THIS IS UP DOWN)
     else{
       // general
@@ -781,7 +777,6 @@ function showStairs(status, id){
         }
         else{
           document.example.popfloors.value = "";
-          document.example.popset.value = "";
         }
     };
 
