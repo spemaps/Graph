@@ -1441,7 +1441,7 @@ function loadGraph() {
     draw_edge(nodeID(edges[i].coords[0]).coords[0], nodeID(edges[i].coords[0]).coords[1], nodeID(edges[i].coords[1]).coords[0], nodeID(edges[i].coords[1]).coords[1], 'black', 2);
   }
   for (var i = 0; i < nodes.length; i++) {
-    draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i, false), 1);
+    draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(nodes[i].id, false), 1);
   }
   img_update();
   //set background IF no current background
