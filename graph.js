@@ -789,20 +789,29 @@ function undoIt(ev) {
  }
  else {
   var oops = undo.pop(); //get what to undo
-   if (oops == 'e') {
+   if (oops[0] == 'e') {
      //remove edge from array
-     var bye_edge = edges.pop();
-     start_coords = nodeID(bye_edge.coords[0]).coords;
-     end_coords = nodeID(bye_edge.coords[1]).coords;
-     remove_edges(start_coords, end_coords, bye_edge.coords[0], bye_edge.coords[1]);//remove photo
-     redo.push(['e', bye_edge]); //add to redo
+     var removed = oops[1];
+     var removed_id;
+     if (typeof(removed) == "number") {
+      removed_id = removed;
+     } else {
+       for (var i = 0; i < edges.length; i++) {
+        if ((edges[i].coords[0] == removed.coords[0]) && (edges[i].coords[1] == removed.coords[1])) {
+          removed_id = i;
+        }
+       }
+     }
+     var returned = removeEdge(removed_id);
+     returned[0] = 'e';
+     redo.push(returned); //add to redo
    } 
 
-   else if (oops == 'n') {
-     //remove node from array
-     var bye_node = nodes.pop();
-     remove_nodes(bye_node.coords);//remove node from drawing\
-     redo.push(['n', bye_node]);//add to redo
+   else if (oops[0] == 'n') {
+      var removed = oops[1]; //removed node id
+      var returned = removeNode(removed);
+      returned[0] = 'n';
+      redo.push(returned);
    } 
 
    else if (oops[0] == 'dn') { //undo delete node //['dn', remove, removed_edges]
@@ -895,33 +904,38 @@ function redoIt(ev) {
  else {
   var jk = redo.pop();
   if (jk[0] == 'e') { //REDO EDGES
-   var redo_edge = jk[1];
-   edges.push(redo_edge); //add edge to array
-   //get edge coordinates
-   start_coords = nodeID(redo_edge.coords[0]).coords;
-   end_coords = nodeID(redo_edge.coords[1]).coords;
-   //draw edge
-   draw_edge(start_coords[0], start_coords[1], end_coords[0], end_coords[1], 'black', 2);
-   //draw two noes around it
-   draw_node(start_coords[0], start_coords[1], radius, colorFind(redo_edge.coords[0],false), 1);
-   draw_node(end_coords[0], end_coords[1], radius, colorFind(redo_edge.coords[1],false), 1);
-   img_update();
-   undoPush('e'); //add back to undo
+    var removed = jk[1];
+    edges.push(removed);
+    draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
+
+    //add to undo
+    undoPush(['e', edges.length - 1]);
   } 
 
   else if (jk[0] == 'n') { //REDO NODES
-   var redo_node = jk[1];
-   nodes.push(redo_node); //add node to array
-   //draw node
-   draw_node(redo_node.coords[0], redo_node.coords[1], radius, colorFind(redo_node.id,false), 1);
-   img_update();
-   undoPush('n'); //add back to undo
+   var removed = jk[1];
+    var removed_edges = jk[2];
+
+    //add node and edges back to arrays
+    nodes.push(removed);
+    for (var i = 0; i < removed_edges.length; i++) {
+      edges.push(removed_edges[i]);
+      draw_edge(nodeID(removed_edges[i].coords[0]).coords[0], nodeID(removed_edges[i].coords[0]).coords[1], nodeID(removed_edges[i].coords[1]).coords[0], nodeID(removed_edges[i].coords[1]).coords[1], 'black', 2); //redraw edge
+    }
+
+    draw_node(removed.coords[0], removed.coords[1], radius, colorFind(removed.id, false), 1); 
+   
+    //add to undo
+    undoPush(['n', removed.id]);
   } 
 
   else if (jk[0] == 'de') {
-    var remove_id = jk[1];
+    var removed = oops[1];
+    edges.push(removed);
+    draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
 
-    undoPush(removeEdge(remove_id));
+    //add to redo
+    undoPush(['e', removed]);
   }
 
   else if (jk[0] == 'dn') {
@@ -1072,7 +1086,7 @@ tools.info = function () {
          //////append new edge to array of edges,false
          edges.push(new Edge([start_id, end_id]));
          //update undo
-         undoPush("e"); //add new to end
+         undoPush(["e", edges.length - 1]); //add new to end
        }
      }
    }
@@ -1199,7 +1213,7 @@ function storeUnits(realDist){
       if (auto_edge && near[0] == 'n') {
           //set edge
           edges.push(new Edge([nodes[closest[1]].id, nodes[near[1]].id]));
-          undoPush("e"); //add new to end
+          undoPush(["e", edges.length - 1]); //add new to end
       } else {
         if (auto_edge) {
           //set edge
@@ -1207,8 +1221,8 @@ function storeUnits(realDist){
           nodes.push(new Node(new_id, [ev._x, ev._y], findNT()));
           new_id++;
 
-          undoPush("n"); //add new to end
-          undoPush("e"); //add new to end
+          undoPush(["n", new_id - 1]); //add new to end
+          undoPush(["e", edges.length - 1]); //add new to end
         }
         else if (auto_node) {
           nodes.push(new Node(new_id, [x, y], findNT()));
@@ -1218,7 +1232,7 @@ function storeUnits(realDist){
           new_id++;
 
            //update undo
-           undoPush("n"); //add new to end
+           undoPush(["n", new_id - 1]); //add new to end
         }
 
       //add extra attributes
