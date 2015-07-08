@@ -1472,7 +1472,7 @@ function clearGraph() {
 function regionDetection(x, y) { 
   var closest; //closest object
   var distance = Infinity; //distance of closest object
-  var location; //location of object in array
+  var object; //location of object in array
   var range = 5;
 
   //check nodes
@@ -1483,11 +1483,11 @@ function regionDetection(x, y) {
       if (dist < distance) {
         closest = 'n';
         distance = dist;
-        location = i;
+        object = nodes[i];
       }
     }
   }
-  if (distance != Infinity) return [closest, location];
+  if (distance != Infinity) return [closest, object];
 
   //check edges
   for (var i = 0; i < edges.length; i++) {
@@ -1505,13 +1505,13 @@ function regionDetection(x, y) {
       if (dist < range && dist + radius + range + 5 < distance) {
         closest = 'e';
         distance = dist;
-        location = i;
+        object = edges[i];
       }
     }
   }
 
   if (distance == Infinity) return ['none'];
-  return [closest, location];
+  return [closest, location, object];
 }
 
 //The edit tool
@@ -1528,7 +1528,6 @@ edits.deleted = function() {
 
    var closest;
    var remove;
-   var remove_id;
 
    this.mousedown = function (ev) {
      edit.started = true;
@@ -1542,15 +1541,13 @@ edits.deleted = function() {
      //region detection
      closest = regionDetection(ev._x, ev._y);
      if (closest[0] != 'none') { //if returned something
-      remove_id = closest[1];
+      remove = closest[2];
 
        //highlight node or edge
        if (closest[0] == 'e') {
-        remove = edges[remove_id];
          draw_edge(nodeID(remove.coords[0]).coords[0], nodeID(remove.coords[0]).coords[1], nodeID(remove.coords[1]).coords[0], nodeID(remove.coords[1]).coords[1], 'yellow', 2);
        }
        else if (closest[0] == 'n') {
-         remove = nodes[remove_id];
          draw_node(remove.coords[0], remove.coords[1], radius, 'yellow', 1);
        }
      }
@@ -1564,10 +1561,10 @@ edits.deleted = function() {
         //remove closest
         context.clearRect(0, 0, canvas.width, canvas.height);
         if (closest[0] == 'e') {
-         undoPush(removeEdge(edges[remove_id]));
+         undoPush(removeEdge(remove));
         }
         else if (closest[0] == 'n') {
-          undoPush(removeNode(nodes[remove_id].id));
+          undoPush(removeNode(remove.id));
         }
       }
     }
@@ -1680,7 +1677,7 @@ edits.autonode = function() {
 }
 
   function autonode_mousemove(x, y, closest) { //returns coordinates
-    var endpoints = edges[closest[1]].coords;
+    var endpoints = closest[2].coords;
     var a = nodeID(endpoints[0]).coords;
     var b = nodeID(endpoints[1]).coords;
     var u = (x - a[0])*(b[0] - a[0]) + (y - a[1])*(b[1] - a[1]);
@@ -1692,8 +1689,8 @@ edits.autonode = function() {
   }
 function autonode_mouseup(x, y, closest) {
   //remove edge, add two new edges
-  var coords = edges[closest[1]].coords;
-  removeEdge(edges[closest[1]]);
+  var coords = closest[2].coords;
+  removeEdge(closest[2]);
   edges.push(new Edge([new_id, coords[0]]));
   edges.push(new Edge([new_id, coords[1]]));
   new_id++;
