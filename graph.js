@@ -1147,11 +1147,10 @@ function storeUnits(realDist){
 };
 
 //node tool~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- var near, closest;
  tools.node = function () {
    var tool = this;
    this.started = false;
-   var x, y;
+   var x, y, near, closest;
    var auto_node = false;
    var auto_edge = false;
 
@@ -1855,7 +1854,7 @@ edits.straightline = function() {
 
 function undoPush(to_undo) {
   undo.push(to_undo); //add to undo
-    if(undo.length == undo_length) {  
+    while (undo.length > undo_length) {  
       undo.shift(); //only store last in range
     }
 }
