@@ -792,17 +792,8 @@ function undoIt(ev) {
    if (oops[0] == 'e') {
      //remove edge from array
      var removed = oops[1];
-     var removed_id;
-     if (typeof(removed) == "number") {
-      removed_id = removed;
-     } else {
-       for (var i = 0; i < edges.length; i++) {
-        if ((edges[i].coords[0] == removed.coords[0]) && (edges[i].coords[1] == removed.coords[1])) {
-          removed_id = i;
-        }
-       }
-     }
-     var returned = removeEdge(removed_id);
+     
+     var returned = removeEdge(removed);
      returned[0] = 'e';
      redo.push(returned); //add to redo
    } 
@@ -837,7 +828,7 @@ function undoIt(ev) {
     draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
 
     //add to redo
-    redo.push(['de', edges.length - 1]);
+    redo.push(['de', removed]);
    }
 
    else if (oops[0] == 'an') { //undo auto node --  ['an', node id, endpoint node id, endpoint node id]
@@ -851,7 +842,7 @@ function undoIt(ev) {
     //remove edges
     for (var i = 0; i < edges.length; i++) {
       if (edges[i].coords[0] == oops[1] && (edges[i].coords[1] == oops[2] || edges[i].coords[1] == oops[3])) {
-        removeEdge(i);
+        removeEdge(edges[i]);
       }
     }
 
@@ -909,7 +900,7 @@ function redoIt(ev) {
     draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
 
     //add to undo
-    undoPush(['e', edges.length - 1]);
+    undoPush(['e', removed]);
   } 
 
   else if (jk[0] == 'n') { //REDO NODES
@@ -930,12 +921,7 @@ function redoIt(ev) {
   } 
 
   else if (jk[0] == 'de') {
-    var removed = oops[1];
-    edges.push(removed);
-    draw_edge(nodeID(removed.coords[0]).coords[0], nodeID(removed.coords[0]).coords[1], nodeID(removed.coords[1]).coords[0], nodeID(removed.coords[1]).coords[1], 'black', 2); //redraw edge
-
-    //add to redo
-    undoPush(['e', removed]);
+    undoPush(removeEdge(jk[1]));
   }
 
   else if (jk[0] == 'dn') {
@@ -952,7 +938,7 @@ function redoIt(ev) {
     var to_remove;
     for (var i = 0; i < edges.length; i++) {
       if (edges[i].coords[1] == sideA && edges[i].coords[0] == sideB || edges[i].coords[0] == sideA && edges[i].coords[1] == sideB)
-        to_remove = i;
+        to_remove = edges[i];
     }
     removeEdge(to_remove);
 
@@ -972,7 +958,6 @@ function redoIt(ev) {
     draw_node(nodeB.coords[0], nodeB.coords[1], radius, colorFind(sideB, false), 1);
 
     undoPush([jk[0], jk[1], jk[2], jk[3]]);
-    img_update();
   }
 
   else { //REDO RESIZE
@@ -997,11 +982,11 @@ function redoIt(ev) {
 
    draw_node(coords[0], coords[1], radius, colorFind(node_id,false), 1);
    nodeID(node_id).coords = coords; //update coords of node
-   img_update();
    
    //push to redo
    undoPush([node_id, old_coords, connected_edges]); //node id, old coordinates, connect_id[]
   }
+  img_update();
  }
 };
  
@@ -1086,7 +1071,7 @@ tools.info = function () {
          //////append new edge to array of edges,false
          edges.push(new Edge([start_id, end_id]));
          //update undo
-         undoPush(["e", edges.length - 1]); //add new to end
+         undoPush(["e", edges[edges.length - 1]]); //add new to end
        }
      }
    }
@@ -1213,7 +1198,7 @@ function storeUnits(realDist){
       if (auto_edge && near[0] == 'n') {
           //set edge
           edges.push(new Edge([nodes[closest[1]].id, nodes[near[1]].id]));
-          undoPush(["e", edges.length - 1]); //add new to end
+          undoPush(["e", edges[edges.length - 1]]); //add new to end
       } else {
         if (auto_edge) {
           //set edge
@@ -1222,7 +1207,7 @@ function storeUnits(realDist){
           new_id++;
 
           undoPush(["n", new_id - 1]); //add new to end
-          undoPush(["e", edges.length - 1]); //add new to end
+          undoPush(["e", edges[edges.length - 1]]); //add new to end
         }
         else if (auto_node) {
           nodes.push(new Node(new_id, [x, y], findNT()));
@@ -1579,7 +1564,7 @@ edits.deleted = function() {
         //remove closest
         context.clearRect(0, 0, canvas.width, canvas.height);
         if (closest[0] == 'e') {
-         undoPush(removeEdge(remove_id));
+         undoPush(removeEdge(edges[remove_id]));
         }
         else if (closest[0] == 'n') {
           undoPush(removeNode(nodes[remove_id].id));
@@ -1629,7 +1614,15 @@ function removeNode(remove_id) {
   img_update();
 }
 
-function removeEdge(remove_id) {
+function removeEdge(edge) { //takes in the edge
+  var remove_id;
+  //find the edge
+  for (var i = 0; i < edges.length; i++) {
+    if ((edges[i].coords[0] == edge.coords[0]) && (edges[i].coords[1] == edge.coords[1])) {
+      removed_id = i;
+    }
+  } 
+
   remove = edges.splice(remove_id, 1)[0];
   remove_edges(nodeID(remove.coords[0]).coords, nodeID(remove.coords[1]).coords, remove.coords[0], remove.coords[1]); //remove from screen
          
@@ -1700,7 +1693,7 @@ edits.autonode = function() {
 function autonode_mouseup(x, y, closest) {
   //remove edge, add two new edges
   var coords = edges[closest[1]].coords;
-  removeEdge(closest[1]);
+  removeEdge(edges[closest[1]]);
   edges.push(new Edge([new_id, coords[0]]));
   edges.push(new Edge([new_id, coords[1]]));
   new_id++;
