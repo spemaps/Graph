@@ -1208,7 +1208,6 @@ function storeUnits(realDist){
           new_id++;
 
           undoPush(["n", new_id - 1]); //add new to end
-          undoPush(["e", edges[edges.length - 1]]); //add new to end
         }
         else if (auto_node) {
           nodes.push(new Node(new_id, [x, y], findNT()));
@@ -1501,8 +1500,15 @@ function regionDetection(x, y) {
     if ((Math.min(coordsA[0], coordsB[0]) - range - 2) <= x && x <= (Math.max(coordsA[0], coordsB[0]) + range + 2) && //x coords
         (Math.min(coordsA[1], coordsB[1]) - range - 2) <= y && y <= (Math.max(coordsA[1], coordsB[1]) + range + 2)) { //y coords
       //find distance to line
-      var m = (coordsA[1] - coordsB[1]) / (coordsA[0] - coordsB[0]);
-      var dist = Math.abs(y - coordsA[1] - m * x + m * coordsA[0]) / Math.sqrt(1 + m * m);
+      var dist;
+      if (coordsA[0] == coordsB[0]) { //equal x coordinates
+        dist = Math.abs(coordsB[1] - coordsA[1]);
+      } else if (coordsB[1] == coordsA[1]) { //equal y coordinates
+        dist  = Math.abs(coordsB[0] - coordsA[0]);
+      } else {
+        var m = (coordsA[1] - coordsB[1]) / (coordsA[0] - coordsB[0]);
+        dist = Math.abs(y - coordsA[1] - m * x + m * coordsA[0]) / Math.sqrt(1 + m * m);
+      }
       if (dist < range && dist + radius + range + 5 < distance) {
         closest = 'e';
         distance = dist;
@@ -1617,7 +1623,7 @@ function removeEdge(edge) { //takes in the edge
   //find the edge
   for (var i = 0; i < edges.length; i++) {
     if ((edges[i].coords[0] == edge.coords[0]) && (edges[i].coords[1] == edge.coords[1])) {
-      removed_id = i;
+      remove_id = i;
     }
   } 
 
