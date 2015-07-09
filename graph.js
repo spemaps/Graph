@@ -263,10 +263,12 @@ function display(id, style) {
     }
   }
 
+
 //<<<<<<< Updated upstream
   // event handler for unit drop down menu.
   function ev_unit_change(ev){
     scaleConversion.units = document.getElementById('units').value;
+
   };
 
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -487,33 +489,15 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
 
 // Get edits from Nodeinfo and store with nodes.
 
-function updateCoord(newc, i, c){
-  var old = nodeID(i).coords[c];
-  nodeID(i).coords[c] = newc;
-  if(c==0){
-    remove_nodes(old, nodeID(i).coords[1]);
-  }
-  if(c==1){
-    remove_nodes(nodeID(i).coords[0], old);
-  }
-
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  //move node
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i, false), 1);
-  img_update();
-  //redraw selection
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius * 0.5, colorFind(i, false), 1);
-};
-
 function updateX(newx, i){
-  var old_x = nodeID(i).coords[c];
+  var old_x = nodeID(i).coords[0];
   nodeID(i).coords[0] = newx;
   remove_nodes([old_x, nodeID(i).coords[1]]);
   context.clearRect(0, 0, canvas.width, canvas.height);
   //move node
   draw_node(newx, nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
+
   //redraw selection
   draw_node(newx, nodeID(i).coords[1], radius, '#FFFF00', 1);
   draw_node(newx, nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
@@ -530,7 +514,6 @@ function updateY(newy, i){
   //redraw selection
   draw_node(nodeID(i).coords[0], newy, radius, '#FFFF00', 1);
   draw_node(nodeID(i).coords[0], newy, radius * 0.5, colorFind(i,false), 1);
-  alert("Have I been redrawn?");
 };
 
 function updateType(newt, i){
@@ -793,6 +776,7 @@ function undoIt(ev) {
    if (oops[0] == 'e') {
      //remove edge from array
      var removed = oops[1];
+     alert(oops[1].coords);
      
      var returned = removeEdge(removed);
      returned[0] = 'e';

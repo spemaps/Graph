@@ -15,8 +15,8 @@
 <div id="info" class = 'nodisplay' style= "z-index: 10"><!--floating box-->
 <form id="example" name="example">
         Node ID: <input type="text" value="" id="findme" name="populateme" onchange= "updateText(value)" />
-        X-Coord: <input type="text" value="" id="popx" name="populateme" onchange = "updateCoord(value, findme.value, 0)" />
-        Y-Coord: <input type="text" value="" id="popy" name="populateme" onchange = "updateCoord(value, findme.value, 1)"/><br>
+        X-Coord: <input type="text" value="" id="popx" name="populateme" onchange = "updateX(value, findme.value)" />
+        Y-Coord: <input type="text" value="" id="popy" name="populateme" onchange = "updateY(value, findme.value)"/><br>
         Type: <input type="text" value="" id="poptype" name="populateme" onchange = "updateType(value, findme.value)"/><br>
         <span class='infobox' id='no1'>Entry: </span><input type="text" value="" id="popentry" name="populateme" onchange = "updateEntry(value, findme.value)"/><br>
         <span class="infobox" id='no2'>Room: </span> <input type="text" value="" id="poproom" name="populateme" onchange = "updateRoom(value, findme.value)"/><br>
@@ -80,6 +80,7 @@
         <form id= "entryway" class = 'nodisplay'>
           Entryway Number: <input type = 'text' name ='entryway'>
         </form>  
+
 
         <form id= "scaleMe" class = 'scalers'>
           Pixels:<input type='text' id = 'pixels' name='pixels' size = "6" value=''>
