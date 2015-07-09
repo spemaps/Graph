@@ -490,30 +490,49 @@ function remove_edges(start_coords, end_coords, start_id, end_id) {
 // Get edits from Nodeinfo and store with nodes.
 
 function updateX(newx, i){
-  var old_x = nodeID(i).coords[0];
-  nodeID(i).coords[0] = newx;
-  remove_nodes([old_x, nodeID(i).coords[1]]);
+  var change_node = nodeID(i);
+  var old_x = change_node.coords[0];
+  change_node.coords[0] = newx;
   context.clearRect(0, 0, canvas.width, canvas.height);
-  //move node
-  draw_node(newx, nodeID(i).coords[1], radius, colorFind(i,false), 1);
+  //find and remove connected edges and redraw
+  var connected_edges = connectedEdges(change_node.id);
+  for (var i = 0; i < connected_edges.length; i++) {
+    var connected_node = nodeID(connected_edges[i]);
+    remove_edges([old_x, change_node.coords[1]], connected_node.coords, change_node.id, connected_node.id);
+    draw_edge(newx, change_node.coords[1], connected_node.coords[0], connected_node.coords[1], 'black', 2);
+  }
+  //remove and redraw node
+  remove_nodes([old_x, change_node.coords[1]]);
+  draw_node(newx, change_node.coords[1], radius, colorFind(i,false), 1);
+
   img_update();
 
   //redraw selection
-  draw_node(newx, nodeID(i).coords[1], radius, '#FFFF00', 1);
-  draw_node(newx, nodeID(i).coords[1], radius * 0.5, colorFind(i,false), 1);
+  draw_node(newx, change_node.coords[1], radius, '#FFFF00', 1);
+  draw_node(newx, change_node.coords[1], radius * 0.5, colorFind(i,false), 1);
 };
 
 function updateY(newy, i){
-  var old_y = nodeID(i).coords[1];
-  nodeID(i).coords[1] = newy;
-  remove_nodes([nodeID(i).coords[0], old_y]);
+  var change_node = nodeID(i);
+  var old_y = change_node.coords[1];
+  change_node.coords[1] = newy;
   context.clearRect(0, 0, canvas.width, canvas.height);
-  //move node
-  draw_node(nodeID(i).coords[0], newy, radius, colorFind(i,false), 1);
+
+  //find and remove connected edges and redraw
+  var connected_edges = connectedEdges(change_node.id);
+  for (var i = 0; i < connected_edges.length; i++) {
+    var connected_node = nodeID(connected_edges[i]);
+    remove_edges([change_node.coords[0], old_y], connected_node.coords, change_node.id, connected_node.id);
+    draw_edge(change_node.coords[0], newy, connected_node.coords[0], connected_node.coords[1], 'black', 2);
+  }
+  //remove and redraw node  
+  remove_nodes([change_node.coords[0], old_y]);
+  draw_node(change_node.coords[0], newy, radius, colorFind(i,false), 1);
+
   img_update();
   //redraw selection
-  draw_node(nodeID(i).coords[0], newy, radius, '#FFFF00', 1);
-  draw_node(nodeID(i).coords[0], newy, radius * 0.5, colorFind(i,false), 1);
+  draw_node(change_node.coords[0], newy, radius, '#FFFF00', 1);
+  draw_node(change_node.coords[0], newy, radius * 0.5, colorFind(i,false), 1);
 };
 
 function updateType(newt, i){
@@ -1394,6 +1413,7 @@ function saveGraph() {
 
   function Graph() {
     this.image = image;
+    this.scale = scaleConversion;
     this.nodes = nodes_scaled;
     this.edges = edges;
   }
@@ -1486,9 +1506,9 @@ function regionDetection(x, y) {
       //find distance to line
       var dist;
       if (coordsA[0] == coordsB[0]) { //equal x coordinates
-        dist = Math.abs(coordsB[1] - coordsA[1]);
+        dist = Math.abs(coordsB[0] - x);
       } else if (coordsB[1] == coordsA[1]) { //equal y coordinates
-        dist  = Math.abs(coordsB[0] - coordsA[0]);
+        dist  = Math.abs(coordsB[1] - y);
       } else {
         var m = (coordsA[1] - coordsB[1]) / (coordsA[0] - coordsB[0]);
         dist = Math.abs(y - coordsA[1] - m * x + m * coordsA[0]) / Math.sqrt(1 + m * m);
