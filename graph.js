@@ -264,11 +264,11 @@ function display(id, style) {
   }
 
 
+
 //<<<<<<< Updated upstream
   // event handler for unit drop down menu.
   function ev_unit_change(ev){
     scaleConversion.units = document.getElementById('units').value;
-
   };
 
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
