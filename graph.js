@@ -1479,13 +1479,15 @@ function downloadGraph(){
   var downloadLink = document.createElement("a");
   downloadLink.download = fileNameToSaveAs;
   downloadLink.innerHTML = "Download File";
-  if (window.URL != null)
+
+  var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+  if (is_chrome)
   {
     // Chrome allows the link to be clicked
     // without actually adding it to the DOM.
     downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
   }
-  else ///DOES NOT WORK YET
+  else 
   {
     // Firefox requires the link to be added to the DOM
     // before it can be clicked.
