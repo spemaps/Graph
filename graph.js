@@ -1471,6 +1471,39 @@ function clearGraph() {
   edges = [];
 }
 
+function downloadGraph(){
+
+  var textToWrite = document.getElementById('graph_info').value;
+  var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+  var fileNameToSaveAs = buildingName + buildingFloor;
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileNameToSaveAs;
+  downloadLink.innerHTML = "Download File";
+  if (window.URL != null)
+  {
+    // Chrome allows the link to be clicked
+    // without actually adding it to the DOM.
+    downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+  }
+  else ///DOES NOT WORK YET
+  {
+    // Firefox requires the link to be added to the DOM
+    // before it can be clicked.
+    downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+  }
+
+  downloadLink.click();
+
+};
+
+function destroyClickedElement(event)
+{
+  document.body.removeChild(event.target);
+}
+
 // Mouse Coordinates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  function mouseCoords(x, y) {
    var message = 'Mouse position: ' + x + ', ' + y;
