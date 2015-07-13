@@ -43,6 +43,11 @@
           </select>
         <div></div>
 
+         <form id = "building" name = "building">
+          Building: <input type = 'text' id = "buildingName" name = "buildingName" value = "" onchange ="buildingNameSet(value)" />
+          Floor: <input type = 'text' id = "buildingFloor" name = "buildingFloor"  size = "5" value = "" onchange = "buildingFloorSet(value)"/>
+        </form>  
+
         <label><form id="dtool"><span>Drawing tool:</span> 
           <input type='radio' name='dtool' value='node' checked='checked'>Node
           <input type='radio' name='dtool' value='edge'>Edge    

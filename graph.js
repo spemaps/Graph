@@ -3,7 +3,7 @@
  */
 
 //Global variables
-var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext
+var canvas, context, canvaso, contexto, backgroundCanvas, backgroundContext;
 var mouse_canvas, mouse_context;
 var toollist; 
 var radius = 3;
@@ -12,6 +12,7 @@ var newheight;
 var scale = 1;
 var unitlist;
 var scaleConversion = {pixel:"", realDistance:"", units:"" };
+var buildingName, buildingFloor;
 
 // The active tool instance.
 var tool;
@@ -263,12 +264,10 @@ function display(id, style) {
     }
   }
 
-
-
-//<<<<<<< Updated upstream
   // event handler for unit drop down menu.
   function ev_unit_change(ev){
     scaleConversion.units = document.getElementById('units').value;
+
   };
 
  //random functions section~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -360,6 +359,15 @@ function connectedEdges(node_id) {
      }
   return connect_id;
 }
+
+function buildingNameSet(name){
+  buildingName = name;
+};
+
+function buildingFloorSet(floor){
+  buildingFloor = floor;
+};
+
 
 // DRAWING TOOLS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1413,6 +1421,8 @@ function saveGraph() {
 
   function Graph() {
     this.image = image;
+    this.building = buildingName;
+    this.floor = buildingFloor;
     this.scale = scaleConversion;
     this.nodes = nodes_scaled;
     this.edges = edges;
