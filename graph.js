@@ -1447,7 +1447,7 @@ function downloadGraph(){
 
   var textToWrite = document.getElementById('graph_info').value;
   var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
-  var fileNameToSaveAs = buildingName + buildingFloor;
+  var fileNameToSaveAs = "floor" + buildingFloor;
   var downloadLink = document.createElement("a");
   downloadLink.download = fileNameToSaveAs;
   downloadLink.innerHTML = "Download File";
