@@ -643,15 +643,12 @@ function parseFloor(string){
   return parts//.sort(compareFunction);
 };
 
-function updateVert(){
-  var radiobtn = document.getElementById("popup");
-  var radiobtn1 = document.getElementById("popdown");
-  if (radiobtn.checked == true)
-    nodeID(i).direction = "U";
-  else if(radiobtn.checked ==true)
-    nodeID(i).direction = "D";
-  else nodeID(i).direction = "B";
-};
+// this works because the attribute for the node is the same as the id (or name) in the HTML. Standardize
+function updateVert(val, id, attribute){
+  nodeID(id).attribute = val;
+}; // COMBINE OTHER THINGS IN HERE! ++++++++++++++++++++++++++++++++++++++++++++++
+
+
 
 // HIDING FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -743,38 +740,20 @@ function showStairs(status, id){
 
     function stairSpec(stat, id){
       
-      display('popup', 'stat');
-      display('popdown', 'stat');
-      display('popboth', 'stat');
+      display('up', 'stat');
+      display('down', 'stat');
+      
       display('no8', 'stat');
       display('no9', 'stat');
       display('no10', 'stat');
-      display('no11', 'stat');
-
-     
-      var radiobtn1 = document.getElementById("popup");
-      var radiobtn2 = document.getElementById("popdown");
-      var radiobtn3  = document.getElementById("popboth");
-
-      radiobtn1.checked = false; 
-      radiobtn2.checked = false; 
-      radiobtn3.checked = false; 
-
-
-       //RADIOBUTTONS GO HERE
+  
       if (stat != "none"){ 
-        
-        dir = nodeID(id).vertical;
-        
-        if (dir== "U") {
-          radiobtn1.checked = true; 
-        }
-        else if (dir == "D") {
-          radiobtn2.checked = true;
-        }
-        else {
-          radiobtn3.checked = true;
-        }
+        document.getElementById("up").value = nodeID(id).up;
+        document.getElementById("down").value = nodeID(id).down;
+      }
+      else{
+        document.getElementById("up").value = "";
+        document.getElementById("down").value = "";
       }
     };
 
@@ -1261,7 +1240,7 @@ function storeUnits(realDist){
         nodeID(new_id - 1).stairset = document.getElementById("stairset").value;
         var value = document.getElementById("stairset").value;
         if (value != "") { //if an entryway number
-          value = parseInt(value) + 1;
+          value = parseInt(value) + 1; //concatenate
           document.getElementById("stairset").value = value.toString();
         }
         if (document.getElementById("nodeType").value == 'elevator'){
@@ -1273,17 +1252,10 @@ function storeUnits(realDist){
           var parts = parseFloor(string)
           nodeID(new_id - 1).floorset = parts;
         }
-          // stairs
+        //stairs new
         else{
-          if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[0].checked)  {
-            nodeID(new_id - 1).vertical = 'U'; 
-          }
-          else if (nodeID(new_id - 1).vertical = document.getElementsByName("dirnodes")[1].checked){
-            nodeID(new_id - 1).vertical = 'D'; 
-          }
-          else{
-            nodeID(new_id - 1).vertical = 'B'; 
-          }
+          nodeID(new_id - 1).up = document.getElementsByName("dirnodes")[0].value;
+          nodeID(new_id - 1).down = document.getElementsByName("dirnodes")[1].value;
         }
       }
         //redraw added node
@@ -1483,14 +1455,12 @@ function downloadGraph(){
   var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
   if (is_chrome)
   {
-    // Chrome allows the link to be clicked
-    // without actually adding it to the DOM.
+    // Chrome allows the link to be clicked without actually adding it to the DOM.
     downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
   }
   else 
   {
-    // Firefox requires the link to be added to the DOM
-    // before it can be clicked.
+    // Firefox requires the link to be added to the DOM before it can be clicked.
     downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
     downloadLink.onclick = destroyClickedElement;
     downloadLink.style.display = "none";
