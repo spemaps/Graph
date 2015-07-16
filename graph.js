@@ -1254,8 +1254,8 @@ function storeUnits(realDist){
         }
         //stairs new
         else{
-          nodeID(new_id - 1).up = document.getElementsByName("dirnodes")[0].value;
-          nodeID(new_id - 1).down = document.getElementsByName("dirnodes")[1].value;
+          nodeID(new_id - 1).up = document.getElementsByName("dirnodes")[1].value;
+          nodeID(new_id - 1).down = document.getElementsByName("dirnodes")[0].value;
         }
       }
         //redraw added node
