@@ -122,7 +122,9 @@ span {
 #stairset {
 	width: 35px;
 }
-
+#stairconnection{
+	font-size: 15.5px;
+}
 .nodisplay{
 	display: none;
 }
