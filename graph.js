@@ -1505,6 +1505,10 @@ function destroyClickedElement(event)
 // my new fun tools ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //given the mouse coordinates determines if in range of node or edge - if so returns
 //whichever object it is closest to
+
+//NOTE: location (the second variable returned) does not exist anymore. being left temporarily.
+// should be cleared out later. Anything that calls on region Detection will need to be adjusted
+//(from 2 to 1)
 function regionDetection(x, y) { 
   var closest; //closest object
   var distance = Infinity; //distance of closest object
@@ -1555,7 +1559,9 @@ function regionDetection(x, y) {
 
   if (distance == Infinity) return ['none'];
   return [closest, location, object];
-}
+};
+
+
 
 //The edit tool
 tools.edit = function() {
@@ -1753,43 +1759,43 @@ edits.straightline = function() {
   this.started = false;
 
   var closest;
-   var remove;
-   var remove_id;
-   var selected_node;
-   var selected_edge;
+  var remove;
+  var remove_id;
+  var selected_node;
+  var selected_edge;
 
-   this.mousedown = function (ev) {
+  this.mousedown = function (ev) {
     edit.started = true;
     selected_node = [];
     selected_edge = [];
-   }
+  }
 
-   this.mousemove = function (ev) {
-     if (!edit.started) {
-       return;
-     }
-     //region detection
-     closest = regionDetection(ev._x, ev._y);
-     if (closest[0] != 'none') { //if returned something
-      remove_id = closest[1];
+  this.mousemove = function (ev) {
+    if (!edit.started) {
+      return;
+    }
+    //region detection
+    closest = regionDetection(ev._x, ev._y);
+    if (closest[0] != 'none') { //if returned something
+      remove_id = closest[2];
 
-       //highlight node or edge
-       if (closest[0] == 'e') {
+      //highlight node or edge
+      if (closest[0] == 'e') {
         var contains = false;
-        for (var i = 0; i < selected_edge.length; i++) {
-          if (selected_edge[i] == closest[1])
+        remove = closest[2];
+        for (var i = 0; i < selected_edge.length; i++) { //checks for duplicates
+          if (selected_edge[i] == remove)
             contains = true;
         }
         if (!contains) { //doesnt already contain
-          selected_edge.push(closest[1]);
-          remove = edges[closest[1]];
+          selected_edge.push(remove);
           draw_edge(nodeID(remove.coords[0]).coords[0], nodeID(remove.coords[0]).coords[1], nodeID(remove.coords[1]).coords[0], nodeID(remove.coords[1]).coords[1], 'yellow', 2);
-         }
-       }
-       else if (closest[0] == 'n') {
+        }
+      }
+      else if (closest[0] == 'n') {
         var contains = false;
-        remove = nodes[remove_id];
-        for (var i = 0; i < selected_node.length; i++) {
+        remove = closest[2];
+        for (var i = 0; i < selected_node.length; i++) { // checks for duplicates
           if (selected_node[i].id == remove.id)
             contains = true;
         }
@@ -1833,7 +1839,7 @@ edits.straightline = function() {
         var result = {};
         var endpoints = [];
         for (var i = 0; i < selected_edge.length; i++) {
-          var coords = edges[selected_edge[i]].coords;
+          var coords = selected_edge[i].coords;
             if (!(coords[0] in result))
                 result[coords[0]] = 1;
             else {
