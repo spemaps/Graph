@@ -313,13 +313,15 @@ function colorFind(node_id, new_node) {
    else if (nodeType =='bathroom') {
     if (new_node) { 
       if (document.getElementsByName("gender")[0].checked) gender = 'F';
-      else gender = 'M';
+      else if (document.getElementsByName("gender")[1].checked) gender = 'M';
+      else gender = 'X';
     } 
     else{
       gender = nodeID(node_id).gender;
     }
     if (gender == 'M') return '#2ECCFA';
-    else return '#F781BE';
+    else if (gender == 'F') return '#F781BE';
+    else return '#FF9900';
    } else if (nodeType =='stairs')
      return '#5858FA';
    else if (nodeType =='elevator')
@@ -604,10 +606,10 @@ function updateRoom(newr, i){
 
 function updateGender(i){
   var radiobtn = document.getElementById("popfemale");
-  if (radiobtn.checked == true)
-    nodeID(i).gender = "F";
-  else
-    nodeID(i).gender = "M";
+  var radiobtn1 = document.getElementById("popmale")
+  if (radiobtn.checked == true) nodeID(i).gender = "F";
+  else if(radiobtn1.checked == true) nodeID(i).gender = "M";
+  else nodeID(i).gender = "X";
 
   draw_node(nodeID(i).coords[0], nodeID(i).coords[1], radius, colorFind(i,false), 1);
   img_update();
@@ -672,15 +674,20 @@ function showBathroom(status, gen){
   display('no3', 'status');
   display('no4', 'status');
   display('no5', 'status');
+   display('no5.5', 'status');
   display('popmale', 'status');
   display('popfemale', 'status');
+  display('popunisex', 'status');
   var radiobtn;
   var radiobtn1;
+  var radiobtn2;
   if(status == "none"){
     radiobtn = document.getElementById("popmale");
     radiobtn.checked = false; 
     radiobtn1 = document.getElementById("popfemale");
     radiobtn1.checked = false; 
+    radiobtn2 = document.getElementById("popunisex");
+    radiobtn2.checked = false; 
   }
   else if(gen == "M"){
     radiobtn = document.getElementById("popmale");
@@ -689,6 +696,10 @@ function showBathroom(status, gen){
   else if(gen == "F"){
     radiobtn = document.getElementById("popfemale");
       radiobtn.checked = true;
+  }
+   else if(gen == "X"){
+    radiobtn = document.getElementById("popunisex");
+    radiobtn.checked = true;
   }
   else{
     radiobtn = document.getElementById("popfemale");
@@ -1218,9 +1229,13 @@ function storeUnits(realDist){
         if (nodeID(new_id - 1).gender = document.getElementsByName("gender")[0].checked)  {
           nodeID(new_id - 1).gender = 'F'; //if female is checked
         }
-        else {
+        else if (nodeID(new_id - 1).gender = document.getElementsByName("gender")[1].checked) {
           nodeID(new_id - 1).gender = 'M'; //if male is checked
         }
+        else {
+          nodeID(new_id - 1).gender = 'X'; //if unisex is checked
+        }
+
       } 
       else if (document.getElementById("nodeType").value == "room") {
         nodeID(new_id - 1).room = document.getElementsByName('numtextbox')[0].value;
