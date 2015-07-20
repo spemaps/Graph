@@ -645,7 +645,9 @@ function parseFloor(string){
 
 // this works because the attribute for the node is the same as the id (or name) in the HTML. Standardize
 function updateVert(val, id, attribute){
-  nodeID(id).attribute = val;
+  if (attribute[0] == 'd')
+    nodeID(id).down = val;
+  else nodeID(id).up = val;
 }; // COMBINE OTHER THINGS IN HERE! ++++++++++++++++++++++++++++++++++++++++++++++
 
 
