@@ -1428,9 +1428,11 @@ function loadGraph() {
   //add new edges and nodes
   var new_nodes = graph.nodes;
   var new_edges = graph.edges;
+  var highestID = 0;
   for (var i = 0; i < new_nodes.length; i++) {
     new_nodes[i].coords[0] = rescale(new_nodes[i].coords[0]);
     new_nodes[i].coords[1] = rescale(new_nodes[i].coords[1]);
+    highestID = Math.max(new_nodes[i].id, highestID);
     nodes.push(new_nodes[i]);
   }
   for (var i = 0; i < new_edges.length; i++) {
@@ -1446,6 +1448,7 @@ function loadGraph() {
     draw_node(nodes[i].coords[0], nodes[i].coords[1], radius, colorFind(nodes[i].id, false), 1);
   }
   img_update();
+  new_id = highestID + 1;
   //set background IF no current background
 }
 
