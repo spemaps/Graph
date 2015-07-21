@@ -715,9 +715,26 @@ function showEntry(status, id){
   display('popentry', 'status');
   if (id == ""){
     document.example.popentry.value = "";
+    document.example.popob.value = "";
+    document.example.popof.value = "";
+    document.getElementById("popin").checked = false;
+    document.getElementById("popout").checked = false;
   }
   else{
     document.example.popentry.value = nodeID(id).entryway;
+    //find which checkbox, if any should be checked!
+    if (nodeID(id).connected.con == "I"){
+      document.getElementById("popin").checked = true;
+      document.getElementById("popout").checked = false;
+      document.example.popob.value = nodeID(id).connected.building;
+      document.example.popof.value = nodeID(id).connected.floor;
+    }
+    else if (nodeID(id).connected.con == "O"){
+      document.getElementById("popout").checked = true;
+      document.getElementById("popin").checked = false;
+      document.example.popob.value = "";
+      document.example.popof.value = "";
+    }
   }
 };
 
@@ -1257,13 +1274,11 @@ function storeUnits(realDist){
 
         var con = document.getElementById("inside").checked;
         var con1 = document.getElementById("outside").checked;
-        alert(con, "con")
-        alert(con1, "con1")
 
         if(con && con1){
-          alert("Curb your enthusiasm! You can only check one.")
+          alert("Curb your enthusiasm! You can only check one. Please edit this node by selecting the 'Node Info' radio button. ")
           document.getElementById("outside").checked= false;
-          nodeID(new_id-1).connected['con'] = 'I';
+          document.getElementById("inside").checked= false;
         }
         else if (nodeID(new_id - 1).connected['con'] = con){
           nodeID(new_id-1).connected['con'] = 'I';
