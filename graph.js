@@ -1252,6 +1252,28 @@ function storeUnits(realDist){
           value = parseInt(value) + 1;
           document.getElementsByName('entryway')[0].value = value.toString();
         }
+        //connection to another building or outside?
+        nodeID(new_id-1).connected = {};
+
+        var con = document.getElementById("inside").checked;
+        var con1 = document.getElementById("outside").checked;
+        alert(con, "con")
+        alert(con1, "con1")
+
+        if(con && con1){
+          alert("Curb your enthusiasm! You can only check one.")
+          document.getElementById("outside").checked= false;
+          nodeID(new_id-1).connected['con'] = 'I';
+        }
+        else if (nodeID(new_id - 1).connected['con'] = con){
+          nodeID(new_id-1).connected['con'] = 'I';
+          nodeID(new_id-1).connected['building'] = document.getElementById("otherBuilding").value;
+          nodeID(new_id-1).connected['floor'] = document.getElementById("otherFloor").value;
+        }
+        else if (nodeID(new_id - 1).connected['con'] = con1){
+          nodeID(new_id-1).connected['con'] = 'O';
+        }
+     
       }
       else if ((document.getElementById("nodeType").value == 'stairs') || (document.getElementById("nodeType").value == 'elevator')){
         nodeID(new_id - 1).stairset = document.getElementById("stairset").value;
@@ -1261,10 +1283,6 @@ function storeUnits(realDist){
           document.getElementById("stairset").value = value.toString();
         }
         if (document.getElementById("nodeType").value == 'elevator'){
-
-          // array of floors in format like 1, 2, 4
-
-          
           var string = document.getElementById("floorset").value;
           var parts = parseFloor(string)
           nodeID(new_id - 1).floorset = parts;
@@ -1726,19 +1744,20 @@ edits.autonode = function() {
       }
     }
   }
-}
+};
 
-  function autonode_mousemove(x, y, closest) { //returns coordinates
-    var endpoints = closest[2].coords;
-    var a = nodeID(endpoints[0]).coords;
-    var b = nodeID(endpoints[1]).coords;
-    var u = (x - a[0])*(b[0] - a[0]) + (y - a[1])*(b[1] - a[1]);
-    var udenom = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1]);
-    u /= udenom;
-    x = a[0] + u * (b[0] - a[0]);
-    y = a[1] + u * (b[1] - a[1]);
-    return([x, y]);
-  }
+function autonode_mousemove(x, y, closest) { //returns coordinates
+  var endpoints = closest[2].coords;
+  var a = nodeID(endpoints[0]).coords;
+  var b = nodeID(endpoints[1]).coords;
+  var u = (x - a[0])*(b[0] - a[0]) + (y - a[1])*(b[1] - a[1]);
+  var udenom = (b[0] - a[0])*(b[0] - a[0]) + (b[1] - a[1])*(b[1] - a[1]);
+  u /= udenom;
+  x = a[0] + u * (b[0] - a[0]);
+  y = a[1] + u * (b[1] - a[1]);
+  return([x, y]);
+};
+
 function autonode_mouseup(x, y, closest) {
   //remove edge, add two new edges
   var coords = closest[2].coords;
@@ -1754,7 +1773,7 @@ function autonode_mouseup(x, y, closest) {
   draw_node(nodeID(coords[0]).coords[0], nodeID(coords[0]).coords[1], radius, colorFind(coords[0]), 1);
   draw_node(nodeID(coords[1]).coords[0], nodeID(coords[1]).coords[1], radius, colorFind(coords[1]), 1);
   undoPush(['an', new_id - 1, coords[0], coords[1]]);
-}
+};
 
 
 edits.straightline = function() {

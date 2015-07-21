@@ -72,8 +72,8 @@
          <form id="vertical" class = 'nodisplay'><span id="stairconnection"> Connecting Floors: </span>
           Down <input type='text' id = 'stairsdown' name="dirnodes" size = '3' value=''>  
           Up <input type='text' id = 'stairsup' name="dirnodes" size = '3' value=''>
-           
         </form>
+
         <form id="gender" class = 'nodisplay'>
           <input type='radio' name='gender' value='F'>Female
           <input type='radio' name='gender' value='M' checked='checked'>Male    
@@ -85,6 +85,14 @@
         <form id= "entryway" class = 'nodisplay'>
           Entryway Number: <input type = 'text' name ='entryway'>
         </form>  
+        <form name = "connected" >
+          Connected to other buildinng <input type="checkbox" id = "inside" value="I">
+          outside <input type="checkbox" id = "outside" value="O">
+        </form>
+        <form name = "insideConnection" >
+          Building Name: <input type="text" id = "otherBuilding" value="" size = 15>
+          Floor: <input type="text" id = "otherFloor" value="" size = 3>
+        </form>
 
         <form id= "scaleMe" class = 'scalers'>
           Pixels:<input type='text' id = 'pixels' name='pixels' size = "6" value=''>
@@ -107,7 +115,7 @@
         <form action='' id="snapping" class = 'nodisplay'>
           <input type='checkbox' name='snapping' value='snapping'>Snapping  
         </form>   
-        </form>
+     
         </div>
 
       </div>
@@ -123,12 +131,12 @@
         <textarea value="" id="graph_info" name="graph_info"></textarea>  
       </div>
 
-      <div id="container">
+      <div id="container" ondrop="drop(event)" ondragover="allowDrop(event)">
       <canvas id='background' width='563' height='272' style="position: absolute; left: 0; top: 0;"></canvas>
       <canvas id="imageView" width="563" height="272" style="position: absolute; left: 0; top: 0;" >
         <!-- change image to whatever you want above-->
       </canvas>
-      <canvas id='mouse' width='563' height='272'></canvas>
+      <canvas id='mouse' width='563' height='272' ></canvas>
        <script src="graph.js"></script>
      </div>
     </body>
