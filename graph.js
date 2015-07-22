@@ -219,6 +219,8 @@ function display(id, style) {
                 }
                 else if (document.getElementById("nodeType").value == "entry"){
                   display('entryway', 'inline-block');
+                  display('hideentry','inline-block');
+                  display('entrybuilding','inline-block');
                 }
                 else if ((document.getElementById("nodeType").value == "stairs") || (document.getElementById("nodeType").value == "elevator")){
                     display('stairset', 'inline-block');
@@ -1272,7 +1274,7 @@ function storeUnits(realDist){
         //connection to another building or outside?
         nodeID(new_id-1).connected = {};
 
-        var con = document.getElementById("inside").checked;
+        var con = document.getElementById("inside").checked;        
         var con1 = document.getElementById("outside").checked;
 
         if(con && con1){
